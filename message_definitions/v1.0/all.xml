@@ -48,5 +48,6 @@
     messages: 52100 - ? < 60000
     commands: 52100 - ? < 60000
   -->
+  <include>droneleaf_mav_msgs.xml</include>
   <messages/>
 </mavlink>
