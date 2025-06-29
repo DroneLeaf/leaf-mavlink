@@ -241,13 +241,21 @@
       <description>Commands the leaf to queue the external trajectory primitive.</description>
       <field type="uint8_t" name="target_system">The system needs to queue the trajectory</field>
       <field type="uint8_t" name="queue">1 to queue, 0 to not</field>
+      <field type="uint8_t" name="traj_id">0 for pos, 1 for ori</field>
     </message>
-    <message id="77024" name="LEAF_ACK_QUEUE_EXTERNAL_TRAJECTORY">
+    <message id="77024" name="LEAF_ACK_QUEUE_EXTERNAL_TRAJECTORY_POS">
       <description>Acknowledges that the external trajectory primitive is queued.</description>
       <field type="uint8_t" name="target_system">The system needs to queue the trajectory</field>
       <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
+      <field type="uint8_t" name="traj_id">0 for pos, 1 for ori</field>
     </message>
-    <message id="77025" name="LEAF_EXTERNAL_TRAJECTORY_SETPOINT_ENU">
+    <message id="77025" name="LEAF_ACK_QUEUE_EXTERNAL_TRAJECTORY_ORI">
+      <description>Acknowledges that the external trajectory primitive is queued.</description>
+      <field type="uint8_t" name="target_system">The system needs to queue the trajectory</field>
+      <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
+      <field type="uint8_t" name="traj_id">0 for pos, 1 for ori</field>
+    </message>
+    <message id="77026" name="LEAF_EXTERNAL_TRAJECTORY_SETPOINT_ENU">
       <description>Reports the leaf vehicle position, velocity, and acceleration as specified by the external trajectory.</description>
       <field type="float" name="x" units="m">X Position in ENU frame</field>
       <field type="float" name="y" units="m">Y Position in ENU frame</field>
@@ -261,15 +269,35 @@
       <field type="float" name="yaw" units="rad">yaw setpoint</field>
       <field type="float" name="yaw_rate" units="rad/s">yaw rate setpoint</field>
     </message>
-    <message id="77026" name="LEAF_DO_TERMINATE_EXTERNAL_TRAJECTORY">
+    <message id="77027" name="LEAF_DO_TERMINATE_EXTERNAL_TRAJECTORY">
       <description>Terminates the external trajectory is completed.</description>
       <field type="uint8_t" name="target_system">The system needs to queue the trajectory</field>
       <field type="uint8_t" name="status">1 for terminate, 0 for not</field>
+      <field type="uint8_t" name="traj_id">0 for pos, 1 for ori</field>
     </message>
-    <message id="77027" name="LEAF_ACK_TERMINATE_EXTERNAL_TRAJECTORY">
+    <message id="77028" name="LEAF_ACK_TERMINATE_EXTERNAL_TRAJECTORY_POS">
       <description>Acknowledges that the external trajectory is completed.</description>
       <field type="uint8_t" name="target_system">The system needs to queue the trajectory</field>
       <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
+      <field type="uint8_t" name="traj_id">0 for pos, 1 for ori</field>
+    </message>
+    <message id="77029" name="LEAF_ACK_TERMINATE_EXTERNAL_TRAJECTORY_ORI">
+      <description>Acknowledges that the external trajectory is completed.</description>
+      <field type="uint8_t" name="target_system">The system needs to queue the trajectory</field>
+      <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
+      <field type="uint8_t" name="traj_id">0 for pos, 1 for ori</field>
+    </message>
+    <message id="77030" name="LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_POS">
+      <description>Stores the last positional offset value in ENU frame.</description>
+      <field type="float" name="x" units="m">X Position in ENU frame</field>
+      <field type="float" name="y" units="m">Y Position in ENU frame</field>
+      <field type="float" name="z" units="m">Z Position in ENU frame</field>
+    </message>
+    <message id="77031" name="LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_ORI">
+      <description>Stores the last orientational offset value in ENU frame.</description>
+      <field type="float" name="x" units="rad">X orientation in rad</field>
+      <field type="float" name="y" units="rad">Y orientation in rad</field>
+      <field type="float" name="z" units="rad">Z orientation in rad</field>
     </message>
   </messages>
 </mavlink>
