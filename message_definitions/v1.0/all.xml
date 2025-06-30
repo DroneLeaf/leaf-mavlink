@@ -19,11 +19,6 @@
   <include>test.xml</include>
   <include>ualberta.xml</include>
   <include>uAvionix.xml</include>
-  <!-- loweheiser.xml range of IDs:
-       messages: 10150 - 10199
-       commands: 10150 - 10199
-  -->
-  <include>loweheiser.xml</include>
   <!-- storm32.xml range of IDs:
     messages: 60000 - 60049
     commands: 60000 - 60049
@@ -39,15 +34,16 @@
     commands: 50000 - 50099
   -->
   <include>cubepilot.xml</include>
-  <include>csAirLink.xml</include>
-  <!-- csAirLink.xml range of IDs:
-    messages: 52000 - 52099
-    commands: 52000 - 52099
+  <!-- ras_a.xml range of IDs:
+    messages: 51000 - 51999
+    commands: 51000 - 51999
+    https://github.com/Dronecode/air-iop-definitions/blob/master/message_definitions/v1.0/ras_a.xml
   -->
   <!--Next range to allocate range of IDs:
-    messages: 52100 - ? < 60000
-    commands: 52100 - ? < 60000
+    messages: 52000 - ? < 60000
+    commands: 52000 - ? < 60000
   -->
   <include>droneleaf_mav_msgs.xml</include>
+
   <messages/>
 </mavlink>

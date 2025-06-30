@@ -127,25 +127,25 @@
       <entry value="18" name="MAV_TYPE_ONBOARD_CONTROLLER">
         <description>Onboard companion controller</description>
       </entry>
-      <entry value="19" name="MAV_TYPE_VTOL_DUOROTOR">
-        <description>Two-rotor VTOL using control surfaces in vertical operation in addition. Tailsitter.</description>
+      <entry value="19" name="MAV_TYPE_VTOL_TAILSITTER_DUOROTOR">
+        <description>Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note, value previously named MAV_TYPE_VTOL_DUOROTOR.</description>
       </entry>
-      <entry value="20" name="MAV_TYPE_VTOL_QUADROTOR">
-        <description>Quad-rotor VTOL using a V-shaped quad config in vertical operation. Tailsitter.</description>
+      <entry value="20" name="MAV_TYPE_VTOL_TAILSITTER_QUADROTOR">
+        <description>Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value previously named MAV_TYPE_VTOL_QUADROTOR.</description>
       </entry>
       <entry value="21" name="MAV_TYPE_VTOL_TILTROTOR">
-        <description>Tiltrotor VTOL</description>
+        <description>Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight.</description>
       </entry>
-      <!-- Entries up to 25 reserved for other VTOL airframes -->
-      <entry value="22" name="MAV_TYPE_VTOL_RESERVED2">
-        <description>VTOL reserved 2</description>
+      <entry value="22" name="MAV_TYPE_VTOL_FIXEDROTOR">
+        <description>VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases.</description>
       </entry>
-      <entry value="23" name="MAV_TYPE_VTOL_RESERVED3">
-        <description>VTOL reserved 3</description>
+      <entry value="23" name="MAV_TYPE_VTOL_TAILSITTER">
+        <description>Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or MAV_TYPE_VTOL_QUADROTOR if appropriate.</description>
       </entry>
-      <entry value="24" name="MAV_TYPE_VTOL_RESERVED4">
-        <description>VTOL reserved 4</description>
+      <entry value="24" name="MAV_TYPE_VTOL_TILTWING">
+        <description>Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any attached engine, can tilt between vertical and horizontal mode.</description>
       </entry>
+      <!-- Entry 25 reserved for other VTOL airframe -->
       <entry value="25" name="MAV_TYPE_VTOL_RESERVED5">
         <description>VTOL reserved 5</description>
       </entry>
@@ -605,6 +605,9 @@
       <entry value="161" name="MAV_COMP_ID_PARACHUTE">
         <description>Parachute component.</description>
       </entry>
+      <entry value="169" name="MAV_COMP_ID_WINCH">
+        <description>Winch component.</description>
+      </entry>
       <entry value="171" name="MAV_COMP_ID_GIMBAL2">
         <description>Gimbal #2.</description>
       </entry>
@@ -690,8 +693,8 @@
         <description>Component handling TUNNEL messages (e.g. vendor specific GUI of a component).</description>
       </entry>
       <entry value="250" name="MAV_COMP_ID_SYSTEM_CONTROL">
-        <deprecated since="2018-11" replaced_by="MAV_COMP_ID_ALL">System control does not require a separate component ID.</deprecated>
-        <description>Component for handling system messages (e.g. to ARM, takeoff, etc.).</description>
+        <deprecated since="2018-11" replaced_by="MAV_COMP_ID_ALL">System control does not require a separate component ID. Instead, system commands should be sent with target_component=MAV_COMP_ID_ALL allowing the target component to use any appropriate component id.</deprecated>
+        <description>Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.).</description>
       </entry>
     </enum>
   </enums>
@@ -704,6 +707,16 @@
       <field type="uint32_t" name="custom_mode">A bitfield for use for autopilot-specific flags</field>
       <field type="uint8_t" name="system_status" enum="MAV_STATE">System status flag.</field>
       <field type="uint8_t_mavlink_version" name="mavlink_version">MAVLink version, not writable by user, gets added by protocol because of magic data type: uint8_t_mavlink_version</field>
+    </message>
+    <message id="300" name="PROTOCOL_VERSION">
+      <wip/>
+      <!-- This message is work-in-progress and it can therefore change. It should NOT be used in stable production environments. -->
+      <description>Version and capability of protocol version. This message can be requested with MAV_CMD_REQUEST_MESSAGE and is used as part of the handshaking to establish which MAVLink version should be used on the network. Every node should respond to a request for PROTOCOL_VERSION to enable the handshaking. Library implementers should consider adding this into the default decoding state machine to allow the protocol core to respond directly.</description>
+      <field type="uint16_t" name="version">Currently active MAVLink version number * 100: v1.0 is 100, v2.0 is 200, etc.</field>
+      <field type="uint16_t" name="min_version">Minimum MAVLink version supported</field>
+      <field type="uint16_t" name="max_version">Maximum MAVLink version supported (set to the same value as version by default)</field>
+      <field type="uint8_t[8]" name="spec_version_hash">The first 8 bytes (not characters printed in hex!) of the git hash.</field>
+      <field type="uint8_t[8]" name="library_version_hash">The first 8 bytes (not characters printed in hex!) of the git hash.</field>
     </message>
   </messages>
 </mavlink>
