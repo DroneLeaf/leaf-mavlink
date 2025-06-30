@@ -6420,13 +6420,13 @@
       <field type="uint8_t" name="vxy_reset_counter">xy velocity reset counter</field>
       <field type="float" name="delta_vz">z velocity reset delta</field>
       <field type="uint8_t" name="vz_reset_counter">z velocity reset counter</field>
-      <field type="float" name="ax" units="m/s^2">North velocity derivative in NED earth-fixed frame.</field>
-      <field type="float" name="ay" units="m/s^2">East velocity derivative in NED earth-fixed frame.</field>
-      <field type="float" name="az" units="m/s^2">Down velocity derivative in NED earth-fixed frame.</field>
+      <field type="float" name="ax" units="m/s/s">North velocity derivative in NED earth-fixed frame.</field>
+      <field type="float" name="ay" units="m/s/s">East velocity derivative in NED earth-fixed frame.</field>
+      <field type="float" name="az" units="m/s/s">Down velocity derivative in NED earth-fixed frame.</field>
       <field type="uint8_t" name="xy_global">true if position (x, y) has a valid global reference (ref_lat, ref_lon)</field>
       <field type="uint8_t" name="z_global">true if z has a valid global reference (ref_alt)</field>
-      <field type="float" name="ref_lat" units="degrees">Reference point latitude</field>
-      <field type="float" name="ref_lon" units="degrees">Reference point longitude</field>
+      <field type="float" name="ref_lat" units="deg">Reference point latitude</field>
+      <field type="float" name="ref_lon" units="deg">Reference point longitude</field>
       <field type="float" name="ref_alt" units="m">Reference altitude AMSL</field>
       <field type="float" name="dist_bottom" units="m">Distance from from bottom surface to ground</field>
       <field type="uint8_t" name="dist_bottom_valid">true if distance to bottom surface is valid</field>
@@ -6443,8 +6443,8 @@
     </message>
     <message id="205" name="VEHICLE_STATUS">
       <description>Encodes the system state of the vehicle published by commander.</description>
-      <field type="uint64_t" name="armed_time" units="microseconds">Arming timestamp</field>
-      <field type="uint64_t" name="takeoff_time" units="microseconds">Takeoff timestamp</field>
+      <field type="uint64_t" name="armed_time" units="us">Arming timestamp</field>
+      <field type="uint64_t" name="takeoff_time" units="us">Takeoff timestamp</field>
       <field type="uint8_t" name="arming_state"/>
       <field type="uint8_t" name="latest_arming_reason"/>
       <field type="uint8_t" name="latest_disarming_reason"/>
