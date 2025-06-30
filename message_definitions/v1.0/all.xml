@@ -44,6 +44,5 @@
     commands: 52000 - ? < 60000
   -->
   <include>droneleaf_mav_msgs.xml</include>
-
   <messages/>
 </mavlink>

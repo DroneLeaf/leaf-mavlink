@@ -6382,7 +6382,6 @@
       <field type="uint8_t" name="new_orientation" enum="MAV_SENSOR_ORIENTATION">orientation after calibration.</field>
       <field type="float" name="scale_factor">field radius correction factor</field>
     </message>
-    
     <message id="202" name="VEHICLE_ATTITUDE">
       <description>Vehicle Attitude.</description>
       <field type="float" name="q_w">Quaternion rotation from the FRD body frame to the NED earth frame (w component).</field>
@@ -6394,14 +6393,12 @@
       <field type="float" name="delta_q_y">Amount by which quaternion y has changed during last reset.</field>
       <field type="float" name="delta_q_z">Amount by which quaternion z has changed during last reset.</field>
     </message>
-
     <message id="203" name="VEHICLE_ANGULAR_VELOCITY">
       <description>Angular velocity components.</description>
-      <field type="float" name="angular_velocity_x" units="rad/s" >X component of angular velocity, positive is rolling to the right.</field>
-      <field type="float" name="angular_velocity_y" units="rad/s" >Y component of angular velocity, positive is pitching up.</field>
-      <field type="float" name="angular_velocity_z" units="rad/s" >Z component of angular velocity, positive is yawing to the right.</field>
+      <field type="float" name="angular_velocity_x" units="rad/s">X component of angular velocity, positive is rolling to the right.</field>
+      <field type="float" name="angular_velocity_y" units="rad/s">Y component of angular velocity, positive is pitching up.</field>
+      <field type="float" name="angular_velocity_z" units="rad/s">Z component of angular velocity, positive is yawing to the right.</field>
     </message>
-
     <message id="204" name="VEHICLE_LOCAL_POSITION">
       <description>Local position. Coordinate frame is right-handed, Z-axis down.</description>
       <field type="uint8_t" name="xy_valid">true if x and y are valid</field>
@@ -6444,7 +6441,6 @@
       <field type="float" name="hagl_min" units="m">minimum height above ground level</field>
       <field type="float" name="hagl_max" units="m">maximum height above ground level</field>
     </message>
-
     <message id="205" name="VEHICLE_STATUS">
       <description>Encodes the system state of the vehicle published by commander.</description>
       <field type="uint64_t" name="armed_time" units="microseconds">Arming timestamp</field>
@@ -6468,7 +6464,6 @@
       <field type="uint8_t" name="in_transition_mode"/>
       <field type="uint8_t" name="in_transition_to_fw"/>
     </message>
-
     <message id="206" name="VEHICLE_CONTROL_MODE">
       <description>Provides boolean values of the vehicle control mode.</description>
       <field type="uint8_t" name="flag_armed">synonym for actuator_armed.armed</field>
@@ -6485,7 +6480,6 @@
       <field type="uint8_t" name="flag_control_climb_rate_enabled">true if climb rate is controlled</field>
       <field type="uint8_t" name="flag_control_termination_enabled">true if flighttermination is enabled</field>
     </message>
-
     <message id="207" name="ACTUATOR_ARMED">
       <description>Provides bool values for actuator armed.</description>
       <field type="uint8_t" name="armed">Set to true if system is armed</field>
@@ -6496,28 +6490,23 @@
       <field type="uint8_t" name="force_failsafe">Set to true if the actuators are forced to the failsafe position</field>
       <field type="uint8_t" name="in_esc_calibration_mode">IO/FMU should ignore messages from the actuator controls topics</field>
     </message>
-
     <message id="208" name="ACTUATOR_OUTPUTS">
       <description>Provides output data</description>
       <field type="uint32_t" name="noutputs">valid outputs</field>
       <field type="float[16]" name="output">output data, in natural output units</field>
     </message>
-
     <message id="209" name="VEHICLE_TORQUE_SETPOINT_MODE">
       <description>thrust_torque_setpoint mode</description>
       <field type="float[3]" name="xyz">torque setpoint about X, Y, Z body axis</field>
     </message>
-
     <message id="210" name="VEHICLE_THRUST_SETPOINT_MODE">
       <description>thrust_torque_setpoint mode</description>
       <field type="float[3]" name="xyz">thrust setpoint along X, Y, Z body axis [-1, 1]</field>
     </message>
-
     <message id="211" name="ACTUATOR_MOTORS">
       <description>Motor control message</description>
       <field type="float[12]" name="control">range: [-1, 1]</field>
     </message>
-
     <!-- 225 EFI_STATUS imported from ardupilotmega.xml -->
     <message id="225" name="EFI_STATUS">
       <description>EFI status output</description>
