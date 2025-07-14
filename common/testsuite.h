@@ -11596,7 +11596,7 @@ static void mavlink_test_gimbal_device_attitude_status(uint8_t system_id, uint8_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_gimbal_device_attitude_status_t packet_in = {
-        963497464,{ 45.0, 46.0, 47.0, 48.0 },157.0,185.0,213.0,963499128,19107,247,58,297.0,325.0
+        963497464,{ 45.0, 46.0, 47.0, 48.0 },157.0,185.0,213.0,963499128,19107,247,58,297.0,325.0,149
     };
     mavlink_gimbal_device_attitude_status_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -11610,6 +11610,7 @@ static void mavlink_test_gimbal_device_attitude_status(uint8_t system_id, uint8_
         packet1.target_component = packet_in.target_component;
         packet1.delta_yaw = packet_in.delta_yaw;
         packet1.delta_yaw_velocity = packet_in.delta_yaw_velocity;
+        packet1.gimbal_device_id = packet_in.gimbal_device_id;
         
         mav_array_memcpy(packet1.q, packet_in.q, sizeof(float)*4);
         
@@ -11625,12 +11626,12 @@ static void mavlink_test_gimbal_device_attitude_status(uint8_t system_id, uint8_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_gimbal_device_attitude_status_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.time_boot_ms , packet1.flags , packet1.q , packet1.angular_velocity_x , packet1.angular_velocity_y , packet1.angular_velocity_z , packet1.failure_flags , packet1.delta_yaw , packet1.delta_yaw_velocity );
+    mavlink_msg_gimbal_device_attitude_status_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.time_boot_ms , packet1.flags , packet1.q , packet1.angular_velocity_x , packet1.angular_velocity_y , packet1.angular_velocity_z , packet1.failure_flags , packet1.delta_yaw , packet1.delta_yaw_velocity , packet1.gimbal_device_id );
     mavlink_msg_gimbal_device_attitude_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_gimbal_device_attitude_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.time_boot_ms , packet1.flags , packet1.q , packet1.angular_velocity_x , packet1.angular_velocity_y , packet1.angular_velocity_z , packet1.failure_flags , packet1.delta_yaw , packet1.delta_yaw_velocity );
+    mavlink_msg_gimbal_device_attitude_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.time_boot_ms , packet1.flags , packet1.q , packet1.angular_velocity_x , packet1.angular_velocity_y , packet1.angular_velocity_z , packet1.failure_flags , packet1.delta_yaw , packet1.delta_yaw_velocity , packet1.gimbal_device_id );
     mavlink_msg_gimbal_device_attitude_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -11643,7 +11644,7 @@ static void mavlink_test_gimbal_device_attitude_status(uint8_t system_id, uint8_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_gimbal_device_attitude_status_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.time_boot_ms , packet1.flags , packet1.q , packet1.angular_velocity_x , packet1.angular_velocity_y , packet1.angular_velocity_z , packet1.failure_flags , packet1.delta_yaw , packet1.delta_yaw_velocity );
+    mavlink_msg_gimbal_device_attitude_status_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.time_boot_ms , packet1.flags , packet1.q , packet1.angular_velocity_x , packet1.angular_velocity_y , packet1.angular_velocity_z , packet1.failure_flags , packet1.delta_yaw , packet1.delta_yaw_velocity , packet1.gimbal_device_id );
     mavlink_msg_gimbal_device_attitude_status_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 

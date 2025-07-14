@@ -5,8 +5,8 @@
 
 
 typedef struct __mavlink_vehicle_status_t {
- uint64_t armed_time; /*< [microseconds] Arming timestamp*/
- uint64_t takeoff_time; /*< [microseconds] Takeoff timestamp*/
+ uint64_t armed_time; /*< [us] Arming timestamp*/
+ uint64_t takeoff_time; /*< [us] Takeoff timestamp*/
  uint64_t nav_state_timestamp; /*<  time when current nav_state activated*/
  uint16_t failure_detector_status; /*<  Bitmask of detected failures*/
  uint8_t arming_state; /*<  */
@@ -98,8 +98,8 @@ typedef struct __mavlink_vehicle_status_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param armed_time [microseconds] Arming timestamp
- * @param takeoff_time [microseconds] Takeoff timestamp
+ * @param armed_time [us] Arming timestamp
+ * @param takeoff_time [us] Takeoff timestamp
  * @param arming_state  
  * @param latest_arming_reason  
  * @param latest_disarming_reason  
@@ -184,8 +184,8 @@ static inline uint16_t mavlink_msg_vehicle_status_pack(uint8_t system_id, uint8_
  * @param status MAVLink status structure
  * @param msg The MAVLink message to compress the data into
  *
- * @param armed_time [microseconds] Arming timestamp
- * @param takeoff_time [microseconds] Takeoff timestamp
+ * @param armed_time [us] Arming timestamp
+ * @param takeoff_time [us] Takeoff timestamp
  * @param arming_state  
  * @param latest_arming_reason  
  * @param latest_disarming_reason  
@@ -273,8 +273,8 @@ static inline uint16_t mavlink_msg_vehicle_status_pack_status(uint8_t system_id,
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param armed_time [microseconds] Arming timestamp
- * @param takeoff_time [microseconds] Takeoff timestamp
+ * @param armed_time [us] Arming timestamp
+ * @param takeoff_time [us] Takeoff timestamp
  * @param arming_state  
  * @param latest_arming_reason  
  * @param latest_disarming_reason  
@@ -398,8 +398,8 @@ static inline uint16_t mavlink_msg_vehicle_status_encode_status(uint8_t system_i
  * @brief Send a vehicle_status message
  * @param chan MAVLink channel to send the message
  *
- * @param armed_time [microseconds] Arming timestamp
- * @param takeoff_time [microseconds] Takeoff timestamp
+ * @param armed_time [us] Arming timestamp
+ * @param takeoff_time [us] Takeoff timestamp
  * @param arming_state  
  * @param latest_arming_reason  
  * @param latest_disarming_reason  
@@ -558,7 +558,7 @@ static inline void mavlink_msg_vehicle_status_send_buf(mavlink_message_t *msgbuf
 /**
  * @brief Get field armed_time from vehicle_status message
  *
- * @return [microseconds] Arming timestamp
+ * @return [us] Arming timestamp
  */
 static inline uint64_t mavlink_msg_vehicle_status_get_armed_time(const mavlink_message_t* msg)
 {
@@ -568,7 +568,7 @@ static inline uint64_t mavlink_msg_vehicle_status_get_armed_time(const mavlink_m
 /**
  * @brief Get field takeoff_time from vehicle_status message
  *
- * @return [microseconds] Takeoff timestamp
+ * @return [us] Takeoff timestamp
  */
 static inline uint64_t mavlink_msg_vehicle_status_get_takeoff_time(const mavlink_message_t* msg)
 {

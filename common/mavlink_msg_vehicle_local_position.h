@@ -16,11 +16,11 @@ typedef struct __mavlink_vehicle_local_position_t {
  float z_deriv; /*< [m/s] Down position time derivative in NED earth-fixed frame*/
  float delta_vxy[2]; /*<  xy velocity reset delta*/
  float delta_vz; /*<  z velocity reset delta*/
- float ax; /*< [m/s^2] North velocity derivative in NED earth-fixed frame.*/
- float ay; /*< [m/s^2] East velocity derivative in NED earth-fixed frame.*/
- float az; /*< [m/s^2] Down velocity derivative in NED earth-fixed frame.*/
- float ref_lat; /*< [degrees] Reference point latitude*/
- float ref_lon; /*< [degrees] Reference point longitude*/
+ float ax; /*< [m/s/s] North velocity derivative in NED earth-fixed frame.*/
+ float ay; /*< [m/s/s] East velocity derivative in NED earth-fixed frame.*/
+ float az; /*< [m/s/s] Down velocity derivative in NED earth-fixed frame.*/
+ float ref_lat; /*< [deg] Reference point latitude*/
+ float ref_lon; /*< [deg] Reference point longitude*/
  float ref_alt; /*< [m] Reference altitude AMSL*/
  float dist_bottom; /*< [m] Distance from from bottom surface to ground*/
  float eph; /*< [m] Standard deviation of horizontal position error*/
@@ -175,13 +175,13 @@ typedef struct __mavlink_vehicle_local_position_t {
  * @param vxy_reset_counter  xy velocity reset counter
  * @param delta_vz  z velocity reset delta
  * @param vz_reset_counter  z velocity reset counter
- * @param ax [m/s^2] North velocity derivative in NED earth-fixed frame.
- * @param ay [m/s^2] East velocity derivative in NED earth-fixed frame.
- * @param az [m/s^2] Down velocity derivative in NED earth-fixed frame.
+ * @param ax [m/s/s] North velocity derivative in NED earth-fixed frame.
+ * @param ay [m/s/s] East velocity derivative in NED earth-fixed frame.
+ * @param az [m/s/s] Down velocity derivative in NED earth-fixed frame.
  * @param xy_global  true if position (x, y) has a valid global reference (ref_lat, ref_lon)
  * @param z_global  true if z has a valid global reference (ref_alt)
- * @param ref_lat [degrees] Reference point latitude
- * @param ref_lon [degrees] Reference point longitude
+ * @param ref_lat [deg] Reference point latitude
+ * @param ref_lon [deg] Reference point longitude
  * @param ref_alt [m] Reference altitude AMSL
  * @param dist_bottom [m] Distance from from bottom surface to ground
  * @param dist_bottom_valid  true if distance to bottom surface is valid
@@ -316,13 +316,13 @@ static inline uint16_t mavlink_msg_vehicle_local_position_pack(uint8_t system_id
  * @param vxy_reset_counter  xy velocity reset counter
  * @param delta_vz  z velocity reset delta
  * @param vz_reset_counter  z velocity reset counter
- * @param ax [m/s^2] North velocity derivative in NED earth-fixed frame.
- * @param ay [m/s^2] East velocity derivative in NED earth-fixed frame.
- * @param az [m/s^2] Down velocity derivative in NED earth-fixed frame.
+ * @param ax [m/s/s] North velocity derivative in NED earth-fixed frame.
+ * @param ay [m/s/s] East velocity derivative in NED earth-fixed frame.
+ * @param az [m/s/s] Down velocity derivative in NED earth-fixed frame.
  * @param xy_global  true if position (x, y) has a valid global reference (ref_lat, ref_lon)
  * @param z_global  true if z has a valid global reference (ref_alt)
- * @param ref_lat [degrees] Reference point latitude
- * @param ref_lon [degrees] Reference point longitude
+ * @param ref_lat [deg] Reference point latitude
+ * @param ref_lon [deg] Reference point longitude
  * @param ref_alt [m] Reference altitude AMSL
  * @param dist_bottom [m] Distance from from bottom surface to ground
  * @param dist_bottom_valid  true if distance to bottom surface is valid
@@ -460,13 +460,13 @@ static inline uint16_t mavlink_msg_vehicle_local_position_pack_status(uint8_t sy
  * @param vxy_reset_counter  xy velocity reset counter
  * @param delta_vz  z velocity reset delta
  * @param vz_reset_counter  z velocity reset counter
- * @param ax [m/s^2] North velocity derivative in NED earth-fixed frame.
- * @param ay [m/s^2] East velocity derivative in NED earth-fixed frame.
- * @param az [m/s^2] Down velocity derivative in NED earth-fixed frame.
+ * @param ax [m/s/s] North velocity derivative in NED earth-fixed frame.
+ * @param ay [m/s/s] East velocity derivative in NED earth-fixed frame.
+ * @param az [m/s/s] Down velocity derivative in NED earth-fixed frame.
  * @param xy_global  true if position (x, y) has a valid global reference (ref_lat, ref_lon)
  * @param z_global  true if z has a valid global reference (ref_alt)
- * @param ref_lat [degrees] Reference point latitude
- * @param ref_lon [degrees] Reference point longitude
+ * @param ref_lat [deg] Reference point latitude
+ * @param ref_lon [deg] Reference point longitude
  * @param ref_alt [m] Reference altitude AMSL
  * @param dist_bottom [m] Distance from from bottom surface to ground
  * @param dist_bottom_valid  true if distance to bottom surface is valid
@@ -640,13 +640,13 @@ static inline uint16_t mavlink_msg_vehicle_local_position_encode_status(uint8_t 
  * @param vxy_reset_counter  xy velocity reset counter
  * @param delta_vz  z velocity reset delta
  * @param vz_reset_counter  z velocity reset counter
- * @param ax [m/s^2] North velocity derivative in NED earth-fixed frame.
- * @param ay [m/s^2] East velocity derivative in NED earth-fixed frame.
- * @param az [m/s^2] Down velocity derivative in NED earth-fixed frame.
+ * @param ax [m/s/s] North velocity derivative in NED earth-fixed frame.
+ * @param ay [m/s/s] East velocity derivative in NED earth-fixed frame.
+ * @param az [m/s/s] Down velocity derivative in NED earth-fixed frame.
  * @param xy_global  true if position (x, y) has a valid global reference (ref_lat, ref_lon)
  * @param z_global  true if z has a valid global reference (ref_alt)
- * @param ref_lat [degrees] Reference point latitude
- * @param ref_lon [degrees] Reference point longitude
+ * @param ref_lat [deg] Reference point latitude
+ * @param ref_lon [deg] Reference point longitude
  * @param ref_alt [m] Reference altitude AMSL
  * @param dist_bottom [m] Distance from from bottom surface to ground
  * @param dist_bottom_valid  true if distance to bottom surface is valid
@@ -1062,7 +1062,7 @@ static inline uint8_t mavlink_msg_vehicle_local_position_get_vz_reset_counter(co
 /**
  * @brief Get field ax from vehicle_local_position message
  *
- * @return [m/s^2] North velocity derivative in NED earth-fixed frame.
+ * @return [m/s/s] North velocity derivative in NED earth-fixed frame.
  */
 static inline float mavlink_msg_vehicle_local_position_get_ax(const mavlink_message_t* msg)
 {
@@ -1072,7 +1072,7 @@ static inline float mavlink_msg_vehicle_local_position_get_ax(const mavlink_mess
 /**
  * @brief Get field ay from vehicle_local_position message
  *
- * @return [m/s^2] East velocity derivative in NED earth-fixed frame.
+ * @return [m/s/s] East velocity derivative in NED earth-fixed frame.
  */
 static inline float mavlink_msg_vehicle_local_position_get_ay(const mavlink_message_t* msg)
 {
@@ -1082,7 +1082,7 @@ static inline float mavlink_msg_vehicle_local_position_get_ay(const mavlink_mess
 /**
  * @brief Get field az from vehicle_local_position message
  *
- * @return [m/s^2] Down velocity derivative in NED earth-fixed frame.
+ * @return [m/s/s] Down velocity derivative in NED earth-fixed frame.
  */
 static inline float mavlink_msg_vehicle_local_position_get_az(const mavlink_message_t* msg)
 {
@@ -1112,7 +1112,7 @@ static inline uint8_t mavlink_msg_vehicle_local_position_get_z_global(const mavl
 /**
  * @brief Get field ref_lat from vehicle_local_position message
  *
- * @return [degrees] Reference point latitude
+ * @return [deg] Reference point latitude
  */
 static inline float mavlink_msg_vehicle_local_position_get_ref_lat(const mavlink_message_t* msg)
 {
@@ -1122,7 +1122,7 @@ static inline float mavlink_msg_vehicle_local_position_get_ref_lat(const mavlink
 /**
  * @brief Get field ref_lon from vehicle_local_position message
  *
- * @return [degrees] Reference point longitude
+ * @return [deg] Reference point longitude
  */
 static inline float mavlink_msg_vehicle_local_position_get_ref_lon(const mavlink_message_t* msg)
 {
