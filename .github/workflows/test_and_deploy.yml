@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - 'master'
+    - 'dev-sitl'
   pull_request:
     branches:
     - '*'
