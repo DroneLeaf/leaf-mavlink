@@ -45,6 +45,9 @@
       <entry value="9" name="LEAF_MODE_REFINED_TUNING_OUTER">
         <description>Refined tuning outer mode</description>
       </entry>
+      <entry value="10" name="LEAF_MODE_MISSION">
+        <description>LeafSDK mission mode</description>
+      </entry>
     </enum>
     <enum name="LEAF_STATUS">
       <entry value="0" name="LEAF_STATUS_READY_TO_LEARN">
@@ -298,6 +301,17 @@
       <field type="float" name="x" units="rad">X orientation in rad</field>
       <field type="float" name="y" units="rad">Y orientation in rad</field>
       <field type="float" name="z" units="rad">Z orientation in rad</field>
+    </message>
+    <message id="77032" name="LEAF_DO_MISSION_RUN">
+      <description>Commands the leaf to run a mission.</description>
+      <field type="uint8_t" name="target_system">The system needs to run the mission</field>
+      <field type="char[64]" name="mission_id">The id of the mission to run</field>
+    </message>
+    <message id="77033" name="LEAF_ACK_MISSION_RUN">
+      <description>Acknowledges that the mission run command has been received.</description>
+      <field type="uint8_t" name="target_system">The system that received the mission run command</field>
+      <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
+      <field type="char[64]" name="mission_id">The id of the mission</field>
     </message>
   </messages>
 </mavlink>
