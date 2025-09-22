@@ -117,6 +117,26 @@
         <description>Leaf is heading to base</description>
       </entry>
     </enum>
+    <enum name="LEAF_MISSION_STATUS">
+      <entry value="0" name="LEAF_MISSION_STATUS_IDLE">
+        <description>Leaf mission manager is idle</description>
+      </entry>
+      <entry value="1" name="LEAF_MISSION_STATUS_EXECUTING">
+        <description>Leaf mission manager is executing a mission</description>
+      </entry>
+      <entry value="2" name="LEAF_MISSION_STATUS_PAUSED">
+        <description>Leaf mission manager has paused the mission</description>
+      </entry>
+      <entry value="3" name="LEAF_MISSION_STATUS_COMPLETED">
+        <description>Leaf mission manager has completed the mission</description>
+      </entry>
+      <entry value="4" name="LEAF_MISSION_STATUS_CANCELED">
+        <description>Leaf mission manager has canceled the mission</description>
+      </entry>
+      <entry value="5" name="LEAF_MISSION_STATUS_ABORTED">
+        <description>Leaf mission manager has aborted the mission</description>
+      </entry>
+    </enum>
     <enum name="LEAF_CONTROL_COMMAND">
       <entry value="0" name="LEAF_CONTROL_PAUSE">
         <description>Pause the exection of the current mission</description>
@@ -124,8 +144,31 @@
       <entry value="1" name="LEAF_CONTROL_RESUME">
         <description>Resume the exection of the current mission</description>
       </entry>
-      <entry value="2" name="LEAF_CONTROL_ABORT">
+      <entry value="2" name="LEAF_CONTROL_CANCEL">
+        <description>Cancel the exection of the current mission</description>
+      </entry>
+      <entry value="3" name="LEAF_CONTROL_ABORT">
         <description>Abort the exection of the current mission</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_CONTROL_COMMAND_ACTION">
+      <entry value="0" name="LEAF_CONTROL_COMMAND_ACTION_NONE">
+        <description>None</description>
+      </entry>
+      <entry value="1" name="LEAF_CONTROL_COMMAND_ACTION_STOP">
+        <description>Stop the current trajectory</description>
+      </entry>
+      <entry value="2" name="LEAF_CONTROL_COMMAND_ACTION_RTL">
+        <description>Return to launch</description>
+      </entry>
+      <entry value="3" name="LEAF_CONTROL_COMMAND_ACTION_STOP_AND_RTL">
+        <description>Stop the current trajectory and return to launch</description>
+      </entry>
+      <entry value="4" name="LEAF_CONTROL_COMMAND_ACTION_LIP">
+        <description>Land in place</description>
+      </entry>
+      <entry value="5" name="LEAF_CONTROL_COMMAND_ACTION_STOP_AND_LIP">
+        <description>Stop the current trajectory and land in place</description>
       </entry>
     </enum>
   </enums>
@@ -201,6 +244,7 @@
       <description>Commands the leaf to execute a control command</description>
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
       <field type="uint8_t" name="cmd" enum="LEAF_CONTROL_COMMAND">The control command to execute</field>
+      <field type="uint8_t" name="action" enum="LEAF_CONTROL_COMMAND_ACTION">The action to perform</field>
     </message>
     <message id="77016" name="LEAF_SAY_TO_QGC">
       <description>Commands the leaf to say something to QGC</description>
