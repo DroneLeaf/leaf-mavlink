@@ -48,7 +48,7 @@
       <entry value="10" name="LEAF_MODE_MISSION">
         <description>LeafSDK mission mode</description>
       </entry>
-      <entry value="11" name="LEAF_MODE_LEARNING_FULL_DEMO">
+      <entry value="11" name="LEAF_MODE_LEARNING_FULL_DATA_COLLECTION">
         <description>Learning all loops mode - no real-time tuning</description>
       </entry>
     </enum>
