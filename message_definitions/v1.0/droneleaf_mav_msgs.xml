@@ -161,14 +161,8 @@
       <entry value="2" name="LEAF_CONTROL_COMMAND_ACTION_RTL">
         <description>Return to launch</description>
       </entry>
-      <entry value="3" name="LEAF_CONTROL_COMMAND_ACTION_STOP_AND_RTL">
-        <description>Stop the current trajectory and return to launch</description>
-      </entry>
-      <entry value="4" name="LEAF_CONTROL_COMMAND_ACTION_LIP">
+      <entry value="3" name="LEAF_CONTROL_COMMAND_ACTION_LIP">
         <description>Land in place</description>
-      </entry>
-      <entry value="5" name="LEAF_CONTROL_COMMAND_ACTION_STOP_AND_LIP">
-        <description>Stop the current trajectory and land in place</description>
       </entry>
     </enum>
   </enums>
@@ -356,6 +350,11 @@
       <field type="uint8_t" name="target_system">The system that received the mission run command</field>
       <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
       <field type="char[64]" name="mission_id">The id of the mission</field>
+    </message>
+    <message id="77034" name="LEAF_DONE_MISSION_RUN">
+      <description>Notifies the leaf that the mission has been completed.</description>
+      <field type="uint8_t" name="target_system">The system that completed the mission</field>
+      <field type="char[64]" name="mission_id">The id of the completed mission</field>
     </message>
   </messages>
 </mavlink>
