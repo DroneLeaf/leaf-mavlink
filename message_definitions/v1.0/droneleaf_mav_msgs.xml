@@ -356,5 +356,9 @@
       <field type="uint8_t" name="target_system">The system that completed the mission</field>
       <field type="char[64]" name="mission_id">The id of the completed mission</field>
     </message>
+    <message id="77035" name="LEAF_MISSION_STATUS">
+      <description>The system status, as defined by enum LEAF_MISSION_STATUS</description>
+      <field type="uint8_t" name="status" enum="LEAF_MISSION_STATUS">The new leaf mission status.</field>
+    </message>
   </messages>
 </mavlink>

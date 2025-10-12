@@ -8822,6 +8822,7 @@ MAVLINK_MSG_ID_LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_ORI = 77031
 MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN = 77032
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_RUN = 77033
 MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN = 77034
+MAVLINK_MSG_ID_LEAF_MISSION_STATUS = 77035
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -28453,6 +28454,44 @@ class MAVLink_leaf_done_mission_run_message(MAVLink_message):
 setattr(MAVLink_leaf_done_mission_run_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_mission_status_message(MAVLink_message):
+    """
+    The system status, as defined by enum LEAF_MISSION_STATUS
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_MISSION_STATUS
+    msgname = "LEAF_MISSION_STATUS"
+    fieldnames = ["status"]
+    ordered_fieldnames = ["status"]
+    fieldtypes = ["uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {"status": "LEAF_MISSION_STATUS"}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<B")
+    orders = [0]
+    lengths = [1]
+    array_lengths = [0]
+    crc_extra = 75
+    unpacker = struct.Struct("<B")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, status: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_mission_status_message.id, MAVLink_leaf_mission_status_message.msgname)
+        self._fieldnames = MAVLink_leaf_mission_status_message.fieldnames
+        self._instance_field = MAVLink_leaf_mission_status_message.instance_field
+        self._instance_offset = MAVLink_leaf_mission_status_message.instance_offset
+        self.status = status
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.status), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_mission_status_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -28940,6 +28979,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN: MAVLink_leaf_do_mission_run_message,
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_RUN: MAVLink_leaf_ack_mission_run_message,
     MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN: MAVLink_leaf_done_mission_run_message,
+    MAVLINK_MSG_ID_LEAF_MISSION_STATUS: MAVLink_leaf_mission_status_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -43929,6 +43969,24 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_done_mission_run_encode(target_system, mission_id), force_mavlink1=force_mavlink1)
+
+    def leaf_mission_status_encode(self, status: int) -> MAVLink_leaf_mission_status_message:
+        """
+        The system status, as defined by enum LEAF_MISSION_STATUS
+
+        status                    : The new leaf mission status. (type:uint8_t, values:LEAF_MISSION_STATUS)
+
+        """
+        return MAVLink_leaf_mission_status_message(status)
+
+    def leaf_mission_status_send(self, status: int, force_mavlink1: bool = False) -> None:
+        """
+        The system status, as defined by enum LEAF_MISSION_STATUS
+
+        status                    : The new leaf mission status. (type:uint8_t, values:LEAF_MISSION_STATUS)
+
+        """
+        self.send(self.leaf_mission_status_encode(status), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """
