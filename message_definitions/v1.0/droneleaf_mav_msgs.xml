@@ -121,19 +121,22 @@
       <entry value="0" name="LEAF_MISSION_STATUS_IDLE">
         <description>Leaf mission manager is idle</description>
       </entry>
-      <entry value="1" name="LEAF_MISSION_STATUS_EXECUTING">
+      <entry value="1" name="LEAF_MISSION_STATUS_READY">
+        <description>Leaf mission manager is idle</description>
+      </entry>
+      <entry value="2" name="LEAF_MISSION_STATUS_EXECUTING">
         <description>Leaf mission manager is executing a mission</description>
       </entry>
-      <entry value="2" name="LEAF_MISSION_STATUS_PAUSED">
+      <entry value="3" name="LEAF_MISSION_STATUS_PAUSED">
         <description>Leaf mission manager has paused the mission</description>
       </entry>
-      <entry value="3" name="LEAF_MISSION_STATUS_COMPLETED">
+      <entry value="4" name="LEAF_MISSION_STATUS_COMPLETED">
         <description>Leaf mission manager has completed the mission</description>
       </entry>
-      <entry value="4" name="LEAF_MISSION_STATUS_CANCELED">
+      <entry value="5" name="LEAF_MISSION_STATUS_CANCELED">
         <description>Leaf mission manager has canceled the mission</description>
       </entry>
-      <entry value="5" name="LEAF_MISSION_STATUS_ABORTED">
+      <entry value="6" name="LEAF_MISSION_STATUS_ABORTED">
         <description>Leaf mission manager has aborted the mission</description>
       </entry>
     </enum>
@@ -359,6 +362,20 @@
     <message id="77035" name="LEAF_MISSION_STATUS">
       <description>The system status, as defined by enum LEAF_MISSION_STATUS</description>
       <field type="uint8_t" name="status" enum="LEAF_MISSION_STATUS">The new leaf mission status.</field>
+    </message>
+    <message id="77036" name="LEAF_QGC_CONTROL_CMD">
+      <description>Commands the leaf to execute a control command</description>
+      <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
+      <field type="uint8_t" name="cmd" enum="LEAF_CONTROL_COMMAND">The control command to execute</field>
+      <field type="uint8_t" name="action" enum="LEAF_CONTROL_COMMAND_ACTION">The action to perform</field>
+    </message>
+    <message id="77037" name="LEAF_QGC_MISSION_START">
+      <description>Commands the leaf to start the mission</description>
+      <field type="char[64]" name="mission_id">The id of the mission to start</field>
+    </message>
+    <message id="77038" name="LEAF_QGC_RTL">
+      <description>Commands the leaf to return to launch</description>
+      <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
     </message>
   </messages>
 </mavlink>

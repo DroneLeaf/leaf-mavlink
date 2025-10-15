@@ -8354,18 +8354,20 @@ enums["LEAF_MISSION_STATUS"] = Enum()
 enums["LEAF_MISSION_STATUS"].bitmask = False
 LEAF_MISSION_STATUS_IDLE = 0
 enums["LEAF_MISSION_STATUS"][0] = EnumEntry("LEAF_MISSION_STATUS_IDLE", """Leaf mission manager is idle""")
-LEAF_MISSION_STATUS_EXECUTING = 1
-enums["LEAF_MISSION_STATUS"][1] = EnumEntry("LEAF_MISSION_STATUS_EXECUTING", """Leaf mission manager is executing a mission""")
-LEAF_MISSION_STATUS_PAUSED = 2
-enums["LEAF_MISSION_STATUS"][2] = EnumEntry("LEAF_MISSION_STATUS_PAUSED", """Leaf mission manager has paused the mission""")
-LEAF_MISSION_STATUS_COMPLETED = 3
-enums["LEAF_MISSION_STATUS"][3] = EnumEntry("LEAF_MISSION_STATUS_COMPLETED", """Leaf mission manager has completed the mission""")
-LEAF_MISSION_STATUS_CANCELED = 4
-enums["LEAF_MISSION_STATUS"][4] = EnumEntry("LEAF_MISSION_STATUS_CANCELED", """Leaf mission manager has canceled the mission""")
-LEAF_MISSION_STATUS_ABORTED = 5
-enums["LEAF_MISSION_STATUS"][5] = EnumEntry("LEAF_MISSION_STATUS_ABORTED", """Leaf mission manager has aborted the mission""")
-LEAF_MISSION_STATUS_ENUM_END = 6
-enums["LEAF_MISSION_STATUS"][6] = EnumEntry("LEAF_MISSION_STATUS_ENUM_END", """""")
+LEAF_MISSION_STATUS_READY = 1
+enums["LEAF_MISSION_STATUS"][1] = EnumEntry("LEAF_MISSION_STATUS_READY", """Leaf mission manager is idle""")
+LEAF_MISSION_STATUS_EXECUTING = 2
+enums["LEAF_MISSION_STATUS"][2] = EnumEntry("LEAF_MISSION_STATUS_EXECUTING", """Leaf mission manager is executing a mission""")
+LEAF_MISSION_STATUS_PAUSED = 3
+enums["LEAF_MISSION_STATUS"][3] = EnumEntry("LEAF_MISSION_STATUS_PAUSED", """Leaf mission manager has paused the mission""")
+LEAF_MISSION_STATUS_COMPLETED = 4
+enums["LEAF_MISSION_STATUS"][4] = EnumEntry("LEAF_MISSION_STATUS_COMPLETED", """Leaf mission manager has completed the mission""")
+LEAF_MISSION_STATUS_CANCELED = 5
+enums["LEAF_MISSION_STATUS"][5] = EnumEntry("LEAF_MISSION_STATUS_CANCELED", """Leaf mission manager has canceled the mission""")
+LEAF_MISSION_STATUS_ABORTED = 6
+enums["LEAF_MISSION_STATUS"][6] = EnumEntry("LEAF_MISSION_STATUS_ABORTED", """Leaf mission manager has aborted the mission""")
+LEAF_MISSION_STATUS_ENUM_END = 7
+enums["LEAF_MISSION_STATUS"][7] = EnumEntry("LEAF_MISSION_STATUS_ENUM_END", """""")
 
 # LEAF_CONTROL_COMMAND
 enums["LEAF_CONTROL_COMMAND"] = Enum()
@@ -8823,6 +8825,9 @@ MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN = 77032
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_RUN = 77033
 MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN = 77034
 MAVLINK_MSG_ID_LEAF_MISSION_STATUS = 77035
+MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD = 77036
+MAVLINK_MSG_ID_LEAF_QGC_MISSION_START = 77037
+MAVLINK_MSG_ID_LEAF_QGC_RTL = 77038
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -28492,6 +28497,123 @@ class MAVLink_leaf_mission_status_message(MAVLink_message):
 setattr(MAVLink_leaf_mission_status_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_qgc_control_cmd_message(MAVLink_message):
+    """
+    Commands the leaf to execute a control command
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD
+    msgname = "LEAF_QGC_CONTROL_CMD"
+    fieldnames = ["target_system", "cmd", "action"]
+    ordered_fieldnames = ["target_system", "cmd", "action"]
+    fieldtypes = ["uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {"cmd": "LEAF_CONTROL_COMMAND", "action": "LEAF_CONTROL_COMMAND_ACTION"}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<BBB")
+    orders = [0, 1, 2]
+    lengths = [1, 1, 1]
+    array_lengths = [0, 0, 0]
+    crc_extra = 130
+    unpacker = struct.Struct("<BBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, target_system: int, cmd: int, action: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_qgc_control_cmd_message.id, MAVLink_leaf_qgc_control_cmd_message.msgname)
+        self._fieldnames = MAVLink_leaf_qgc_control_cmd_message.fieldnames
+        self._instance_field = MAVLink_leaf_qgc_control_cmd_message.instance_field
+        self._instance_offset = MAVLink_leaf_qgc_control_cmd_message.instance_offset
+        self.target_system = target_system
+        self.cmd = cmd
+        self.action = action
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.cmd, self.action), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_qgc_control_cmd_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_qgc_mission_start_message(MAVLink_message):
+    """
+    Commands the leaf to start the mission
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_QGC_MISSION_START
+    msgname = "LEAF_QGC_MISSION_START"
+    fieldnames = ["mission_id"]
+    ordered_fieldnames = ["mission_id"]
+    fieldtypes = ["char"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<c")
+    orders = [0]
+    lengths = [1]
+    array_lengths = [64]
+    crc_extra = 192
+    unpacker = struct.Struct("<64s")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, mission_id: bytes):
+        MAVLink_message.__init__(self, MAVLink_leaf_qgc_mission_start_message.id, MAVLink_leaf_qgc_mission_start_message.msgname)
+        self._fieldnames = MAVLink_leaf_qgc_mission_start_message.fieldnames
+        self._instance_field = MAVLink_leaf_qgc_mission_start_message.instance_field
+        self._instance_offset = MAVLink_leaf_qgc_mission_start_message.instance_offset
+        self._mission_id_raw = mission_id
+        self.mission_id = mission_id.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self._mission_id_raw), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_qgc_mission_start_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_qgc_rtl_message(MAVLink_message):
+    """
+    Commands the leaf to return to launch
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_QGC_RTL
+    msgname = "LEAF_QGC_RTL"
+    fieldnames = ["target_system"]
+    ordered_fieldnames = ["target_system"]
+    fieldtypes = ["uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<B")
+    orders = [0]
+    lengths = [1]
+    array_lengths = [0]
+    crc_extra = 45
+    unpacker = struct.Struct("<B")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, target_system: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_qgc_rtl_message.id, MAVLink_leaf_qgc_rtl_message.msgname)
+        self._fieldnames = MAVLink_leaf_qgc_rtl_message.fieldnames
+        self._instance_field = MAVLink_leaf_qgc_rtl_message.instance_field
+        self._instance_offset = MAVLink_leaf_qgc_rtl_message.instance_offset
+        self.target_system = target_system
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_qgc_rtl_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -28980,6 +29102,9 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_RUN: MAVLink_leaf_ack_mission_run_message,
     MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN: MAVLink_leaf_done_mission_run_message,
     MAVLINK_MSG_ID_LEAF_MISSION_STATUS: MAVLink_leaf_mission_status_message,
+    MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD: MAVLink_leaf_qgc_control_cmd_message,
+    MAVLINK_MSG_ID_LEAF_QGC_MISSION_START: MAVLink_leaf_qgc_mission_start_message,
+    MAVLINK_MSG_ID_LEAF_QGC_RTL: MAVLink_leaf_qgc_rtl_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -43987,6 +44112,64 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_mission_status_encode(status), force_mavlink1=force_mavlink1)
+
+    def leaf_qgc_control_cmd_encode(self, target_system: int, cmd: int, action: int) -> MAVLink_leaf_qgc_control_cmd_message:
+        """
+        Commands the leaf to execute a control command
+
+        target_system             : The system needs to execute a control command (type:uint8_t)
+        cmd                       : The control command to execute (type:uint8_t, values:LEAF_CONTROL_COMMAND)
+        action                    : The action to perform (type:uint8_t, values:LEAF_CONTROL_COMMAND_ACTION)
+
+        """
+        return MAVLink_leaf_qgc_control_cmd_message(target_system, cmd, action)
+
+    def leaf_qgc_control_cmd_send(self, target_system: int, cmd: int, action: int, force_mavlink1: bool = False) -> None:
+        """
+        Commands the leaf to execute a control command
+
+        target_system             : The system needs to execute a control command (type:uint8_t)
+        cmd                       : The control command to execute (type:uint8_t, values:LEAF_CONTROL_COMMAND)
+        action                    : The action to perform (type:uint8_t, values:LEAF_CONTROL_COMMAND_ACTION)
+
+        """
+        self.send(self.leaf_qgc_control_cmd_encode(target_system, cmd, action), force_mavlink1=force_mavlink1)
+
+    def leaf_qgc_mission_start_encode(self, mission_id: bytes) -> MAVLink_leaf_qgc_mission_start_message:
+        """
+        Commands the leaf to start the mission
+
+        mission_id                : The id of the mission to start (type:char)
+
+        """
+        return MAVLink_leaf_qgc_mission_start_message(mission_id)
+
+    def leaf_qgc_mission_start_send(self, mission_id: bytes, force_mavlink1: bool = False) -> None:
+        """
+        Commands the leaf to start the mission
+
+        mission_id                : The id of the mission to start (type:char)
+
+        """
+        self.send(self.leaf_qgc_mission_start_encode(mission_id), force_mavlink1=force_mavlink1)
+
+    def leaf_qgc_rtl_encode(self, target_system: int) -> MAVLink_leaf_qgc_rtl_message:
+        """
+        Commands the leaf to return to launch
+
+        target_system             : The system needs to execute a control command (type:uint8_t)
+
+        """
+        return MAVLink_leaf_qgc_rtl_message(target_system)
+
+    def leaf_qgc_rtl_send(self, target_system: int, force_mavlink1: bool = False) -> None:
+        """
+        Commands the leaf to return to launch
+
+        target_system             : The system needs to execute a control command (type:uint8_t)
+
+        """
+        self.send(self.leaf_qgc_rtl_encode(target_system), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """

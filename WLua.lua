@@ -466,6 +466,8 @@ messageName = {
     [77031] = 'LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_ORI',
     [77032] = 'LEAF_DO_MISSION_RUN',
     [77033] = 'LEAF_ACK_MISSION_RUN',
+    [77034] = 'LEAF_DONE_MISSION_RUN',
+    [77035] = 'LEAF_MISSION_STATUS',
     [10151] = 'LOWEHEISER_GOV_EFI',
 }
 
@@ -3226,9 +3228,7 @@ local enumEntryName = {
         [0] = "LEAF_CONTROL_COMMAND_ACTION_NONE",
         [1] = "LEAF_CONTROL_COMMAND_ACTION_STOP",
         [2] = "LEAF_CONTROL_COMMAND_ACTION_RTL",
-        [3] = "LEAF_CONTROL_COMMAND_ACTION_STOP_AND_RTL",
-        [4] = "LEAF_CONTROL_COMMAND_ACTION_LIP",
-        [5] = "LEAF_CONTROL_COMMAND_ACTION_STOP_AND_LIP",
+        [3] = "LEAF_CONTROL_COMMAND_ACTION_LIP",
     },
 }
 f.magic = ProtoField.uint8("mavlink_proto.magic", "Magic value / version", base.HEX, protocolVersions)
@@ -44071,6 +44071,20 @@ f.LEAF_ACK_MISSION_RUN_target_system = ProtoField.new("target_system (uint8_t)",
                             "mavlink_proto.LEAF_ACK_MISSION_RUN_mission_id",
                             ftypes.STRING,
                             nil)
+    
+f.LEAF_DONE_MISSION_RUN_target_system = ProtoField.new("target_system (uint8_t)",
+                            "mavlink_proto.LEAF_DONE_MISSION_RUN_target_system",
+                            ftypes.UINT8,
+                            nil)
+    f.LEAF_DONE_MISSION_RUN_mission_id = ProtoField.new("mission_id (char)",
+                            "mavlink_proto.LEAF_DONE_MISSION_RUN_mission_id",
+                            ftypes.STRING,
+                            nil)
+    
+f.LEAF_MISSION_STATUS_status = ProtoField.new("status (LEAF_MISSION_STATUS)",
+                            "mavlink_proto.LEAF_MISSION_STATUS_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_MISSION_STATUS)
     
 f.LOWEHEISER_GOV_EFI_volt_batt = ProtoField.new("volt_batt (float) [V]",
                             "mavlink_proto.LOWEHEISER_GOV_EFI_volt_batt",
@@ -101047,6 +101061,34 @@ function payload_fns.payload_77033(buffer, tree, msgid, offset, limit, pinfo)
     subtree = tree:add_le(f.LEAF_ACK_MISSION_RUN_status, tvbrange)
     tvbrange = padded(offset + 2, 64)
     subtree = tree:add_le(f.LEAF_ACK_MISSION_RUN_mission_id, tvbrange)
+end
+-- dissect payload of message type LEAF_DONE_MISSION_RUN
+function payload_fns.payload_77034(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 65 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 65)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_DONE_MISSION_RUN_target_system, tvbrange)
+    tvbrange = padded(offset + 1, 64)
+    subtree = tree:add_le(f.LEAF_DONE_MISSION_RUN_mission_id, tvbrange)
+end
+-- dissect payload of message type LEAF_MISSION_STATUS
+function payload_fns.payload_77035(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 1 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 1)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_STATUS_status, tvbrange)
 end
 -- dissect payload of message type LOWEHEISER_GOV_EFI
 function payload_fns.payload_10151(buffer, tree, msgid, offset, limit, pinfo)
