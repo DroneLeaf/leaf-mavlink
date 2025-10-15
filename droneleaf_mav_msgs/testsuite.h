@@ -874,7 +874,7 @@ static void mavlink_test_leaf_control_cmd(uint8_t system_id, uint8_t component_i
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_control_cmd_t packet_in = {
-        5,72,139
+        5,72,139,"DEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMN"
     };
     mavlink_leaf_control_cmd_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -882,6 +882,7 @@ static void mavlink_test_leaf_control_cmd(uint8_t system_id, uint8_t component_i
         packet1.cmd = packet_in.cmd;
         packet1.action = packet_in.action;
         
+        mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
@@ -895,12 +896,12 @@ static void mavlink_test_leaf_control_cmd(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_control_cmd_pack(system_id, component_id, &msg , packet1.target_system , packet1.cmd , packet1.action );
+    mavlink_msg_leaf_control_cmd_pack(system_id, component_id, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
     mavlink_msg_leaf_control_cmd_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_control_cmd_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.cmd , packet1.action );
+    mavlink_msg_leaf_control_cmd_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
     mavlink_msg_leaf_control_cmd_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -913,7 +914,7 @@ static void mavlink_test_leaf_control_cmd(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_control_cmd_send(MAVLINK_COMM_1 , packet1.target_system , packet1.cmd , packet1.action );
+    mavlink_msg_leaf_control_cmd_send(MAVLINK_COMM_1 , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
     mavlink_msg_leaf_control_cmd_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -2155,7 +2156,7 @@ static void mavlink_test_leaf_qgc_control_cmd(uint8_t system_id, uint8_t compone
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_qgc_control_cmd_t packet_in = {
-        5,72,139
+        5,72,139,"DEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMN"
     };
     mavlink_leaf_qgc_control_cmd_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -2163,6 +2164,7 @@ static void mavlink_test_leaf_qgc_control_cmd(uint8_t system_id, uint8_t compone
         packet1.cmd = packet_in.cmd;
         packet1.action = packet_in.action;
         
+        mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
@@ -2176,12 +2178,12 @@ static void mavlink_test_leaf_qgc_control_cmd(uint8_t system_id, uint8_t compone
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_control_cmd_pack(system_id, component_id, &msg , packet1.target_system , packet1.cmd , packet1.action );
+    mavlink_msg_leaf_qgc_control_cmd_pack(system_id, component_id, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
     mavlink_msg_leaf_qgc_control_cmd_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_control_cmd_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.cmd , packet1.action );
+    mavlink_msg_leaf_qgc_control_cmd_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
     mavlink_msg_leaf_qgc_control_cmd_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -2194,7 +2196,7 @@ static void mavlink_test_leaf_qgc_control_cmd(uint8_t system_id, uint8_t compone
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_control_cmd_send(MAVLINK_COMM_1 , packet1.target_system , packet1.cmd , packet1.action );
+    mavlink_msg_leaf_qgc_control_cmd_send(MAVLINK_COMM_1 , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
     mavlink_msg_leaf_qgc_control_cmd_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 

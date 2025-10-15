@@ -27658,22 +27658,22 @@ class MAVLink_leaf_control_cmd_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_CONTROL_CMD
     msgname = "LEAF_CONTROL_CMD"
-    fieldnames = ["target_system", "cmd", "action"]
-    ordered_fieldnames = ["target_system", "cmd", "action"]
-    fieldtypes = ["uint8_t", "uint8_t", "uint8_t"]
+    fieldnames = ["target_system", "cmd", "action", "mission_id"]
+    ordered_fieldnames = ["target_system", "cmd", "action", "mission_id"]
+    fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "char"]
     fielddisplays_by_name: Dict[str, str] = {}
     fieldenums_by_name: Dict[str, str] = {"cmd": "LEAF_CONTROL_COMMAND", "action": "LEAF_CONTROL_COMMAND_ACTION"}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<BBB")
-    orders = [0, 1, 2]
-    lengths = [1, 1, 1]
-    array_lengths = [0, 0, 0]
-    crc_extra = 102
-    unpacker = struct.Struct("<BBB")
+    native_format = bytearray(b"<BBBc")
+    orders = [0, 1, 2, 3]
+    lengths = [1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 64]
+    crc_extra = 216
+    unpacker = struct.Struct("<BBB64s")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, target_system: int, cmd: int, action: int):
+    def __init__(self, target_system: int, cmd: int, action: int, mission_id: bytes):
         MAVLink_message.__init__(self, MAVLink_leaf_control_cmd_message.id, MAVLink_leaf_control_cmd_message.msgname)
         self._fieldnames = MAVLink_leaf_control_cmd_message.fieldnames
         self._instance_field = MAVLink_leaf_control_cmd_message.instance_field
@@ -27681,9 +27681,11 @@ class MAVLink_leaf_control_cmd_message(MAVLink_message):
         self.target_system = target_system
         self.cmd = cmd
         self.action = action
+        self._mission_id_raw = mission_id
+        self.mission_id = mission_id.split(b"\x00", 1)[0].decode("ascii", errors="replace")
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.cmd, self.action), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.cmd, self.action, self._mission_id_raw), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -28507,22 +28509,22 @@ class MAVLink_leaf_qgc_control_cmd_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD
     msgname = "LEAF_QGC_CONTROL_CMD"
-    fieldnames = ["target_system", "cmd", "action"]
-    ordered_fieldnames = ["target_system", "cmd", "action"]
-    fieldtypes = ["uint8_t", "uint8_t", "uint8_t"]
+    fieldnames = ["target_system", "cmd", "action", "mission_id"]
+    ordered_fieldnames = ["target_system", "cmd", "action", "mission_id"]
+    fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "char"]
     fielddisplays_by_name: Dict[str, str] = {}
     fieldenums_by_name: Dict[str, str] = {"cmd": "LEAF_CONTROL_COMMAND", "action": "LEAF_CONTROL_COMMAND_ACTION"}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<BBB")
-    orders = [0, 1, 2]
-    lengths = [1, 1, 1]
-    array_lengths = [0, 0, 0]
-    crc_extra = 130
-    unpacker = struct.Struct("<BBB")
+    native_format = bytearray(b"<BBBc")
+    orders = [0, 1, 2, 3]
+    lengths = [1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 64]
+    crc_extra = 231
+    unpacker = struct.Struct("<BBB64s")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, target_system: int, cmd: int, action: int):
+    def __init__(self, target_system: int, cmd: int, action: int, mission_id: bytes):
         MAVLink_message.__init__(self, MAVLink_leaf_qgc_control_cmd_message.id, MAVLink_leaf_qgc_control_cmd_message.msgname)
         self._fieldnames = MAVLink_leaf_qgc_control_cmd_message.fieldnames
         self._instance_field = MAVLink_leaf_qgc_control_cmd_message.instance_field
@@ -28530,9 +28532,11 @@ class MAVLink_leaf_qgc_control_cmd_message(MAVLink_message):
         self.target_system = target_system
         self.cmd = cmd
         self.action = action
+        self._mission_id_raw = mission_id
+        self.mission_id = mission_id.split(b"\x00", 1)[0].decode("ascii", errors="replace")
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.cmd, self.action), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.cmd, self.action, self._mission_id_raw), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -43778,27 +43782,29 @@ class MAVLink(object):
         """
         self.send(self.leaf_do_inspect_encode(target_system, slap), force_mavlink1=force_mavlink1)
 
-    def leaf_control_cmd_encode(self, target_system: int, cmd: int, action: int) -> MAVLink_leaf_control_cmd_message:
+    def leaf_control_cmd_encode(self, target_system: int, cmd: int, action: int, mission_id: bytes) -> MAVLink_leaf_control_cmd_message:
         """
         Commands the leaf to execute a control command
 
         target_system             : The system needs to execute a control command (type:uint8_t)
         cmd                       : The control command to execute (type:uint8_t, values:LEAF_CONTROL_COMMAND)
         action                    : The action to perform (type:uint8_t, values:LEAF_CONTROL_COMMAND_ACTION)
+        mission_id                : The id of the mission to control (type:char)
 
         """
-        return MAVLink_leaf_control_cmd_message(target_system, cmd, action)
+        return MAVLink_leaf_control_cmd_message(target_system, cmd, action, mission_id)
 
-    def leaf_control_cmd_send(self, target_system: int, cmd: int, action: int, force_mavlink1: bool = False) -> None:
+    def leaf_control_cmd_send(self, target_system: int, cmd: int, action: int, mission_id: bytes, force_mavlink1: bool = False) -> None:
         """
         Commands the leaf to execute a control command
 
         target_system             : The system needs to execute a control command (type:uint8_t)
         cmd                       : The control command to execute (type:uint8_t, values:LEAF_CONTROL_COMMAND)
         action                    : The action to perform (type:uint8_t, values:LEAF_CONTROL_COMMAND_ACTION)
+        mission_id                : The id of the mission to control (type:char)
 
         """
-        self.send(self.leaf_control_cmd_encode(target_system, cmd, action), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_control_cmd_encode(target_system, cmd, action, mission_id), force_mavlink1=force_mavlink1)
 
     def leaf_say_to_qgc_encode(self, target_system: int, content: bytes) -> MAVLink_leaf_say_to_qgc_message:
         """
@@ -44242,27 +44248,29 @@ class MAVLink(object):
         """
         self.send(self.leaf_mission_status_encode(status), force_mavlink1=force_mavlink1)
 
-    def leaf_qgc_control_cmd_encode(self, target_system: int, cmd: int, action: int) -> MAVLink_leaf_qgc_control_cmd_message:
+    def leaf_qgc_control_cmd_encode(self, target_system: int, cmd: int, action: int, mission_id: bytes) -> MAVLink_leaf_qgc_control_cmd_message:
         """
         Commands the leaf to execute a control command
 
         target_system             : The system needs to execute a control command (type:uint8_t)
         cmd                       : The control command to execute (type:uint8_t, values:LEAF_CONTROL_COMMAND)
         action                    : The action to perform (type:uint8_t, values:LEAF_CONTROL_COMMAND_ACTION)
+        mission_id                : The id of the mission to control (type:char)
 
         """
-        return MAVLink_leaf_qgc_control_cmd_message(target_system, cmd, action)
+        return MAVLink_leaf_qgc_control_cmd_message(target_system, cmd, action, mission_id)
 
-    def leaf_qgc_control_cmd_send(self, target_system: int, cmd: int, action: int, force_mavlink1: bool = False) -> None:
+    def leaf_qgc_control_cmd_send(self, target_system: int, cmd: int, action: int, mission_id: bytes, force_mavlink1: bool = False) -> None:
         """
         Commands the leaf to execute a control command
 
         target_system             : The system needs to execute a control command (type:uint8_t)
         cmd                       : The control command to execute (type:uint8_t, values:LEAF_CONTROL_COMMAND)
         action                    : The action to perform (type:uint8_t, values:LEAF_CONTROL_COMMAND_ACTION)
+        mission_id                : The id of the mission to control (type:char)
 
         """
-        self.send(self.leaf_qgc_control_cmd_encode(target_system, cmd, action), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_qgc_control_cmd_encode(target_system, cmd, action, mission_id), force_mavlink1=force_mavlink1)
 
     def leaf_qgc_mission_start_encode(self, mission_id: bytes) -> MAVLink_leaf_qgc_mission_start_message:
         """

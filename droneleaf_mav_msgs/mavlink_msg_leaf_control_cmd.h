@@ -8,35 +8,38 @@ typedef struct __mavlink_leaf_control_cmd_t {
  uint8_t target_system; /*<  The system needs to execute a control command*/
  uint8_t cmd; /*<  The control command to execute*/
  uint8_t action; /*<  The action to perform*/
+ char mission_id[64]; /*<  The id of the mission to control*/
 } mavlink_leaf_control_cmd_t;
 
-#define MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN 3
-#define MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN 3
-#define MAVLINK_MSG_ID_77015_LEN 3
-#define MAVLINK_MSG_ID_77015_MIN_LEN 3
+#define MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN 67
+#define MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN 67
+#define MAVLINK_MSG_ID_77015_LEN 67
+#define MAVLINK_MSG_ID_77015_MIN_LEN 67
 
-#define MAVLINK_MSG_ID_LEAF_CONTROL_CMD_CRC 102
-#define MAVLINK_MSG_ID_77015_CRC 102
+#define MAVLINK_MSG_ID_LEAF_CONTROL_CMD_CRC 216
+#define MAVLINK_MSG_ID_77015_CRC 216
 
-
+#define MAVLINK_MSG_LEAF_CONTROL_CMD_FIELD_MISSION_ID_LEN 64
 
 #if MAVLINK_COMMAND_24BIT
 #define MAVLINK_MESSAGE_INFO_LEAF_CONTROL_CMD { \
     77015, \
     "LEAF_CONTROL_CMD", \
-    3, \
+    4, \
     {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_control_cmd_t, target_system) }, \
          { "cmd", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_leaf_control_cmd_t, cmd) }, \
          { "action", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_leaf_control_cmd_t, action) }, \
+         { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 3, offsetof(mavlink_leaf_control_cmd_t, mission_id) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_LEAF_CONTROL_CMD { \
     "LEAF_CONTROL_CMD", \
-    3, \
+    4, \
     {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_control_cmd_t, target_system) }, \
          { "cmd", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_leaf_control_cmd_t, cmd) }, \
          { "action", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_leaf_control_cmd_t, action) }, \
+         { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 3, offsetof(mavlink_leaf_control_cmd_t, mission_id) }, \
          } \
 }
 #endif
@@ -50,24 +53,25 @@ typedef struct __mavlink_leaf_control_cmd_t {
  * @param target_system  The system needs to execute a control command
  * @param cmd  The control command to execute
  * @param action  The action to perform
+ * @param mission_id  The id of the mission to control
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_control_cmd_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t target_system, uint8_t cmd, uint8_t action)
+                               uint8_t target_system, uint8_t cmd, uint8_t action, const char *mission_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
     _mav_put_uint8_t(buf, 1, cmd);
     _mav_put_uint8_t(buf, 2, action);
-
+    _mav_put_char_array(buf, 3, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN);
 #else
     mavlink_leaf_control_cmd_t packet;
     packet.target_system = target_system;
     packet.cmd = cmd;
     packet.action = action;
-
+    mav_array_assign_char(packet.mission_id, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN);
 #endif
 
@@ -85,24 +89,25 @@ static inline uint16_t mavlink_msg_leaf_control_cmd_pack(uint8_t system_id, uint
  * @param target_system  The system needs to execute a control command
  * @param cmd  The control command to execute
  * @param action  The action to perform
+ * @param mission_id  The id of the mission to control
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_control_cmd_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               uint8_t target_system, uint8_t cmd, uint8_t action)
+                               uint8_t target_system, uint8_t cmd, uint8_t action, const char *mission_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
     _mav_put_uint8_t(buf, 1, cmd);
     _mav_put_uint8_t(buf, 2, action);
-
+    _mav_put_char_array(buf, 3, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN);
 #else
     mavlink_leaf_control_cmd_t packet;
     packet.target_system = target_system;
     packet.cmd = cmd;
     packet.action = action;
-
+    mav_array_memcpy(packet.mission_id, mission_id, sizeof(char)*64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN);
 #endif
 
@@ -123,25 +128,26 @@ static inline uint16_t mavlink_msg_leaf_control_cmd_pack_status(uint8_t system_i
  * @param target_system  The system needs to execute a control command
  * @param cmd  The control command to execute
  * @param action  The action to perform
+ * @param mission_id  The id of the mission to control
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_control_cmd_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t target_system,uint8_t cmd,uint8_t action)
+                                   uint8_t target_system,uint8_t cmd,uint8_t action,const char *mission_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
     _mav_put_uint8_t(buf, 1, cmd);
     _mav_put_uint8_t(buf, 2, action);
-
+    _mav_put_char_array(buf, 3, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN);
 #else
     mavlink_leaf_control_cmd_t packet;
     packet.target_system = target_system;
     packet.cmd = cmd;
     packet.action = action;
-
+    mav_array_assign_char(packet.mission_id, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN);
 #endif
 
@@ -159,7 +165,7 @@ static inline uint16_t mavlink_msg_leaf_control_cmd_pack_chan(uint8_t system_id,
  */
 static inline uint16_t mavlink_msg_leaf_control_cmd_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_control_cmd_t* leaf_control_cmd)
 {
-    return mavlink_msg_leaf_control_cmd_pack(system_id, component_id, msg, leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action);
+    return mavlink_msg_leaf_control_cmd_pack(system_id, component_id, msg, leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action, leaf_control_cmd->mission_id);
 }
 
 /**
@@ -173,7 +179,7 @@ static inline uint16_t mavlink_msg_leaf_control_cmd_encode(uint8_t system_id, ui
  */
 static inline uint16_t mavlink_msg_leaf_control_cmd_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_control_cmd_t* leaf_control_cmd)
 {
-    return mavlink_msg_leaf_control_cmd_pack_chan(system_id, component_id, chan, msg, leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action);
+    return mavlink_msg_leaf_control_cmd_pack_chan(system_id, component_id, chan, msg, leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action, leaf_control_cmd->mission_id);
 }
 
 /**
@@ -187,7 +193,7 @@ static inline uint16_t mavlink_msg_leaf_control_cmd_encode_chan(uint8_t system_i
  */
 static inline uint16_t mavlink_msg_leaf_control_cmd_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_control_cmd_t* leaf_control_cmd)
 {
-    return mavlink_msg_leaf_control_cmd_pack_status(system_id, component_id, _status, msg,  leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action);
+    return mavlink_msg_leaf_control_cmd_pack_status(system_id, component_id, _status, msg,  leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action, leaf_control_cmd->mission_id);
 }
 
 /**
@@ -197,24 +203,25 @@ static inline uint16_t mavlink_msg_leaf_control_cmd_encode_status(uint8_t system
  * @param target_system  The system needs to execute a control command
  * @param cmd  The control command to execute
  * @param action  The action to perform
+ * @param mission_id  The id of the mission to control
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_control_cmd_send(mavlink_channel_t chan, uint8_t target_system, uint8_t cmd, uint8_t action)
+static inline void mavlink_msg_leaf_control_cmd_send(mavlink_channel_t chan, uint8_t target_system, uint8_t cmd, uint8_t action, const char *mission_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
     _mav_put_uint8_t(buf, 1, cmd);
     _mav_put_uint8_t(buf, 2, action);
-
+    _mav_put_char_array(buf, 3, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_CONTROL_CMD, buf, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_CRC);
 #else
     mavlink_leaf_control_cmd_t packet;
     packet.target_system = target_system;
     packet.cmd = cmd;
     packet.action = action;
-
+    mav_array_assign_char(packet.mission_id, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_CONTROL_CMD, (const char *)&packet, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_CRC);
 #endif
 }
@@ -227,7 +234,7 @@ static inline void mavlink_msg_leaf_control_cmd_send(mavlink_channel_t chan, uin
 static inline void mavlink_msg_leaf_control_cmd_send_struct(mavlink_channel_t chan, const mavlink_leaf_control_cmd_t* leaf_control_cmd)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_control_cmd_send(chan, leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action);
+    mavlink_msg_leaf_control_cmd_send(chan, leaf_control_cmd->target_system, leaf_control_cmd->cmd, leaf_control_cmd->action, leaf_control_cmd->mission_id);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_CONTROL_CMD, (const char *)leaf_control_cmd, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_CRC);
 #endif
@@ -241,21 +248,21 @@ static inline void mavlink_msg_leaf_control_cmd_send_struct(mavlink_channel_t ch
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_control_cmd_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, uint8_t cmd, uint8_t action)
+static inline void mavlink_msg_leaf_control_cmd_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, uint8_t cmd, uint8_t action, const char *mission_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
     _mav_put_uint8_t(buf, 0, target_system);
     _mav_put_uint8_t(buf, 1, cmd);
     _mav_put_uint8_t(buf, 2, action);
-
+    _mav_put_char_array(buf, 3, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_CONTROL_CMD, buf, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_CRC);
 #else
     mavlink_leaf_control_cmd_t *packet = (mavlink_leaf_control_cmd_t *)msgbuf;
     packet->target_system = target_system;
     packet->cmd = cmd;
     packet->action = action;
-
+    mav_array_assign_char(packet->mission_id, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_CONTROL_CMD, (const char *)packet, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_CRC);
 #endif
 }
@@ -297,6 +304,16 @@ static inline uint8_t mavlink_msg_leaf_control_cmd_get_action(const mavlink_mess
 }
 
 /**
+ * @brief Get field mission_id from leaf_control_cmd message
+ *
+ * @return  The id of the mission to control
+ */
+static inline uint16_t mavlink_msg_leaf_control_cmd_get_mission_id(const mavlink_message_t* msg, char *mission_id)
+{
+    return _MAV_RETURN_char_array(msg, mission_id, 64,  3);
+}
+
+/**
  * @brief Decode a leaf_control_cmd message into a struct
  *
  * @param msg The message to decode
@@ -308,6 +325,7 @@ static inline void mavlink_msg_leaf_control_cmd_decode(const mavlink_message_t* 
     leaf_control_cmd->target_system = mavlink_msg_leaf_control_cmd_get_target_system(msg);
     leaf_control_cmd->cmd = mavlink_msg_leaf_control_cmd_get_cmd(msg);
     leaf_control_cmd->action = mavlink_msg_leaf_control_cmd_get_action(msg);
+    mavlink_msg_leaf_control_cmd_get_mission_id(msg, leaf_control_cmd->mission_id);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN? msg->len : MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN;
         memset(leaf_control_cmd, 0, MAVLINK_MSG_ID_LEAF_CONTROL_CMD_LEN);

@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_PYTHON_ARRAY_TEST.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_PYTHON_ARRAY_TEST_XML_HASH -4958609407014244224
+#define MAVLINK_PYTHON_ARRAY_TEST_XML_HASH -8324722354151930585
 
 #ifdef __cplusplus
 extern "C" {

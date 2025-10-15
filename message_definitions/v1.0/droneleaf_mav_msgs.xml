@@ -242,6 +242,7 @@
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
       <field type="uint8_t" name="cmd" enum="LEAF_CONTROL_COMMAND">The control command to execute</field>
       <field type="uint8_t" name="action" enum="LEAF_CONTROL_COMMAND_ACTION">The action to perform</field>
+      <field type="char[64]" name="mission_id">The id of the mission to control</field>
     </message>
     <message id="77016" name="LEAF_SAY_TO_QGC">
       <description>Commands the leaf to say something to QGC</description>
@@ -368,6 +369,7 @@
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
       <field type="uint8_t" name="cmd" enum="LEAF_CONTROL_COMMAND">The control command to execute</field>
       <field type="uint8_t" name="action" enum="LEAF_CONTROL_COMMAND_ACTION">The action to perform</field>
+      <field type="char[64]" name="mission_id">The id of the mission to control</field>
     </message>
     <message id="77037" name="LEAF_QGC_MISSION_START">
       <description>Commands the leaf to start the mission</description>
