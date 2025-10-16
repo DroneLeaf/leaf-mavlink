@@ -8360,14 +8360,8 @@ LEAF_MISSION_STATUS_EXECUTING = 2
 enums["LEAF_MISSION_STATUS"][2] = EnumEntry("LEAF_MISSION_STATUS_EXECUTING", """Leaf mission manager is executing a mission""")
 LEAF_MISSION_STATUS_PAUSED = 3
 enums["LEAF_MISSION_STATUS"][3] = EnumEntry("LEAF_MISSION_STATUS_PAUSED", """Leaf mission manager has paused the mission""")
-LEAF_MISSION_STATUS_COMPLETED = 4
-enums["LEAF_MISSION_STATUS"][4] = EnumEntry("LEAF_MISSION_STATUS_COMPLETED", """Leaf mission manager has completed the mission""")
-LEAF_MISSION_STATUS_CANCELED = 5
-enums["LEAF_MISSION_STATUS"][5] = EnumEntry("LEAF_MISSION_STATUS_CANCELED", """Leaf mission manager has canceled the mission""")
-LEAF_MISSION_STATUS_ABORTED = 6
-enums["LEAF_MISSION_STATUS"][6] = EnumEntry("LEAF_MISSION_STATUS_ABORTED", """Leaf mission manager has aborted the mission""")
-LEAF_MISSION_STATUS_ENUM_END = 7
-enums["LEAF_MISSION_STATUS"][7] = EnumEntry("LEAF_MISSION_STATUS_ENUM_END", """""")
+LEAF_MISSION_STATUS_ENUM_END = 4
+enums["LEAF_MISSION_STATUS"][4] = EnumEntry("LEAF_MISSION_STATUS_ENUM_END", """""")
 
 # LEAF_CONTROL_COMMAND
 enums["LEAF_CONTROL_COMMAND"] = Enum()

@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_DRONELEAF_MAV_MSGS.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH 3404778935058817744
+#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -2099845148002510822
 
 #ifdef __cplusplus
 extern "C" {
@@ -105,10 +105,7 @@ typedef enum LEAF_MISSION_STATUS
    LEAF_MISSION_STATUS_READY=1, /* Leaf mission manager is idle | */
    LEAF_MISSION_STATUS_EXECUTING=2, /* Leaf mission manager is executing a mission | */
    LEAF_MISSION_STATUS_PAUSED=3, /* Leaf mission manager has paused the mission | */
-   LEAF_MISSION_STATUS_COMPLETED=4, /* Leaf mission manager has completed the mission | */
-   LEAF_MISSION_STATUS_CANCELED=5, /* Leaf mission manager has canceled the mission | */
-   LEAF_MISSION_STATUS_ABORTED=6, /* Leaf mission manager has aborted the mission | */
-   LEAF_MISSION_STATUS_ENUM_END=7, /*  | */
+   LEAF_MISSION_STATUS_ENUM_END=4, /*  | */
 } LEAF_MISSION_STATUS;
 #endif
 

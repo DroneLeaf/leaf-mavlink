@@ -130,15 +130,6 @@
       <entry value="3" name="LEAF_MISSION_STATUS_PAUSED">
         <description>Leaf mission manager has paused the mission</description>
       </entry>
-      <entry value="4" name="LEAF_MISSION_STATUS_COMPLETED">
-        <description>Leaf mission manager has completed the mission</description>
-      </entry>
-      <entry value="5" name="LEAF_MISSION_STATUS_CANCELED">
-        <description>Leaf mission manager has canceled the mission</description>
-      </entry>
-      <entry value="6" name="LEAF_MISSION_STATUS_ABORTED">
-        <description>Leaf mission manager has aborted the mission</description>
-      </entry>
     </enum>
     <enum name="LEAF_CONTROL_COMMAND">
       <entry value="0" name="LEAF_CONTROL_PAUSE">
