@@ -382,11 +382,15 @@
       <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
       <field type="char[64]" name="mission_id">The id of the mission</field>
     </message>
-    <message id="77041" name="LEAF_ACK_MISSION_CANCEL">
-      <description>Acknowledges that the mission cancel command has been received.</description>
-      <field type="uint8_t" name="target_system">The system that received the mission cancel command</field>
+    <message id="77041" name="LEAF_ACK_MISSION_ABORT">
+      <description>Acknowledges that the mission abort command has been received.</description>
+      <field type="uint8_t" name="target_system">The system that received the mission abort command</field>
       <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
       <field type="char[64]" name="mission_id">The id of the mission</field>
+    </message>
+    <message id="77042" name="LEAF_QGC_ABORT">
+      <description>Commands the leaf to abort the mission</description>
+      <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
     </message>
   </messages>
 </mavlink>
