@@ -61,7 +61,8 @@ typedef enum LEAF_MODE
    LEAF_MODE_REFINED_TUNING_OFFLINE=8, /* Refined tuning offline mode | */
    LEAF_MODE_REFINED_TUNING_OUTER=9, /* Refined tuning outer mode | */
    LEAF_MODE_MISSION=10, /* LeafSDK mission mode | */
-   LEAF_MODE_ENUM_END=11, /*  | */
+   LEAF_MODE_LEARNING_FULL_DATA_COLLECTION=11, /* Learning all loops mode - no real-time tuning | */
+   LEAF_MODE_ENUM_END=12, /*  | */
 } LEAF_MODE;
 #endif
 
