@@ -342,6 +342,7 @@
       <description>Commands the leaf to run a mission.</description>
       <field type="uint8_t" name="target_system">The system needs to run the mission</field>
       <field type="char[64]" name="mission_id">The id of the mission to run</field>
+      <field type="uint8_t" name="forced">1 to start immediately, 0 to wait for start command</field>
     </message>
     <message id="77033" name="LEAF_ACK_MISSION_RUN">
       <description>Acknowledges that the mission run command has been received.</description>

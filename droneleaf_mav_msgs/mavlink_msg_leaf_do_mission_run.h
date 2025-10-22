@@ -7,15 +7,16 @@
 typedef struct __mavlink_leaf_do_mission_run_t {
  uint8_t target_system; /*<  The system needs to run the mission*/
  char mission_id[64]; /*<  The id of the mission to run*/
+ uint8_t forced; /*<  1 to start immediately, 0 to wait for start command*/
 } mavlink_leaf_do_mission_run_t;
 
-#define MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN 65
-#define MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN 65
-#define MAVLINK_MSG_ID_77032_LEN 65
-#define MAVLINK_MSG_ID_77032_MIN_LEN 65
+#define MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN 66
+#define MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN 66
+#define MAVLINK_MSG_ID_77032_LEN 66
+#define MAVLINK_MSG_ID_77032_MIN_LEN 66
 
-#define MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_CRC 90
-#define MAVLINK_MSG_ID_77032_CRC 90
+#define MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_CRC 101
+#define MAVLINK_MSG_ID_77032_CRC 101
 
 #define MAVLINK_MSG_LEAF_DO_MISSION_RUN_FIELD_MISSION_ID_LEN 64
 
@@ -23,17 +24,19 @@ typedef struct __mavlink_leaf_do_mission_run_t {
 #define MAVLINK_MESSAGE_INFO_LEAF_DO_MISSION_RUN { \
     77032, \
     "LEAF_DO_MISSION_RUN", \
-    2, \
+    3, \
     {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_do_mission_run_t, target_system) }, \
          { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 1, offsetof(mavlink_leaf_do_mission_run_t, mission_id) }, \
+         { "forced", NULL, MAVLINK_TYPE_UINT8_T, 0, 65, offsetof(mavlink_leaf_do_mission_run_t, forced) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_LEAF_DO_MISSION_RUN { \
     "LEAF_DO_MISSION_RUN", \
-    2, \
+    3, \
     {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_do_mission_run_t, target_system) }, \
          { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 1, offsetof(mavlink_leaf_do_mission_run_t, mission_id) }, \
+         { "forced", NULL, MAVLINK_TYPE_UINT8_T, 0, 65, offsetof(mavlink_leaf_do_mission_run_t, forced) }, \
          } \
 }
 #endif
@@ -46,19 +49,22 @@ typedef struct __mavlink_leaf_do_mission_run_t {
  *
  * @param target_system  The system needs to run the mission
  * @param mission_id  The id of the mission to run
+ * @param forced  1 to start immediately, 0 to wait for start command
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_do_mission_run_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t target_system, const char *mission_id)
+                               uint8_t target_system, const char *mission_id, uint8_t forced)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
+    _mav_put_uint8_t(buf, 65, forced);
     _mav_put_char_array(buf, 1, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN);
 #else
     mavlink_leaf_do_mission_run_t packet;
     packet.target_system = target_system;
+    packet.forced = forced;
     mav_array_assign_char(packet.mission_id, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN);
 #endif
@@ -76,19 +82,22 @@ static inline uint16_t mavlink_msg_leaf_do_mission_run_pack(uint8_t system_id, u
  *
  * @param target_system  The system needs to run the mission
  * @param mission_id  The id of the mission to run
+ * @param forced  1 to start immediately, 0 to wait for start command
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_do_mission_run_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               uint8_t target_system, const char *mission_id)
+                               uint8_t target_system, const char *mission_id, uint8_t forced)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
+    _mav_put_uint8_t(buf, 65, forced);
     _mav_put_char_array(buf, 1, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN);
 #else
     mavlink_leaf_do_mission_run_t packet;
     packet.target_system = target_system;
+    packet.forced = forced;
     mav_array_memcpy(packet.mission_id, mission_id, sizeof(char)*64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN);
 #endif
@@ -109,20 +118,23 @@ static inline uint16_t mavlink_msg_leaf_do_mission_run_pack_status(uint8_t syste
  * @param msg The MAVLink message to compress the data into
  * @param target_system  The system needs to run the mission
  * @param mission_id  The id of the mission to run
+ * @param forced  1 to start immediately, 0 to wait for start command
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_do_mission_run_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t target_system,const char *mission_id)
+                                   uint8_t target_system,const char *mission_id,uint8_t forced)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
+    _mav_put_uint8_t(buf, 65, forced);
     _mav_put_char_array(buf, 1, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN);
 #else
     mavlink_leaf_do_mission_run_t packet;
     packet.target_system = target_system;
+    packet.forced = forced;
     mav_array_assign_char(packet.mission_id, mission_id, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN);
 #endif
@@ -141,7 +153,7 @@ static inline uint16_t mavlink_msg_leaf_do_mission_run_pack_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_leaf_do_mission_run_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_do_mission_run_t* leaf_do_mission_run)
 {
-    return mavlink_msg_leaf_do_mission_run_pack(system_id, component_id, msg, leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id);
+    return mavlink_msg_leaf_do_mission_run_pack(system_id, component_id, msg, leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id, leaf_do_mission_run->forced);
 }
 
 /**
@@ -155,7 +167,7 @@ static inline uint16_t mavlink_msg_leaf_do_mission_run_encode(uint8_t system_id,
  */
 static inline uint16_t mavlink_msg_leaf_do_mission_run_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_do_mission_run_t* leaf_do_mission_run)
 {
-    return mavlink_msg_leaf_do_mission_run_pack_chan(system_id, component_id, chan, msg, leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id);
+    return mavlink_msg_leaf_do_mission_run_pack_chan(system_id, component_id, chan, msg, leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id, leaf_do_mission_run->forced);
 }
 
 /**
@@ -169,7 +181,7 @@ static inline uint16_t mavlink_msg_leaf_do_mission_run_encode_chan(uint8_t syste
  */
 static inline uint16_t mavlink_msg_leaf_do_mission_run_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_do_mission_run_t* leaf_do_mission_run)
 {
-    return mavlink_msg_leaf_do_mission_run_pack_status(system_id, component_id, _status, msg,  leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id);
+    return mavlink_msg_leaf_do_mission_run_pack_status(system_id, component_id, _status, msg,  leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id, leaf_do_mission_run->forced);
 }
 
 /**
@@ -178,19 +190,22 @@ static inline uint16_t mavlink_msg_leaf_do_mission_run_encode_status(uint8_t sys
  *
  * @param target_system  The system needs to run the mission
  * @param mission_id  The id of the mission to run
+ * @param forced  1 to start immediately, 0 to wait for start command
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_do_mission_run_send(mavlink_channel_t chan, uint8_t target_system, const char *mission_id)
+static inline void mavlink_msg_leaf_do_mission_run_send(mavlink_channel_t chan, uint8_t target_system, const char *mission_id, uint8_t forced)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN];
     _mav_put_uint8_t(buf, 0, target_system);
+    _mav_put_uint8_t(buf, 65, forced);
     _mav_put_char_array(buf, 1, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN, buf, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_CRC);
 #else
     mavlink_leaf_do_mission_run_t packet;
     packet.target_system = target_system;
+    packet.forced = forced;
     mav_array_assign_char(packet.mission_id, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN, (const char *)&packet, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_CRC);
 #endif
@@ -204,7 +219,7 @@ static inline void mavlink_msg_leaf_do_mission_run_send(mavlink_channel_t chan, 
 static inline void mavlink_msg_leaf_do_mission_run_send_struct(mavlink_channel_t chan, const mavlink_leaf_do_mission_run_t* leaf_do_mission_run)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_do_mission_run_send(chan, leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id);
+    mavlink_msg_leaf_do_mission_run_send(chan, leaf_do_mission_run->target_system, leaf_do_mission_run->mission_id, leaf_do_mission_run->forced);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN, (const char *)leaf_do_mission_run, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_CRC);
 #endif
@@ -218,16 +233,18 @@ static inline void mavlink_msg_leaf_do_mission_run_send_struct(mavlink_channel_t
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_do_mission_run_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, const char *mission_id)
+static inline void mavlink_msg_leaf_do_mission_run_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, const char *mission_id, uint8_t forced)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
     _mav_put_uint8_t(buf, 0, target_system);
+    _mav_put_uint8_t(buf, 65, forced);
     _mav_put_char_array(buf, 1, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN, buf, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_CRC);
 #else
     mavlink_leaf_do_mission_run_t *packet = (mavlink_leaf_do_mission_run_t *)msgbuf;
     packet->target_system = target_system;
+    packet->forced = forced;
     mav_array_assign_char(packet->mission_id, mission_id, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN, (const char *)packet, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_CRC);
 #endif
@@ -260,6 +277,16 @@ static inline uint16_t mavlink_msg_leaf_do_mission_run_get_mission_id(const mavl
 }
 
 /**
+ * @brief Get field forced from leaf_do_mission_run message
+ *
+ * @return  1 to start immediately, 0 to wait for start command
+ */
+static inline uint8_t mavlink_msg_leaf_do_mission_run_get_forced(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  65);
+}
+
+/**
  * @brief Decode a leaf_do_mission_run message into a struct
  *
  * @param msg The message to decode
@@ -270,6 +297,7 @@ static inline void mavlink_msg_leaf_do_mission_run_decode(const mavlink_message_
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     leaf_do_mission_run->target_system = mavlink_msg_leaf_do_mission_run_get_target_system(msg);
     mavlink_msg_leaf_do_mission_run_get_mission_id(msg, leaf_do_mission_run->mission_id);
+    leaf_do_mission_run->forced = mavlink_msg_leaf_do_mission_run_get_forced(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN? msg->len : MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN;
         memset(leaf_do_mission_run, 0, MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_LEN);

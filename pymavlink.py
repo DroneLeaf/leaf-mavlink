@@ -8296,8 +8296,10 @@ LEAF_MODE_REFINED_TUNING_OUTER = 9
 enums["LEAF_MODE"][9] = EnumEntry("LEAF_MODE_REFINED_TUNING_OUTER", """Refined tuning outer mode""")
 LEAF_MODE_MISSION = 10
 enums["LEAF_MODE"][10] = EnumEntry("LEAF_MODE_MISSION", """LeafSDK mission mode""")
-LEAF_MODE_ENUM_END = 11
-enums["LEAF_MODE"][11] = EnumEntry("LEAF_MODE_ENUM_END", """""")
+LEAF_MODE_LEARNING_FULL_DATA_COLLECTION = 11
+enums["LEAF_MODE"][11] = EnumEntry("LEAF_MODE_LEARNING_FULL_DATA_COLLECTION", """Learning all loops mode - no real-time tuning""")
+LEAF_MODE_ENUM_END = 12
+enums["LEAF_MODE"][12] = EnumEntry("LEAF_MODE_ENUM_END", """""")
 
 # LEAF_STATUS
 enums["LEAF_STATUS"] = Enum()
@@ -28345,22 +28347,22 @@ class MAVLink_leaf_do_mission_run_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN
     msgname = "LEAF_DO_MISSION_RUN"
-    fieldnames = ["target_system", "mission_id"]
-    ordered_fieldnames = ["target_system", "mission_id"]
-    fieldtypes = ["uint8_t", "char"]
+    fieldnames = ["target_system", "mission_id", "forced"]
+    ordered_fieldnames = ["target_system", "mission_id", "forced"]
+    fieldtypes = ["uint8_t", "char", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
     fieldenums_by_name: Dict[str, str] = {}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<Bc")
-    orders = [0, 1]
-    lengths = [1, 1]
-    array_lengths = [0, 64]
-    crc_extra = 90
-    unpacker = struct.Struct("<B64s")
+    native_format = bytearray(b"<BcB")
+    orders = [0, 1, 2]
+    lengths = [1, 1, 1]
+    array_lengths = [0, 64, 0]
+    crc_extra = 101
+    unpacker = struct.Struct("<B64sB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, target_system: int, mission_id: bytes):
+    def __init__(self, target_system: int, mission_id: bytes, forced: int):
         MAVLink_message.__init__(self, MAVLink_leaf_do_mission_run_message.id, MAVLink_leaf_do_mission_run_message.msgname)
         self._fieldnames = MAVLink_leaf_do_mission_run_message.fieldnames
         self._instance_field = MAVLink_leaf_do_mission_run_message.instance_field
@@ -28368,9 +28370,10 @@ class MAVLink_leaf_do_mission_run_message(MAVLink_message):
         self.target_system = target_system
         self._mission_id_raw = mission_id
         self.mission_id = mission_id.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+        self.forced = forced
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self._mission_id_raw), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self._mission_id_raw, self.forced), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -44202,25 +44205,27 @@ class MAVLink(object):
         """
         self.send(self.leaf_external_trajectory_offset_enu_ori_encode(x, y, z), force_mavlink1=force_mavlink1)
 
-    def leaf_do_mission_run_encode(self, target_system: int, mission_id: bytes) -> MAVLink_leaf_do_mission_run_message:
+    def leaf_do_mission_run_encode(self, target_system: int, mission_id: bytes, forced: int) -> MAVLink_leaf_do_mission_run_message:
         """
         Commands the leaf to run a mission.
 
         target_system             : The system needs to run the mission (type:uint8_t)
         mission_id                : The id of the mission to run (type:char)
+        forced                    : 1 to start immediately, 0 to wait for start command (type:uint8_t)
 
         """
-        return MAVLink_leaf_do_mission_run_message(target_system, mission_id)
+        return MAVLink_leaf_do_mission_run_message(target_system, mission_id, forced)
 
-    def leaf_do_mission_run_send(self, target_system: int, mission_id: bytes, force_mavlink1: bool = False) -> None:
+    def leaf_do_mission_run_send(self, target_system: int, mission_id: bytes, forced: int, force_mavlink1: bool = False) -> None:
         """
         Commands the leaf to run a mission.
 
         target_system             : The system needs to run the mission (type:uint8_t)
         mission_id                : The id of the mission to run (type:char)
+        forced                    : 1 to start immediately, 0 to wait for start command (type:uint8_t)
 
         """
-        self.send(self.leaf_do_mission_run_encode(target_system, mission_id), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_do_mission_run_encode(target_system, mission_id, forced), force_mavlink1=force_mavlink1)
 
     def leaf_ack_mission_run_encode(self, target_system: int, status: int, mission_id: bytes) -> MAVLink_leaf_ack_mission_run_message:
         """

@@ -1916,11 +1916,12 @@ static void mavlink_test_leaf_do_mission_run(uint8_t system_id, uint8_t componen
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_do_mission_run_t packet_in = {
-        5,"BCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL"
+        5,"BCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",8
     };
     mavlink_leaf_do_mission_run_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.target_system = packet_in.target_system;
+        packet1.forced = packet_in.forced;
         
         mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
         
@@ -1936,12 +1937,12 @@ static void mavlink_test_leaf_do_mission_run(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_mission_run_pack(system_id, component_id, &msg , packet1.target_system , packet1.mission_id );
+    mavlink_msg_leaf_do_mission_run_pack(system_id, component_id, &msg , packet1.target_system , packet1.mission_id , packet1.forced );
     mavlink_msg_leaf_do_mission_run_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_mission_run_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.mission_id );
+    mavlink_msg_leaf_do_mission_run_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.mission_id , packet1.forced );
     mavlink_msg_leaf_do_mission_run_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -1954,7 +1955,7 @@ static void mavlink_test_leaf_do_mission_run(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_mission_run_send(MAVLINK_COMM_1 , packet1.target_system , packet1.mission_id );
+    mavlink_msg_leaf_do_mission_run_send(MAVLINK_COMM_1 , packet1.target_system , packet1.mission_id , packet1.forced );
     mavlink_msg_leaf_do_mission_run_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
