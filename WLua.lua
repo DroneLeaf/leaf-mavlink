@@ -475,6 +475,7 @@ messageName = {
     [77040] = 'LEAF_ACK_MISSION_RESUME',
     [77041] = 'LEAF_ACK_MISSION_ABORT',
     [77042] = 'LEAF_QGC_ABORT',
+    [77043] = 'LEAF_SETPOINT_OFFSET',
     [10151] = 'LOWEHEISER_GOV_EFI',
 }
 
@@ -44068,6 +44069,10 @@ f.LEAF_DO_MISSION_RUN_target_system = ProtoField.new("target_system (uint8_t)",
                             "mavlink_proto.LEAF_DO_MISSION_RUN_mission_id",
                             ftypes.STRING,
                             nil)
+    f.LEAF_DO_MISSION_RUN_forced = ProtoField.new("forced (uint8_t)",
+                            "mavlink_proto.LEAF_DO_MISSION_RUN_forced",
+                            ftypes.UINT8,
+                            nil)
     
 f.LEAF_ACK_MISSION_RUN_target_system = ProtoField.new("target_system (uint8_t)",
                             "mavlink_proto.LEAF_ACK_MISSION_RUN_target_system",
@@ -44165,6 +44170,23 @@ f.LEAF_ACK_MISSION_ABORT_target_system = ProtoField.new("target_system (uint8_t)
 f.LEAF_QGC_ABORT_target_system = ProtoField.new("target_system (uint8_t)",
                             "mavlink_proto.LEAF_QGC_ABORT_target_system",
                             ftypes.UINT8,
+                            nil)
+    
+f.LEAF_SETPOINT_OFFSET_x = ProtoField.new("x (float) [m]",
+                            "mavlink_proto.LEAF_SETPOINT_OFFSET_x",
+                            ftypes.FLOAT,
+                            nil)
+    f.LEAF_SETPOINT_OFFSET_y = ProtoField.new("y (float) [m]",
+                            "mavlink_proto.LEAF_SETPOINT_OFFSET_y",
+                            ftypes.FLOAT,
+                            nil)
+    f.LEAF_SETPOINT_OFFSET_z = ProtoField.new("z (float) [m]",
+                            "mavlink_proto.LEAF_SETPOINT_OFFSET_z",
+                            ftypes.FLOAT,
+                            nil)
+    f.LEAF_SETPOINT_OFFSET_yaw = ProtoField.new("yaw (float) [rad]",
+                            "mavlink_proto.LEAF_SETPOINT_OFFSET_yaw",
+                            ftypes.FLOAT,
                             nil)
     
 f.LOWEHEISER_GOV_EFI_volt_batt = ProtoField.new("volt_batt (float) [V]",
@@ -101116,9 +101138,9 @@ end
 -- dissect payload of message type LEAF_DO_MISSION_RUN
 function payload_fns.payload_77032(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 65 > limit) then
+    if (offset + 66 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 65)
+        padded:set_size(offset + 66)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
@@ -101127,6 +101149,8 @@ function payload_fns.payload_77032(buffer, tree, msgid, offset, limit, pinfo)
     subtree = tree:add_le(f.LEAF_DO_MISSION_RUN_target_system, tvbrange)
     tvbrange = padded(offset + 1, 64)
     subtree = tree:add_le(f.LEAF_DO_MISSION_RUN_mission_id, tvbrange)
+    tvbrange = padded(offset + 65, 1)
+    subtree = tree:add_le(f.LEAF_DO_MISSION_RUN_forced, tvbrange)
 end
 -- dissect payload of message type LEAF_ACK_MISSION_RUN
 function payload_fns.payload_77033(buffer, tree, msgid, offset, limit, pinfo)
@@ -101281,6 +101305,27 @@ function payload_fns.payload_77042(buffer, tree, msgid, offset, limit, pinfo)
     end
     tvbrange = padded(offset + 0, 1)
     subtree = tree:add_le(f.LEAF_QGC_ABORT_target_system, tvbrange)
+end
+-- dissect payload of message type LEAF_SETPOINT_OFFSET
+function payload_fns.payload_77043(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 16 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 16)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 4)
+    subtree = tree:add_le(f.LEAF_SETPOINT_OFFSET_x, tvbrange)
+    tvbrange = padded(offset + 4, 4)
+    subtree = tree:add_le(f.LEAF_SETPOINT_OFFSET_y, tvbrange)
+    tvbrange = padded(offset + 8, 4)
+    subtree = tree:add_le(f.LEAF_SETPOINT_OFFSET_z, tvbrange)
+    tvbrange = padded(offset + 12, 4)
+    subtree = tree:add_le(f.LEAF_SETPOINT_OFFSET_yaw, tvbrange)
+    value = tvbrange:le_float()
+    subtree:append_text(string.format(" (%g deg)",value*180/math.pi))
 end
 -- dissect payload of message type LOWEHEISER_GOV_EFI
 function payload_fns.payload_10151(buffer, tree, msgid, offset, limit, pinfo)

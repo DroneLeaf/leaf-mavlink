@@ -396,5 +396,12 @@
       <description>Commands the leaf to abort the mission</description>
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
     </message>
+    <message id="77043" name="LEAF_SETPOINT_OFFSET">
+      <description>Setpoint offset</description>
+      <field type="float" name="x" units="m">X position</field>
+      <field type="float" name="y" units="m">Y position</field>
+      <field type="float" name="z" units="m">Z position</field>
+      <field type="float" name="yaw" units="rad">Yaw angle</field>
+    </message>
   </messages>
 </mavlink>

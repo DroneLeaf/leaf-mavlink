@@ -8828,6 +8828,7 @@ MAVLINK_MSG_ID_LEAF_ACK_MISSION_PAUSE = 77039
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_RESUME = 77040
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_ABORT = 77041
 MAVLINK_MSG_ID_LEAF_QGC_ABORT = 77042
+MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET = 77043
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -28780,6 +28781,47 @@ class MAVLink_leaf_qgc_abort_message(MAVLink_message):
 setattr(MAVLink_leaf_qgc_abort_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_setpoint_offset_message(MAVLink_message):
+    """
+    Setpoint offset
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET
+    msgname = "LEAF_SETPOINT_OFFSET"
+    fieldnames = ["x", "y", "z", "yaw"]
+    ordered_fieldnames = ["x", "y", "z", "yaw"]
+    fieldtypes = ["float", "float", "float", "float"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {"x": "m", "y": "m", "z": "m", "yaw": "rad"}
+    native_format = bytearray(b"<ffff")
+    orders = [0, 1, 2, 3]
+    lengths = [1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0]
+    crc_extra = 57
+    unpacker = struct.Struct("<ffff")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, x: float, y: float, z: float, yaw: float):
+        MAVLink_message.__init__(self, MAVLink_leaf_setpoint_offset_message.id, MAVLink_leaf_setpoint_offset_message.msgname)
+        self._fieldnames = MAVLink_leaf_setpoint_offset_message.fieldnames
+        self._instance_field = MAVLink_leaf_setpoint_offset_message.instance_field
+        self._instance_offset = MAVLink_leaf_setpoint_offset_message.instance_offset
+        self.x = x
+        self.y = y
+        self.z = z
+        self.yaw = yaw
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.x, self.y, self.z, self.yaw), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_setpoint_offset_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -29275,6 +29317,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_RESUME: MAVLink_leaf_ack_mission_resume_message,
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_ABORT: MAVLink_leaf_ack_mission_abort_message,
     MAVLINK_MSG_ID_LEAF_QGC_ABORT: MAVLink_leaf_qgc_abort_message,
+    MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET: MAVLink_leaf_setpoint_offset_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -44430,6 +44473,30 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_qgc_abort_encode(target_system), force_mavlink1=force_mavlink1)
+
+    def leaf_setpoint_offset_encode(self, x: float, y: float, z: float, yaw: float) -> MAVLink_leaf_setpoint_offset_message:
+        """
+        Setpoint offset
+
+        x                         : X position [m] (type:float)
+        y                         : Y position [m] (type:float)
+        z                         : Z position [m] (type:float)
+        yaw                       : Yaw angle [rad] (type:float)
+
+        """
+        return MAVLink_leaf_setpoint_offset_message(x, y, z, yaw)
+
+    def leaf_setpoint_offset_send(self, x: float, y: float, z: float, yaw: float, force_mavlink1: bool = False) -> None:
+        """
+        Setpoint offset
+
+        x                         : X position [m] (type:float)
+        y                         : Y position [m] (type:float)
+        z                         : Z position [m] (type:float)
+        yaw                       : Yaw angle [rad] (type:float)
+
+        """
+        self.send(self.leaf_setpoint_offset_encode(x, y, z, yaw), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """
