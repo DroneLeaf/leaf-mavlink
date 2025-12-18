@@ -24,8 +24,8 @@
       <entry value="2" name="LEAF_MODE_WAYPOINT_MISSION">
         <description>Waypoint mission mode</description>
       </entry>
-      <entry value="3" name="LEAF_MODE_LEARNING_INNER">
-        <description>Learning inner loops mode</description>
+      <entry value="3" name="LEAF_MODE_ROLL_PITCH_LEARNING">
+        <description>learning Roll/Pitch loops mode</description>
       </entry>
       <entry value="4" name="LEAF_MODE_LEARNING_OUTER">
         <description>Learning outer loops mode</description>
