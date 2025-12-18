@@ -53,7 +53,7 @@ typedef enum LEAF_MODE
    LEAF_MODE_RC_Stabilized=0, /* Remote control stabilized mode | */
    LEAF_MODE_RC_POSITION=1, /* Remote control position mode | */
    LEAF_MODE_WAYPOINT_MISSION=2, /* Waypoint mission mode | */
-   LEAF_MODE_LEARNING_INNER=3, /* Learning inner loops mode | */
+   LEAF_MODE_ROLL_PITCH_LEARNING=3, /* learning Roll/Pitch loops mode | */
    LEAF_MODE_LEARNING_OUTER=4, /* Learning outer loops mode | */
    LEAF_MODE_LEARNING_FULL=5, /* Learning all loops mode | */
    LEAF_MODE_INSPECTION=6, /* Inspection mode | */
