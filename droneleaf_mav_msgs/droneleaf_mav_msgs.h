@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_DRONELEAF_MAV_MSGS.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -4464907871616346678
+#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -9168214089414092946
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,10 +42,10 @@ typedef enum LEAF_MODE
    LEAF_MODE_RC_POSITION=1, /* Remote control position mode | */
    LEAF_MODE_WAYPOINT_MISSION=2, /* Waypoint mission mode | */
    LEAF_MODE_ROLL_PITCH_LEARNING=3, /* learning Roll/Pitch loops mode | */
-   LEAF_MODE_LEARNING_OUTER=4, /* Learning outer loops mode | */
-   LEAF_MODE_LEARNING_FULL=5, /* Learning all loops mode | */
-   LEAF_MODE_REFINED_TUNING_ONLINE=7, /* Refined tuning online mode | */
-   LEAF_MODE_REFINED_TUNING_OFFLINE=8, /* Refined tuning offline mode | */
+   LEAF_MODE_SELECTIVE_X_Y_ALTITUDE_LEARNING=4, /* Selective X, Y, Altitude learning mode | */
+   LEAF_MODE_FULL_LEARNING=5, /* Full system learning mode | */
+   LEAF_MODE_RC_STABILIZE_HOVER_THRUST_ID=7, /* RC stabilize hover thrust identification mode | */
+   LEAF_MODE_REFINED_TUNING_COLLECT_DATA=8, /* Refined tuning data collection mode | */
    LEAF_MODE_REFINED_TUNING_OUTER=9, /* Refined tuning outer mode | */
    LEAF_MODE_MISSION=10, /* LeafSDK mission mode | */
    LEAF_MODE_LEARNING_FULL_DATA_COLLECTION=11, /* Learning all loops mode - no real-time tuning | */

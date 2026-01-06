@@ -16,17 +16,17 @@
       <entry value="3" name="LEAF_MODE_ROLL_PITCH_LEARNING">
         <description>learning Roll/Pitch loops mode</description>
       </entry>
-      <entry value="4" name="LEAF_MODE_LEARNING_OUTER">
-        <description>Learning outer loops mode</description>
+      <entry value="4" name="LEAF_MODE_SELECTIVE_X_Y_ALTITUDE_LEARNING">
+        <description>Selective X, Y, Altitude learning mode</description>
       </entry>
-      <entry value="5" name="LEAF_MODE_LEARNING_FULL">
-        <description>Learning all loops mode</description>
+      <entry value="5" name="LEAF_MODE_FULL_LEARNING">
+        <description>Full system learning mode</description>
       </entry>
-      <entry value="7" name="LEAF_MODE_REFINED_TUNING_ONLINE">
-        <description>Refined tuning online mode</description>
+      <entry value="7" name="LEAF_MODE_RC_STABILIZE_HOVER_THRUST_ID">
+        <description>RC stabilize hover thrust identification mode</description>
       </entry>
-      <entry value="8" name="LEAF_MODE_REFINED_TUNING_OFFLINE">
-        <description>Refined tuning offline mode</description>
+      <entry value="8" name="LEAF_MODE_REFINED_TUNING_COLLECT_DATA">
+        <description>Refined tuning data collection mode</description>
       </entry>
       <entry value="9" name="LEAF_MODE_REFINED_TUNING_OUTER">
         <description>Refined tuning outer mode</description>
