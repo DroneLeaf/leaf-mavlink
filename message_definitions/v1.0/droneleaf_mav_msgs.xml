@@ -3,17 +3,6 @@
   <include>common.xml</include>
   <version>1</version>
   <enums>
-    <enum name="LEAF_INSPECTION_OPTION">
-      <entry value="0" name="LEAF_INSPECTION_OPTION_BOTH">
-        <description>Inspect both north and south</description>
-      </entry>
-      <entry value="1" name="LEAF_INSPECTION_OPTION_NORTH">
-        <description>Inspect only the north</description>
-      </entry>
-      <entry value="2" name="LEAF_INSPECTION_OPTION_SOUTH">
-        <description>Inspect only the south</description>
-      </entry>
-    </enum>
     <enum name="LEAF_MODE">
       <entry value="0" name="LEAF_MODE_RC_Stabilized">
         <description>Remote control stabilized mode</description>
@@ -32,9 +21,6 @@
       </entry>
       <entry value="5" name="LEAF_MODE_LEARNING_FULL">
         <description>Learning all loops mode</description>
-      </entry>
-      <entry value="6" name="LEAF_MODE_INSPECTION">
-        <description>Inspection mode</description>
       </entry>
       <entry value="7" name="LEAF_MODE_REFINED_TUNING_ONLINE">
         <description>Refined tuning online mode</description>
@@ -86,33 +72,7 @@
       <entry value="10" name="LEAF_STATUS_NOT_READY">
         <description>Leaf is not ready to fly yet</description>
       </entry>
-      <entry value="11" name="LEAF_STATUS_INSPECTION_READY">
-        <description>Leaf is ready to perform inspection</description>
-      </entry>
-      <entry value="12" name="LEAF_STATUS_GOING_TO_NORTH_FACE">
-        <description>Leaf is heading to north face</description>
-      </entry>
-      <entry value="13" name="LEAF_STATUS_GOING_TO_SOUTH_FACE">
-        <description>Leaf is heading to south face</description>
-      </entry>
-      <entry value="14" name="LEAF_STATUS_INSPECTING_NORTH_FACE">
-        <description>Leaf is performing inspection on north face</description>
-      </entry>
-      <entry value="15" name="LEAF_STATUS_INSPECTING_SOUTH_FACE">
-        <description>Leaf is performing inspection on south face</description>
-      </entry>
-      <entry value="16" name="LEAF_STATUS_INSPECTION_NORTH_FACE_FINISHED">
-        <description>Leaf has finished inspection on north face</description>
-      </entry>
-      <entry value="17" name="LEAF_STATUS_INSPECTION_SOUTH_FACE_FINISHED">
-        <description>Leaf has finished inspection on south face</description>
-      </entry>
-      <entry value="18" name="LEAF_STATUS_INSPECTION_FINISHED">
-        <description>Leaf has finished inspection</description>
-      </entry>
-      <entry value="19" name="LEAF_STATUS_INSPECTION_ABORTED">
-        <description>Leaf has aborted inspection</description>
-      </entry>
+
       <entry value="20" name="LEAF_STATUS_MISSION_PAUSED">
         <description>Leaf has paused the mission</description>
       </entry>
@@ -226,11 +186,6 @@
       <field type="uint8_t" name="target_system">The system needs to switch to MRFT y controller</field>
       <field type="uint8_t" name="enable">1 to switch on, 0 to switch back off</field>
     </message>
-    <message id="77014" name="LEAF_DO_INSPECT">
-      <description>Commands the leaf to perform inspection</description>
-      <field type="uint8_t" name="target_system">The system needs to perform inspection</field>
-      <field type="uint8_t" name="slap">The slap to inspect, 1 or 2 or 0 for both</field>
-    </message>
     <message id="77015" name="LEAF_CONTROL_CMD">
       <description>Commands the leaf to execute a control command</description>
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
@@ -259,15 +214,6 @@
       <field type="uint8_t" name="alt">The altitude MRFT status</field>
       <field type="uint8_t" name="x">The x MRFT status</field>
       <field type="uint8_t" name="y">The y MRFT status</field>
-    </message>
-    <message id="77020" name="LEAF_INSPECTION_OPTION">
-      <description>The inspection option, as defined by enum LEAF_INSPECTION_OPTION</description>
-      <field type="uint8_t" name="option" enum="LEAF_INSPECTION_OPTION">The new leaf inspection option.</field>
-    </message>
-    <message id="77021" name="LEAF_SET_INSPECTION_OPTION">
-      <description>Set the inspection option, as defined by enum LEAF_INSPECTION_OPTION.</description>
-      <field type="uint8_t" name="target_system">The system setting the mode</field>
-      <field type="uint8_t" name="option" enum="LEAF_INSPECTION_OPTION">The new leaf inspection option.</field>
     </message>
     <message id="77022" name="LEAF_HEARTBEAT">
       <description>The heartbeat message</description>
