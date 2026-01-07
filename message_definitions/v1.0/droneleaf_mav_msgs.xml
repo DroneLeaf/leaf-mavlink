@@ -122,16 +122,34 @@
     </enum>
     <enum name="LEAF_MISSION_STATUS">
       <entry value="0" name="LEAF_MISSION_STATUS_IDLE">
-        <description>Leaf mission manager is idle</description>
+        <description>Queue is empty, no mission loaded</description>
       </entry>
       <entry value="1" name="LEAF_MISSION_STATUS_READY">
-        <description>Leaf mission manager is idle</description>
+        <description>Current mission is ready to execute</description>
       </entry>
-      <entry value="2" name="LEAF_MISSION_STATUS_EXECUTING">
-        <description>Leaf mission manager is executing a mission</description>
+      <entry value="2" name="LEAF_MISSION_STATUS_RUNNING">
+        <description>Current mission is running</description>
       </entry>
-      <entry value="3" name="LEAF_MISSION_STATUS_PAUSED">
-        <description>Leaf mission manager has paused the mission</description>
+      <entry value="3" name="LEAF_MISSION_STATUS_SCHEDULED_PAUSE">
+        <description>Current mission is running but has a scheduled pause</description>
+      </entry>
+      <entry value="4" name="LEAF_MISSION_STATUS_PAUSED_MID_STEP">
+        <description>Current mission is paused mid-step</description>
+      </entry>
+      <entry value="5" name="LEAF_MISSION_STATUS_PAUSED_BETWEEN_STEPS">
+        <description>Current mission is paused between steps</description>
+      </entry>
+      <entry value="6" name="LEAF_MISSION_STATUS_COMPLETED">
+        <description>Current mission completed successfully</description>
+      </entry>
+      <entry value="7" name="LEAF_MISSION_STATUS_FAILED">
+        <description>Current mission failed</description>
+      </entry>
+      <entry value="8" name="LEAF_MISSION_STATUS_CANCELLED">
+        <description>Current mission was cancelled</description>
+      </entry>
+      <entry value="9" name="LEAF_MISSION_STATUS_SAFETY">
+        <description>Critical safety state, FC decides what to do</description>
       </entry>
     </enum>
     <enum name="LEAF_CONTROL_COMMAND">
@@ -141,25 +159,25 @@
       <entry value="1" name="LEAF_CONTROL_RESUME">
         <description>Resume the exection of the current mission</description>
       </entry>
-      <entry value="2" name="LEAF_CONTROL_CANCEL">
-        <description>Cancel the exection of the current mission</description>
-      </entry>
-      <entry value="3" name="LEAF_CONTROL_ABORT">
+      <entry value="2" name="LEAF_CONTROL_ABORT">
         <description>Abort the exection of the current mission</description>
       </entry>
-    </enum>
-    <enum name="LEAF_CONTROL_COMMAND_ACTION">
-      <entry value="0" name="LEAF_CONTROL_COMMAND_ACTION_NONE">
-        <description>None</description>
+      <entry value="3" name="LEAF_CONTROL_LAND_IN_PLACE">
+        <description>Land in place</description>
       </entry>
-      <entry value="1" name="LEAF_CONTROL_COMMAND_ACTION_STOP">
-        <description>Stop the current trajectory</description>
-      </entry>
-      <entry value="2" name="LEAF_CONTROL_COMMAND_ACTION_RTL">
+      <entry value="4" name="LEAF_CONTROL_RETURN_TO_LAUNCH">
         <description>Return to launch</description>
       </entry>
-      <entry value="3" name="LEAF_CONTROL_COMMAND_ACTION_LIP">
-        <description>Land in place</description>
+    </enum>
+    <enum name="JoystickMode">
+      <entry value="0" name="DISABLED">
+        <description>Joystick is disabled</description>
+      </entry>
+      <entry value="1" name="ENABLED_ALWAYS">
+        <description>Joystick is always enabled</description>
+      </entry>
+      <entry value="2" name="ENABLED_ON_PAUSE">
+        <description>Joystick is enabled only on pause</description>
       </entry>
     </enum>
   </enums>
@@ -235,7 +253,6 @@
       <description>Commands the leaf to execute a control command</description>
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
       <field type="uint8_t" name="cmd" enum="LEAF_CONTROL_COMMAND">The control command to execute</field>
-      <field type="uint8_t" name="action" enum="LEAF_CONTROL_COMMAND_ACTION">The action to perform</field>
       <field type="char[64]" name="mission_id">The id of the mission to control</field>
     </message>
     <message id="77016" name="LEAF_SAY_TO_QGC">
@@ -356,14 +373,14 @@
       <field type="char[64]" name="mission_id">The id of the completed mission</field>
     </message>
     <message id="77035" name="LEAF_MISSION_STATUS">
-      <description>The system status, as defined by enum LEAF_MISSION_STATUS</description>
-      <field type="uint8_t" name="status" enum="LEAF_MISSION_STATUS">The new leaf mission status.</field>
+      <description>The mission manager status including mission state and joystick mode</description>
+      <field type="uint8_t" name="status" enum="LEAF_MISSION_STATUS">The current mission status.</field>
+      <field type="uint8_t" name="joystick_mode" enum="JoystickMode">The current joystick mode.</field>
     </message>
     <message id="77036" name="LEAF_QGC_CONTROL_CMD">
-      <description>Commands the leaf to execute a control command</description>
+      <description>Commands the leaf to execute a control command (from QGC)</description>
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
       <field type="uint8_t" name="cmd" enum="LEAF_CONTROL_COMMAND">The control command to execute</field>
-      <field type="uint8_t" name="action" enum="LEAF_CONTROL_COMMAND_ACTION">The action to perform</field>
       <field type="char[64]" name="mission_id">The id of the mission to control</field>
     </message>
     <message id="77037" name="LEAF_QGC_MISSION_START">
