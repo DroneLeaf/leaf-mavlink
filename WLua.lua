@@ -56,14 +56,11 @@ messageName = {
     [77011] = 'LEAF_DO_SWITCH_MRFT_ALT',
     [77012] = 'LEAF_DO_SWITCH_MRFT_X',
     [77013] = 'LEAF_DO_SWITCH_MRFT_Y',
-    [77014] = 'LEAF_DO_INSPECT',
-    [77015] = 'LEAF_CONTROL_CMD',
+    [77015] = 'LEAF_SET_MISSION_STATE',
     [77016] = 'LEAF_SAY_TO_QGC',
     [77017] = 'LEAF_DO_ARM_IDLE',
     [77018] = 'LEAF_CLIENT_TAGNAME',
     [77019] = 'LEAF_MRFT_STATUS',
-    [77020] = 'LEAF_INSPECTION_OPTION',
-    [77021] = 'LEAF_SET_INSPECTION_OPTION',
     [77022] = 'LEAF_HEARTBEAT',
     [77023] = 'LEAF_DO_QUEUE_EXTERNAL_TRAJECTORY',
     [77024] = 'LEAF_ACK_QUEUE_EXTERNAL_TRAJECTORY_POS',
@@ -74,17 +71,17 @@ messageName = {
     [77029] = 'LEAF_ACK_TERMINATE_EXTERNAL_TRAJECTORY_ORI',
     [77030] = 'LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_POS',
     [77031] = 'LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_ORI',
-    [77032] = 'LEAF_DO_MISSION_RUN',
+    [77032] = 'LEAF_QGC_RESERVED_MESSAGE_77032',
     [77033] = 'LEAF_ACK_MISSION_RUN',
-    [77034] = 'LEAF_DONE_MISSION_RUN',
+    [77034] = 'LEAF_ACK_MISSION_COMPLETE',
     [77035] = 'LEAF_MISSION_STATUS',
-    [77036] = 'LEAF_QGC_CONTROL_CMD',
-    [77037] = 'LEAF_QGC_MISSION_START',
-    [77038] = 'LEAF_QGC_RTL',
+    [77036] = 'LEAF_DO_QGC_MISSION_CONTROL_CMD',
+    [77037] = 'LEAF_QGC_RESERVED_MESSAGE_77037',
+    [77038] = 'LEAF_DO_EMERGENCY_RTL',
     [77039] = 'LEAF_ACK_MISSION_PAUSE',
     [77040] = 'LEAF_ACK_MISSION_RESUME',
     [77041] = 'LEAF_ACK_MISSION_ABORT',
-    [77042] = 'LEAF_QGC_ABORT',
+    [77042] = 'LEAF_DO_EMERGENCY_ABORT',
     [77043] = 'LEAF_SETPOINT_OFFSET',
     [1] = 'SYS_STATUS',
     [2] = 'SYSTEM_TIME',
@@ -328,21 +325,15 @@ messageName = {
 }
 
 local enumEntryName = {
-    ["LEAF_INSPECTION_OPTION"] = {
-        [0] = "LEAF_INSPECTION_OPTION_BOTH",
-        [1] = "LEAF_INSPECTION_OPTION_NORTH",
-        [2] = "LEAF_INSPECTION_OPTION_SOUTH",
-    },
     ["LEAF_MODE"] = {
         [0] = "LEAF_MODE_RC_Stabilized",
         [1] = "LEAF_MODE_RC_POSITION",
         [2] = "LEAF_MODE_WAYPOINT_MISSION",
         [3] = "LEAF_MODE_ROLL_PITCH_LEARNING",
-        [4] = "LEAF_MODE_LEARNING_OUTER",
-        [5] = "LEAF_MODE_LEARNING_FULL",
-        [6] = "LEAF_MODE_INSPECTION",
-        [7] = "LEAF_MODE_REFINED_TUNING_ONLINE",
-        [8] = "LEAF_MODE_REFINED_TUNING_OFFLINE",
+        [4] = "LEAF_MODE_SELECTIVE_X_Y_ALTITUDE_LEARNING",
+        [5] = "LEAF_MODE_FULL_LEARNING",
+        [7] = "LEAF_MODE_RC_STABILIZE_HOVER_THRUST_ID",
+        [8] = "LEAF_MODE_REFINED_TUNING_COLLECT_DATA",
         [9] = "LEAF_MODE_REFINED_TUNING_OUTER",
         [10] = "LEAF_MODE_MISSION",
         [11] = "LEAF_MODE_LEARNING_FULL_DATA_COLLECTION",
@@ -359,36 +350,29 @@ local enumEntryName = {
         [8] = "LEAF_STATUS_ARMED",
         [9] = "LEAF_STATUS_DISARMED",
         [10] = "LEAF_STATUS_NOT_READY",
-        [11] = "LEAF_STATUS_INSPECTION_READY",
-        [12] = "LEAF_STATUS_GOING_TO_NORTH_FACE",
-        [13] = "LEAF_STATUS_GOING_TO_SOUTH_FACE",
-        [14] = "LEAF_STATUS_INSPECTING_NORTH_FACE",
-        [15] = "LEAF_STATUS_INSPECTING_SOUTH_FACE",
-        [16] = "LEAF_STATUS_INSPECTION_NORTH_FACE_FINISHED",
-        [17] = "LEAF_STATUS_INSPECTION_SOUTH_FACE_FINISHED",
-        [18] = "LEAF_STATUS_INSPECTION_FINISHED",
-        [19] = "LEAF_STATUS_INSPECTION_ABORTED",
         [20] = "LEAF_STATUS_MISSION_PAUSED",
         [21] = "LEAF_STATUS_RETURNING_TO_BASE",
     },
-    ["LEAF_MISSION_STATUS"] = {
-        [0] = "LEAF_MISSION_STATUS_IDLE",
-        [1] = "LEAF_MISSION_STATUS_READY",
-        [2] = "LEAF_MISSION_STATUS_RUNNING",
-        [3] = "LEAF_MISSION_STATUS_SCHEDULED_PAUSE",
-        [4] = "LEAF_MISSION_STATUS_PAUSED_MID_STEP",
-        [5] = "LEAF_MISSION_STATUS_PAUSED_BETWEEN_STEPS",
-        [6] = "LEAF_MISSION_STATUS_COMPLETED",
-        [7] = "LEAF_MISSION_STATUS_FAILED",
-        [8] = "LEAF_MISSION_STATUS_CANCELLED",
-        [9] = "LEAF_MISSION_STATUS_SAFETY",
+    ["LEAF_MISSION_STATE"] = {
+        [0] = "LEAF_MISSION_STATE_IDLE",
+        [1] = "LEAF_MISSION_STATE_READY",
+        [2] = "LEAF_MISSION_STATE_RUNNING",
+        [3] = "LEAF_MISSION_STATE_SCHEDULED_PAUSE",
+        [4] = "LEAF_MISSION_STATE_PAUSED_MID_STEP",
+        [5] = "LEAF_MISSION_STATE_PAUSED_BETWEEN_STEPS",
+        [6] = "LEAF_MISSION_STATE_COMPLETED",
+        [7] = "LEAF_MISSION_STATE_FAILED",
+        [8] = "LEAF_MISSION_STATE_CANCELLED",
+        [9] = "LEAF_MISSION_STATE_SAFETY",
     },
-    ["LEAF_CONTROL_COMMAND"] = {
-        [0] = "LEAF_CONTROL_PAUSE",
-        [1] = "LEAF_CONTROL_RESUME",
-        [2] = "LEAF_CONTROL_ABORT",
-        [3] = "LEAF_CONTROL_LAND_IN_PLACE",
-        [4] = "LEAF_CONTROL_RETURN_TO_LAUNCH",
+    ["LEAF_MISSION_CONTROL_COMMAND"] = {
+        [0] = "LEAF_MISSION_CONTROL_PAUSE",
+        [1] = "LEAF_MISSION_CONTROL_RESUME",
+        [2] = "LEAF_MISSION_CONTROL_ABORT",
+        [3] = "LEAF_MISSION_CONTROL_LAND_IN_PLACE",
+        [4] = "LEAF_MISSION_CONTROL_RETURN_TO_LAUNCH",
+        [5] = "LEAF_MISSION_CONTROL_READY",
+        [6] = "LEAF_MISSION_CONTROL_START",
     },
     ["JoystickMode"] = {
         [0] = "DISABLED",
@@ -2236,356 +2220,6 @@ local enumEntryName = {
         [242] = "MAV_COMP_ID_TUNNEL_NODE",
         [243] = "MAV_COMP_ID_ILLUMINATOR",
         [250] = "MAV_COMP_ID_SYSTEM_CONTROL",
-    },
-    ["BOOL"] = {
-        [0] = "BOOL_FALSE",
-        [1] = "BOOL_TRUE",
-    },
-    ["UALBERTA_AUTOPILOT_MODE"] = {
-        [1] = "MODE_MANUAL_DIRECT",
-        [2] = "MODE_MANUAL_SCALED",
-        [3] = "MODE_AUTO_PID_ATT",
-        [4] = "MODE_AUTO_PID_VEL",
-        [5] = "MODE_AUTO_PID_POS",
-    },
-    ["UALBERTA_NAV_MODE"] = {
-        [1] = "NAV_AHRS_INIT",
-        [2] = "NAV_AHRS",
-        [3] = "NAV_INS_GPS_INIT",
-        [4] = "NAV_INS_GPS",
-    },
-    ["UALBERTA_PILOT_MODE"] = {
-        [1] = "PILOT_MANUAL",
-        [2] = "PILOT_AUTO",
-        [3] = "PILOT_ROTO",
-    },
-    ["UAVIONIX_ADSB_OUT_DYNAMIC_STATE"] = {
-        [1] = "UAVIONIX_ADSB_OUT_DYNAMIC_STATE_INTENT_CHANGE",
-        [2] = "UAVIONIX_ADSB_OUT_DYNAMIC_STATE_AUTOPILOT_ENABLED",
-        [4] = "UAVIONIX_ADSB_OUT_DYNAMIC_STATE_NICBARO_CROSSCHECKED",
-        [8] = "UAVIONIX_ADSB_OUT_DYNAMIC_STATE_ON_GROUND",
-        [16] = "UAVIONIX_ADSB_OUT_DYNAMIC_STATE_IDENT",
-    },
-    ["UAVIONIX_ADSB_OUT_RF_SELECT"] = {
-        [1] = "UAVIONIX_ADSB_OUT_RF_SELECT_RX_ENABLED",
-        [2] = "UAVIONIX_ADSB_OUT_RF_SELECT_TX_ENABLED",
-    },
-    ["UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX"] = {
-        [0] = "UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_0",
-        [1] = "UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_1",
-        [2] = "UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_2D",
-        [3] = "UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_3D",
-        [4] = "UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_DGPS",
-        [5] = "UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_RTK",
-    },
-    ["UAVIONIX_ADSB_RF_HEALTH"] = {
-        [1] = "UAVIONIX_ADSB_RF_HEALTH_OK",
-        [2] = "UAVIONIX_ADSB_RF_HEALTH_FAIL_TX",
-        [16] = "UAVIONIX_ADSB_RF_HEALTH_FAIL_RX",
-    },
-    ["UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE"] = {
-        [0] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_NO_DATA",
-        [1] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L15M_W23M",
-        [2] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L25M_W28P5M",
-        [3] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L25_34M",
-        [4] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L35_33M",
-        [5] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L35_38M",
-        [6] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L45_39P5M",
-        [7] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L45_45M",
-        [8] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L55_45M",
-        [9] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L55_52M",
-        [10] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L65_59P5M",
-        [11] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L65_67M",
-        [12] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L75_W72P5M",
-        [13] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L75_W80M",
-        [14] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L85_W80M",
-        [15] = "UAVIONIX_ADSB_OUT_CFG_AIRCRAFT_SIZE_L85_W90M",
-    },
-    ["UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT"] = {
-        [0] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_NO_DATA",
-        [1] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_2M",
-        [2] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_4M",
-        [3] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_6M",
-        [4] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_0M",
-        [5] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_2M",
-        [6] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_4M",
-        [7] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_6M",
-    },
-    ["UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LON"] = {
-        [0] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LON_NO_DATA",
-        [1] = "UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LON_APPLIED_BY_SENSOR",
-    },
-    ["UAVIONIX_ADSB_EMERGENCY_STATUS"] = {
-        [0] = "UAVIONIX_ADSB_OUT_NO_EMERGENCY",
-        [1] = "UAVIONIX_ADSB_OUT_GENERAL_EMERGENCY",
-        [2] = "UAVIONIX_ADSB_OUT_LIFEGUARD_EMERGENCY",
-        [3] = "UAVIONIX_ADSB_OUT_MINIMUM_FUEL_EMERGENCY",
-        [4] = "UAVIONIX_ADSB_OUT_NO_COMM_EMERGENCY",
-        [5] = "UAVIONIX_ADSB_OUT_UNLAWFUL_INTERFERANCE_EMERGENCY",
-        [6] = "UAVIONIX_ADSB_OUT_DOWNED_AIRCRAFT_EMERGENCY",
-        [7] = "UAVIONIX_ADSB_OUT_RESERVED",
-    },
-    ["UAVIONIX_ADSB_OUT_CONTROL_STATE"] = {
-        [1] = "UAVIONIX_ADSB_OUT_CONTROL_STATE_EXTERNAL_BARO_CROSSCHECKED",
-        [4] = "UAVIONIX_ADSB_OUT_CONTROL_STATE_ON_GROUND",
-        [8] = "UAVIONIX_ADSB_OUT_CONTROL_STATE_IDENT_BUTTON_ACTIVE",
-        [16] = "UAVIONIX_ADSB_OUT_CONTROL_STATE_MODE_A_ENABLED",
-        [32] = "UAVIONIX_ADSB_OUT_CONTROL_STATE_MODE_C_ENABLED",
-        [64] = "UAVIONIX_ADSB_OUT_CONTROL_STATE_MODE_S_ENABLED",
-        [128] = "UAVIONIX_ADSB_OUT_CONTROL_STATE_1090ES_TX_ENABLED",
-    },
-    ["UAVIONIX_ADSB_XBIT"] = {
-        [128] = "UAVIONIX_ADSB_XBIT_ENABLED",
-    },
-    ["UAVIONIX_ADSB_OUT_STATUS_STATE"] = {
-        [1] = "UAVIONIX_ADSB_OUT_STATUS_STATE_ON_GROUND",
-        [2] = "UAVIONIX_ADSB_OUT_STATUS_STATE_INTERROGATED_SINCE_LAST",
-        [4] = "UAVIONIX_ADSB_OUT_STATUS_STATE_XBIT_ENABLED",
-        [8] = "UAVIONIX_ADSB_OUT_STATUS_STATE_IDENT_ACTIVE",
-        [16] = "UAVIONIX_ADSB_OUT_STATUS_STATE_MODE_A_ENABLED",
-        [32] = "UAVIONIX_ADSB_OUT_STATUS_STATE_MODE_C_ENABLED",
-        [64] = "UAVIONIX_ADSB_OUT_STATUS_STATE_MODE_S_ENABLED",
-        [128] = "UAVIONIX_ADSB_OUT_STATUS_STATE_1090ES_TX_ENABLED",
-    },
-    ["UAVIONIX_ADSB_OUT_STATUS_NIC_NACP"] = {
-        [1] = "UAVIONIX_ADSB_NIC_CR_20_NM",
-        [2] = "UAVIONIX_ADSB_NIC_CR_8_NM",
-        [3] = "UAVIONIX_ADSB_NIC_CR_4_NM",
-        [4] = "UAVIONIX_ADSB_NIC_CR_2_NM",
-        [5] = "UAVIONIX_ADSB_NIC_CR_1_NM",
-        [6] = "UAVIONIX_ADSB_NIC_CR_0_3_NM",
-        [7] = "UAVIONIX_ADSB_NIC_CR_0_2_NM",
-        [8] = "UAVIONIX_ADSB_NIC_CR_0_1_NM",
-        [9] = "UAVIONIX_ADSB_NIC_CR_75_M",
-        [10] = "UAVIONIX_ADSB_NIC_CR_25_M",
-        [11] = "UAVIONIX_ADSB_NIC_CR_7_5_M",
-        [16] = "UAVIONIX_ADSB_NACP_EPU_10_NM",
-        [32] = "UAVIONIX_ADSB_NACP_EPU_4_NM",
-        [48] = "UAVIONIX_ADSB_NACP_EPU_2_NM",
-        [64] = "UAVIONIX_ADSB_NACP_EPU_1_NM",
-        [80] = "UAVIONIX_ADSB_NACP_EPU_0_5_NM",
-        [96] = "UAVIONIX_ADSB_NACP_EPU_0_3_NM",
-        [112] = "UAVIONIX_ADSB_NACP_EPU_0_1_NM",
-        [128] = "UAVIONIX_ADSB_NACP_EPU_0_05_NM",
-        [144] = "UAVIONIX_ADSB_NACP_EPU_30_M",
-        [160] = "UAVIONIX_ADSB_NACP_EPU_10_M",
-        [176] = "UAVIONIX_ADSB_NACP_EPU_3_M",
-    },
-    ["UAVIONIX_ADSB_OUT_STATUS_FAULT"] = {
-        [8] = "UAVIONIX_ADSB_OUT_STATUS_FAULT_STATUS_MESSAGE_UNAVAIL",
-        [16] = "UAVIONIX_ADSB_OUT_STATUS_FAULT_GPS_NO_POS",
-        [32] = "UAVIONIX_ADSB_OUT_STATUS_FAULT_GPS_UNAVAIL",
-        [64] = "UAVIONIX_ADSB_OUT_STATUS_FAULT_TX_SYSTEM_FAIL",
-        [128] = "UAVIONIX_ADSB_OUT_STATUS_FAULT_MAINT_REQ",
-    },
-    ["MAV_STORM32_TUNNEL_PAYLOAD_TYPE"] = {
-        [200] = "MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH1_IN",
-        [201] = "MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH1_OUT",
-        [202] = "MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH2_IN",
-        [203] = "MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH2_OUT",
-        [204] = "MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH3_IN",
-        [205] = "MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH3_OUT",
-    },
-    ["MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS"] = {
-        [1] = "MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS_HAS_PROFILES",
-    },
-    ["MAV_STORM32_GIMBAL_MANAGER_FLAGS"] = {
-        [1] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_RC_ACTIVE",
-        [2] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_ONBOARD_ACTIVE",
-        [4] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_AUTOPILOT_ACTIVE",
-        [8] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_GCS_ACTIVE",
-        [16] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CAMERA_ACTIVE",
-        [32] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_GCS2_ACTIVE",
-        [64] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CAMERA2_ACTIVE",
-        [128] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CUSTOM_ACTIVE",
-        [256] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CUSTOM2_ACTIVE",
-        [512] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_SET_SUPERVISON",
-        [1024] = "MAV_STORM32_GIMBAL_MANAGER_FLAGS_SET_RELEASE",
-    },
-    ["MAV_STORM32_GIMBAL_MANAGER_CLIENT"] = {
-        [0] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_NONE",
-        [1] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_ONBOARD",
-        [2] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_AUTOPILOT",
-        [3] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_GCS",
-        [4] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_CAMERA",
-        [5] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_GCS2",
-        [6] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_CAMERA2",
-        [7] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_CUSTOM",
-        [8] = "MAV_STORM32_GIMBAL_MANAGER_CLIENT_CUSTOM2",
-    },
-    ["MAV_STORM32_GIMBAL_MANAGER_PROFILE"] = {
-        [0] = "MAV_STORM32_GIMBAL_MANAGER_PROFILE_DEFAULT",
-        [1] = "MAV_STORM32_GIMBAL_MANAGER_PROFILE_CUSTOM",
-        [2] = "MAV_STORM32_GIMBAL_MANAGER_PROFILE_COOPERATIVE",
-        [3] = "MAV_STORM32_GIMBAL_MANAGER_PROFILE_EXCLUSIVE",
-        [4] = "MAV_STORM32_GIMBAL_MANAGER_PROFILE_PRIORITY_COOPERATIVE",
-        [5] = "MAV_STORM32_GIMBAL_MANAGER_PROFILE_PRIORITY_EXCLUSIVE",
-    },
-    ["MAV_QSHOT_MODE"] = {
-        [0] = "MAV_QSHOT_MODE_UNDEFINED",
-        [1] = "MAV_QSHOT_MODE_DEFAULT",
-        [2] = "MAV_QSHOT_MODE_GIMBAL_RETRACT",
-        [3] = "MAV_QSHOT_MODE_GIMBAL_NEUTRAL",
-        [4] = "MAV_QSHOT_MODE_GIMBAL_MISSION",
-        [5] = "MAV_QSHOT_MODE_GIMBAL_RC_CONTROL",
-        [6] = "MAV_QSHOT_MODE_POI_TARGETING",
-        [7] = "MAV_QSHOT_MODE_SYSID_TARGETING",
-        [8] = "MAV_QSHOT_MODE_CABLECAM_2POINT",
-        [9] = "MAV_QSHOT_MODE_HOME_TARGETING",
-    },
-    ["MLRS_RADIO_LINK_STATS_FLAGS"] = {
-        [1] = "MLRS_RADIO_LINK_STATS_FLAGS_RSSI_DBM",
-        [2] = "MLRS_RADIO_LINK_STATS_FLAGS_RX_RECEIVE_ANTENNA2",
-        [4] = "MLRS_RADIO_LINK_STATS_FLAGS_RX_TRANSMIT_ANTENNA1",
-        [8] = "MLRS_RADIO_LINK_STATS_FLAGS_RX_TRANSMIT_ANTENNA2",
-        [16] = "MLRS_RADIO_LINK_STATS_FLAGS_TX_RECEIVE_ANTENNA2",
-        [32] = "MLRS_RADIO_LINK_STATS_FLAGS_TX_TRANSMIT_ANTENNA1",
-        [64] = "MLRS_RADIO_LINK_STATS_FLAGS_TX_TRANSMIT_ANTENNA2",
-    },
-    ["MLRS_RADIO_LINK_TYPE"] = {
-        [0] = "MLRS_RADIO_LINK_TYPE_GENERIC",
-        [1] = "MLRS_RADIO_LINK_TYPE_HERELINK",
-        [2] = "MLRS_RADIO_LINK_TYPE_DRAGONLINK",
-        [3] = "MLRS_RADIO_LINK_TYPE_RFD900",
-        [4] = "MLRS_RADIO_LINK_TYPE_CROSSFIRE",
-        [5] = "MLRS_RADIO_LINK_TYPE_EXPRESSLRS",
-        [6] = "MLRS_RADIO_LINK_TYPE_MLRS",
-    },
-    ["MAV_AVSS_COMMAND_FAILURE_REASON"] = {
-        [1] = "PRS_NOT_STEADY",
-        [2] = "PRS_DTM_NOT_ARMED",
-        [3] = "PRS_OTM_NOT_ARMED",
-    },
-    ["AVSS_M300_OPERATION_MODE"] = {
-        [0] = "MODE_M300_MANUAL_CTRL",
-        [1] = "MODE_M300_ATTITUDE",
-        [6] = "MODE_M300_P_GPS",
-        [9] = "MODE_M300_HOTPOINT_MODE",
-        [10] = "MODE_M300_ASSISTED_TAKEOFF",
-        [11] = "MODE_M300_AUTO_TAKEOFF",
-        [12] = "MODE_M300_AUTO_LANDING",
-        [15] = "MODE_M300_NAVI_GO_HOME",
-        [17] = "MODE_M300_NAVI_SDK_CTRL",
-        [31] = "MODE_M300_S_SPORT",
-        [33] = "MODE_M300_FORCE_AUTO_LANDING",
-        [38] = "MODE_M300_T_TRIPOD",
-        [40] = "MODE_M300_SEARCH_MODE",
-        [41] = "MODE_M300_ENGINE_START",
-    },
-    ["AVSS_HORSEFLY_OPERATION_MODE"] = {
-        [0] = "MODE_HORSEFLY_MANUAL_CTRL",
-        [1] = "MODE_HORSEFLY_AUTO_TAKEOFF",
-        [2] = "MODE_HORSEFLY_AUTO_LANDING",
-        [3] = "MODE_HORSEFLY_NAVI_GO_HOME",
-        [4] = "MODE_HORSEFLY_DROP",
-    },
-    ["AIRLINK_AUTH_RESPONSE_TYPE"] = {
-        [0] = "AIRLINK_ERROR_LOGIN_OR_PASS",
-        [1] = "AIRLINK_AUTH_OK",
-    },
-    ["MARSH_TYPE"] = {
-        [100] = "MARSH_TYPE_MANAGER",
-        [101] = "MARSH_TYPE_FLIGHT_MODEL",
-        [102] = "MARSH_TYPE_CONTROLS",
-        [103] = "MARSH_TYPE_VISUALISATION",
-        [104] = "MARSH_TYPE_INSTRUMENTS",
-        [105] = "MARSH_TYPE_MOTION_PLATFORM",
-        [106] = "MARSH_TYPE_GSEAT",
-        [107] = "MARSH_TYPE_EYE_TRACKER",
-        [108] = "MARSH_TYPE_CONTROL_LOADING",
-        [109] = "MARSH_TYPE_VIBRATION_SOURCE",
-        [110] = "MARSH_TYPE_PILOT_TARGET",
-        [111] = "MARSH_TYPE_EXPERIMENT_DIRECTOR",
-    },
-    ["MARSH_MODE_FLAGS"] = {
-        [16777216] = "MARSH_MODE_SINGLE_MESSAGE",
-        [33554432] = "MARSH_MODE_ALL_MESSAGES",
-    },
-    ["CONTROL_AXIS"] = {
-        [0] = "CONTROL_AXIS_ROLL",
-        [1] = "CONTROL_AXIS_PITCH",
-        [2] = "CONTROL_AXIS_THRUST",
-        [3] = "CONTROL_AXIS_YAW",
-    },
-    ["MARSH_MANUAL_SETPOINT_MODE"] = {
-        [0] = "MARSH_MANUAL_SETPOINT_MODE_TARGET",
-        [1] = "MARSH_MANUAL_SETPOINT_MODE_TRIM",
-    },
-    ["MOTION_PLATFORM_MODE"] = {
-        [0] = "MOTION_PLATFORM_MODE_UNKNOWN",
-        [1] = "MOTION_PLATFORM_MODE_UNINITIALIZED",
-        [2] = "MOTION_PLATFORM_MODE_OFF",
-        [3] = "MOTION_PLATFORM_MODE_SETTLED",
-        [4] = "MOTION_PLATFORM_MODE_NEUTRAL",
-        [5] = "MOTION_PLATFORM_MODE_FROZEN",
-        [6] = "MOTION_PLATFORM_MODE_ENGAGED",
-    },
-    ["MOTION_PLATFORM_HEALTH"] = {
-        [0] = "MOTION_PLATFORM_HEALTH_OK",
-        [1] = "MOTION_PLATFORM_HEALTH_WARNING",
-        [2] = "MOTION_PLATFORM_HEALTH_ERROR",
-        [3] = "MOTION_PLATFORM_HEALTH_CRITICAL",
-    },
-    ["LEAF_INSPECTION_OPTION"] = {
-        [0] = "LEAF_INSPECTION_OPTION_BOTH",
-        [1] = "LEAF_INSPECTION_OPTION_NORTH",
-        [2] = "LEAF_INSPECTION_OPTION_SOUTH",
-    },
-    ["LEAF_MODE"] = {
-        [0] = "LEAF_MODE_RC_Stabilized",
-        [1] = "LEAF_MODE_RC_POSITION",
-        [2] = "LEAF_MODE_WAYPOINT_MISSION",
-        [3] = "LEAF_MODE_ROLL_PITCH_LEARNING",
-        [4] = "LEAF_MODE_LEARNING_OUTER",
-        [5] = "LEAF_MODE_LEARNING_FULL",
-        [6] = "LEAF_MODE_INSPECTION",
-        [7] = "LEAF_MODE_REFINED_TUNING_ONLINE",
-        [8] = "LEAF_MODE_REFINED_TUNING_OFFLINE",
-        [9] = "LEAF_MODE_REFINED_TUNING_OUTER",
-        [10] = "LEAF_MODE_MISSION",
-        [11] = "LEAF_MODE_LEARNING_FULL_DATA_COLLECTION",
-    },
-    ["LEAF_STATUS"] = {
-        [0] = "LEAF_STATUS_READY_TO_LEARN",
-        [1] = "LEAF_STATUS_LEARNING",
-        [2] = "LEAF_STATUS_READY_TO_FLY",
-        [3] = "LEAF_STATUS_TAKING_OFF",
-        [4] = "LEAF_STATUS_FLYING",
-        [5] = "LEAF_STATUS_LANDING",
-        [6] = "LEAF_STATUS_LANDED",
-        [7] = "LEAF_STATUS_ARMED_IDLE",
-        [8] = "LEAF_STATUS_ARMED",
-        [9] = "LEAF_STATUS_DISARMED",
-        [10] = "LEAF_STATUS_NOT_READY",
-        [11] = "LEAF_STATUS_INSPECTION_READY",
-        [12] = "LEAF_STATUS_GOING_TO_NORTH_FACE",
-        [13] = "LEAF_STATUS_GOING_TO_SOUTH_FACE",
-        [14] = "LEAF_STATUS_INSPECTING_NORTH_FACE",
-        [15] = "LEAF_STATUS_INSPECTING_SOUTH_FACE",
-        [16] = "LEAF_STATUS_INSPECTION_NORTH_FACE_FINISHED",
-        [17] = "LEAF_STATUS_INSPECTION_SOUTH_FACE_FINISHED",
-        [18] = "LEAF_STATUS_INSPECTION_FINISHED",
-        [19] = "LEAF_STATUS_INSPECTION_ABORTED",
-        [20] = "LEAF_STATUS_MISSION_PAUSED",
-        [21] = "LEAF_STATUS_RETURNING_TO_BASE",
-    },
-    ["LEAF_MISSION_STATUS"] = {
-        [0] = "LEAF_MISSION_STATUS_IDLE",
-        [1] = "LEAF_MISSION_STATUS_READY",
-        [2] = "LEAF_MISSION_STATUS_EXECUTING",
-        [3] = "LEAF_MISSION_STATUS_PAUSED",
-    },
-    ["LEAF_CONTROL_COMMAND"] = {
-        [0] = "LEAF_CONTROL_PAUSE",
-        [1] = "LEAF_CONTROL_RESUME",
-        [2] = "LEAF_CONTROL_CANCEL",
-        [3] = "LEAF_CONTROL_ABORT",
-    },
-    ["LEAF_CONTROL_COMMAND_ACTION"] = {
-        [0] = "LEAF_CONTROL_COMMAND_ACTION_NONE",
-        [1] = "LEAF_CONTROL_COMMAND_ACTION_STOP",
-        [2] = "LEAF_CONTROL_COMMAND_ACTION_RTL",
-        [3] = "LEAF_CONTROL_COMMAND_ACTION_LIP",
     },
 }
 f.magic = ProtoField.uint8("mavlink_proto.magic", "Magic value / version", base.HEX, protocolVersions)
@@ -5805,25 +5439,16 @@ f.LEAF_DO_SWITCH_MRFT_Y_target_system = ProtoField.new("target_system (uint8_t)"
                             ftypes.UINT8,
                             nil)
     
-f.LEAF_DO_INSPECT_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_DO_INSPECT_target_system",
+f.LEAF_SET_MISSION_STATE_target_system = ProtoField.new("target_system (uint8_t)",
+                            "mavlink_proto.LEAF_SET_MISSION_STATE_target_system",
                             ftypes.UINT8,
                             nil)
-    f.LEAF_DO_INSPECT_slap = ProtoField.new("slap (uint8_t)",
-                            "mavlink_proto.LEAF_DO_INSPECT_slap",
+    f.LEAF_SET_MISSION_STATE_state = ProtoField.new("state (LEAF_MISSION_STATE)",
+                            "mavlink_proto.LEAF_SET_MISSION_STATE_state",
                             ftypes.UINT8,
-                            nil)
-    
-f.LEAF_CONTROL_CMD_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_CONTROL_CMD_target_system",
-                            ftypes.UINT8,
-                            nil)
-    f.LEAF_CONTROL_CMD_cmd = ProtoField.new("cmd (LEAF_CONTROL_COMMAND)",
-                            "mavlink_proto.LEAF_CONTROL_CMD_cmd",
-                            ftypes.UINT8,
-                            enumEntryName.LEAF_CONTROL_COMMAND)
-    f.LEAF_CONTROL_CMD_mission_id = ProtoField.new("mission_id (char)",
-                            "mavlink_proto.LEAF_CONTROL_CMD_mission_id",
+                            enumEntryName.LEAF_MISSION_STATE)
+    f.LEAF_SET_MISSION_STATE_mission_id = ProtoField.new("mission_id (char)",
+                            "mavlink_proto.LEAF_SET_MISSION_STATE_mission_id",
                             ftypes.STRING,
                             nil)
     
@@ -5870,20 +5495,6 @@ f.LEAF_MRFT_STATUS_roll = ProtoField.new("roll (uint8_t)",
                             "mavlink_proto.LEAF_MRFT_STATUS_y",
                             ftypes.UINT8,
                             nil)
-    
-f.LEAF_INSPECTION_OPTION_option = ProtoField.new("option (LEAF_INSPECTION_OPTION)",
-                            "mavlink_proto.LEAF_INSPECTION_OPTION_option",
-                            ftypes.UINT8,
-                            enumEntryName.LEAF_INSPECTION_OPTION)
-    
-f.LEAF_SET_INSPECTION_OPTION_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_SET_INSPECTION_OPTION_target_system",
-                            ftypes.UINT8,
-                            nil)
-    f.LEAF_SET_INSPECTION_OPTION_option = ProtoField.new("option (LEAF_INSPECTION_OPTION)",
-                            "mavlink_proto.LEAF_SET_INSPECTION_OPTION_option",
-                            ftypes.UINT8,
-                            enumEntryName.LEAF_INSPECTION_OPTION)
     
 f.LEAF_HEARTBEAT_status = ProtoField.new("status (LEAF_STATUS)",
                             "mavlink_proto.LEAF_HEARTBEAT_status",
@@ -6051,16 +5662,8 @@ f.LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_ORI_x = ProtoField.new("x (float) [rad]",
                             ftypes.FLOAT,
                             nil)
     
-f.LEAF_DO_MISSION_RUN_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_DO_MISSION_RUN_target_system",
-                            ftypes.UINT8,
-                            nil)
-    f.LEAF_DO_MISSION_RUN_mission_id = ProtoField.new("mission_id (char)",
-                            "mavlink_proto.LEAF_DO_MISSION_RUN_mission_id",
-                            ftypes.STRING,
-                            nil)
-    f.LEAF_DO_MISSION_RUN_forced = ProtoField.new("forced (uint8_t)",
-                            "mavlink_proto.LEAF_DO_MISSION_RUN_forced",
+f.LEAF_QGC_RESERVED_MESSAGE_77032_reserved = ProtoField.new("reserved (uint8_t)",
+                            "mavlink_proto.LEAF_QGC_RESERVED_MESSAGE_77032_reserved",
                             ftypes.UINT8,
                             nil)
     
@@ -6077,44 +5680,44 @@ f.LEAF_ACK_MISSION_RUN_target_system = ProtoField.new("target_system (uint8_t)",
                             ftypes.STRING,
                             nil)
     
-f.LEAF_DONE_MISSION_RUN_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_DONE_MISSION_RUN_target_system",
+f.LEAF_ACK_MISSION_COMPLETE_target_system = ProtoField.new("target_system (uint8_t)",
+                            "mavlink_proto.LEAF_ACK_MISSION_COMPLETE_target_system",
                             ftypes.UINT8,
                             nil)
-    f.LEAF_DONE_MISSION_RUN_mission_id = ProtoField.new("mission_id (char)",
-                            "mavlink_proto.LEAF_DONE_MISSION_RUN_mission_id",
+    f.LEAF_ACK_MISSION_COMPLETE_mission_id = ProtoField.new("mission_id (char)",
+                            "mavlink_proto.LEAF_ACK_MISSION_COMPLETE_mission_id",
                             ftypes.STRING,
                             nil)
     
-f.LEAF_MISSION_STATUS_status = ProtoField.new("status (LEAF_MISSION_STATUS)",
+f.LEAF_MISSION_STATUS_status = ProtoField.new("status (LEAF_MISSION_STATE)",
                             "mavlink_proto.LEAF_MISSION_STATUS_status",
                             ftypes.UINT8,
-                            enumEntryName.LEAF_MISSION_STATUS)
+                            enumEntryName.LEAF_MISSION_STATE)
     f.LEAF_MISSION_STATUS_joystick_mode = ProtoField.new("joystick_mode (JoystickMode)",
                             "mavlink_proto.LEAF_MISSION_STATUS_joystick_mode",
                             ftypes.UINT8,
                             enumEntryName.JoystickMode)
     
-f.LEAF_QGC_CONTROL_CMD_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_QGC_CONTROL_CMD_target_system",
+f.LEAF_DO_QGC_MISSION_CONTROL_CMD_target_system = ProtoField.new("target_system (uint8_t)",
+                            "mavlink_proto.LEAF_DO_QGC_MISSION_CONTROL_CMD_target_system",
                             ftypes.UINT8,
                             nil)
-    f.LEAF_QGC_CONTROL_CMD_cmd = ProtoField.new("cmd (LEAF_CONTROL_COMMAND)",
-                            "mavlink_proto.LEAF_QGC_CONTROL_CMD_cmd",
+    f.LEAF_DO_QGC_MISSION_CONTROL_CMD_cmd = ProtoField.new("cmd (LEAF_MISSION_CONTROL_COMMAND)",
+                            "mavlink_proto.LEAF_DO_QGC_MISSION_CONTROL_CMD_cmd",
                             ftypes.UINT8,
-                            enumEntryName.LEAF_CONTROL_COMMAND)
-    f.LEAF_QGC_CONTROL_CMD_mission_id = ProtoField.new("mission_id (char)",
-                            "mavlink_proto.LEAF_QGC_CONTROL_CMD_mission_id",
+                            enumEntryName.LEAF_MISSION_CONTROL_COMMAND)
+    f.LEAF_DO_QGC_MISSION_CONTROL_CMD_mission_id = ProtoField.new("mission_id (char)",
+                            "mavlink_proto.LEAF_DO_QGC_MISSION_CONTROL_CMD_mission_id",
                             ftypes.STRING,
                             nil)
     
-f.LEAF_QGC_MISSION_START_mission_id = ProtoField.new("mission_id (char)",
-                            "mavlink_proto.LEAF_QGC_MISSION_START_mission_id",
-                            ftypes.STRING,
+f.LEAF_QGC_RESERVED_MESSAGE_77037_reserved = ProtoField.new("reserved (uint8_t)",
+                            "mavlink_proto.LEAF_QGC_RESERVED_MESSAGE_77037_reserved",
+                            ftypes.UINT8,
                             nil)
     
-f.LEAF_QGC_RTL_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_QGC_RTL_target_system",
+f.LEAF_DO_EMERGENCY_RTL_target_system = ProtoField.new("target_system (uint8_t)",
+                            "mavlink_proto.LEAF_DO_EMERGENCY_RTL_target_system",
                             ftypes.UINT8,
                             nil)
     
@@ -6157,8 +5760,8 @@ f.LEAF_ACK_MISSION_ABORT_target_system = ProtoField.new("target_system (uint8_t)
                             ftypes.STRING,
                             nil)
     
-f.LEAF_QGC_ABORT_target_system = ProtoField.new("target_system (uint8_t)",
-                            "mavlink_proto.LEAF_QGC_ABORT_target_system",
+f.LEAF_DO_EMERGENCY_ABORT_target_system = ProtoField.new("target_system (uint8_t)",
+                            "mavlink_proto.LEAF_DO_EMERGENCY_ABORT_target_system",
                             ftypes.UINT8,
                             nil)
     
@@ -30941,22 +30544,7 @@ function payload_fns.payload_77013(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 1, 1)
     subtree = tree:add_le(f.LEAF_DO_SWITCH_MRFT_Y_enable, tvbrange)
 end
--- dissect payload of message type LEAF_DO_INSPECT
-function payload_fns.payload_77014(buffer, tree, msgid, offset, limit, pinfo)
-    local padded, field_offset, value, subtree, tvbrange
-    if (offset + 2 > limit) then
-        padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 2)
-        padded = padded:tvb("Untruncated payload")
-    else
-        padded = buffer
-    end
-    tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_DO_INSPECT_target_system, tvbrange)
-    tvbrange = padded(offset + 1, 1)
-    subtree = tree:add_le(f.LEAF_DO_INSPECT_slap, tvbrange)
-end
--- dissect payload of message type LEAF_CONTROL_CMD
+-- dissect payload of message type LEAF_SET_MISSION_STATE
 function payload_fns.payload_77015(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
     if (offset + 66 > limit) then
@@ -30967,11 +30555,11 @@ function payload_fns.payload_77015(buffer, tree, msgid, offset, limit, pinfo)
         padded = buffer
     end
     tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_CONTROL_CMD_target_system, tvbrange)
+    subtree = tree:add_le(f.LEAF_SET_MISSION_STATE_target_system, tvbrange)
     tvbrange = padded(offset + 1, 1)
-    subtree = tree:add_le(f.LEAF_CONTROL_CMD_cmd, tvbrange)
+    subtree = tree:add_le(f.LEAF_SET_MISSION_STATE_state, tvbrange)
     tvbrange = padded(offset + 2, 64)
-    subtree = tree:add_le(f.LEAF_CONTROL_CMD_mission_id, tvbrange)
+    subtree = tree:add_le(f.LEAF_SET_MISSION_STATE_mission_id, tvbrange)
 end
 -- dissect payload of message type LEAF_SAY_TO_QGC
 function payload_fns.payload_77016(buffer, tree, msgid, offset, limit, pinfo)
@@ -31036,34 +30624,6 @@ function payload_fns.payload_77019(buffer, tree, msgid, offset, limit, pinfo)
     subtree = tree:add_le(f.LEAF_MRFT_STATUS_x, tvbrange)
     tvbrange = padded(offset + 4, 1)
     subtree = tree:add_le(f.LEAF_MRFT_STATUS_y, tvbrange)
-end
--- dissect payload of message type LEAF_INSPECTION_OPTION
-function payload_fns.payload_77020(buffer, tree, msgid, offset, limit, pinfo)
-    local padded, field_offset, value, subtree, tvbrange
-    if (offset + 1 > limit) then
-        padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 1)
-        padded = padded:tvb("Untruncated payload")
-    else
-        padded = buffer
-    end
-    tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_INSPECTION_OPTION_option, tvbrange)
-end
--- dissect payload of message type LEAF_SET_INSPECTION_OPTION
-function payload_fns.payload_77021(buffer, tree, msgid, offset, limit, pinfo)
-    local padded, field_offset, value, subtree, tvbrange
-    if (offset + 2 > limit) then
-        padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 2)
-        padded = padded:tvb("Untruncated payload")
-    else
-        padded = buffer
-    end
-    tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_SET_INSPECTION_OPTION_target_system, tvbrange)
-    tvbrange = padded(offset + 1, 1)
-    subtree = tree:add_le(f.LEAF_SET_INSPECTION_OPTION_option, tvbrange)
 end
 -- dissect payload of message type LEAF_HEARTBEAT
 function payload_fns.payload_77022(buffer, tree, msgid, offset, limit, pinfo)
@@ -31263,22 +30823,18 @@ function payload_fns.payload_77031(buffer, tree, msgid, offset, limit, pinfo)
     value = tvbrange:le_float()
     subtree:append_text(string.format(" (%g deg)",value*180/math.pi))
 end
--- dissect payload of message type LEAF_DO_MISSION_RUN
+-- dissect payload of message type LEAF_QGC_RESERVED_MESSAGE_77032
 function payload_fns.payload_77032(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 66 > limit) then
+    if (offset + 1 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 66)
+        padded:set_size(offset + 1)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
     end
     tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_DO_MISSION_RUN_target_system, tvbrange)
-    tvbrange = padded(offset + 1, 64)
-    subtree = tree:add_le(f.LEAF_DO_MISSION_RUN_mission_id, tvbrange)
-    tvbrange = padded(offset + 65, 1)
-    subtree = tree:add_le(f.LEAF_DO_MISSION_RUN_forced, tvbrange)
+    subtree = tree:add_le(f.LEAF_QGC_RESERVED_MESSAGE_77032_reserved, tvbrange)
 end
 -- dissect payload of message type LEAF_ACK_MISSION_RUN
 function payload_fns.payload_77033(buffer, tree, msgid, offset, limit, pinfo)
@@ -31297,7 +30853,7 @@ function payload_fns.payload_77033(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 2, 64)
     subtree = tree:add_le(f.LEAF_ACK_MISSION_RUN_mission_id, tvbrange)
 end
--- dissect payload of message type LEAF_DONE_MISSION_RUN
+-- dissect payload of message type LEAF_ACK_MISSION_COMPLETE
 function payload_fns.payload_77034(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
     if (offset + 65 > limit) then
@@ -31308,9 +30864,9 @@ function payload_fns.payload_77034(buffer, tree, msgid, offset, limit, pinfo)
         padded = buffer
     end
     tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_DONE_MISSION_RUN_target_system, tvbrange)
+    subtree = tree:add_le(f.LEAF_ACK_MISSION_COMPLETE_target_system, tvbrange)
     tvbrange = padded(offset + 1, 64)
-    subtree = tree:add_le(f.LEAF_DONE_MISSION_RUN_mission_id, tvbrange)
+    subtree = tree:add_le(f.LEAF_ACK_MISSION_COMPLETE_mission_id, tvbrange)
 end
 -- dissect payload of message type LEAF_MISSION_STATUS
 function payload_fns.payload_77035(buffer, tree, msgid, offset, limit, pinfo)
@@ -31327,7 +30883,7 @@ function payload_fns.payload_77035(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 1, 1)
     subtree = tree:add_le(f.LEAF_MISSION_STATUS_joystick_mode, tvbrange)
 end
--- dissect payload of message type LEAF_QGC_CONTROL_CMD
+-- dissect payload of message type LEAF_DO_QGC_MISSION_CONTROL_CMD
 function payload_fns.payload_77036(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
     if (offset + 66 > limit) then
@@ -31338,26 +30894,26 @@ function payload_fns.payload_77036(buffer, tree, msgid, offset, limit, pinfo)
         padded = buffer
     end
     tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_QGC_CONTROL_CMD_target_system, tvbrange)
+    subtree = tree:add_le(f.LEAF_DO_QGC_MISSION_CONTROL_CMD_target_system, tvbrange)
     tvbrange = padded(offset + 1, 1)
-    subtree = tree:add_le(f.LEAF_QGC_CONTROL_CMD_cmd, tvbrange)
+    subtree = tree:add_le(f.LEAF_DO_QGC_MISSION_CONTROL_CMD_cmd, tvbrange)
     tvbrange = padded(offset + 2, 64)
-    subtree = tree:add_le(f.LEAF_QGC_CONTROL_CMD_mission_id, tvbrange)
+    subtree = tree:add_le(f.LEAF_DO_QGC_MISSION_CONTROL_CMD_mission_id, tvbrange)
 end
--- dissect payload of message type LEAF_QGC_MISSION_START
+-- dissect payload of message type LEAF_QGC_RESERVED_MESSAGE_77037
 function payload_fns.payload_77037(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 64 > limit) then
+    if (offset + 1 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 64)
+        padded:set_size(offset + 1)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
     end
-    tvbrange = padded(offset + 0, 64)
-    subtree = tree:add_le(f.LEAF_QGC_MISSION_START_mission_id, tvbrange)
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_QGC_RESERVED_MESSAGE_77037_reserved, tvbrange)
 end
--- dissect payload of message type LEAF_QGC_RTL
+-- dissect payload of message type LEAF_DO_EMERGENCY_RTL
 function payload_fns.payload_77038(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
     if (offset + 1 > limit) then
@@ -31368,7 +30924,7 @@ function payload_fns.payload_77038(buffer, tree, msgid, offset, limit, pinfo)
         padded = buffer
     end
     tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_QGC_RTL_target_system, tvbrange)
+    subtree = tree:add_le(f.LEAF_DO_EMERGENCY_RTL_target_system, tvbrange)
 end
 -- dissect payload of message type LEAF_ACK_MISSION_PAUSE
 function payload_fns.payload_77039(buffer, tree, msgid, offset, limit, pinfo)
@@ -31421,7 +30977,7 @@ function payload_fns.payload_77041(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 2, 64)
     subtree = tree:add_le(f.LEAF_ACK_MISSION_ABORT_mission_id, tvbrange)
 end
--- dissect payload of message type LEAF_QGC_ABORT
+-- dissect payload of message type LEAF_DO_EMERGENCY_ABORT
 function payload_fns.payload_77042(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
     if (offset + 1 > limit) then
@@ -31432,7 +30988,7 @@ function payload_fns.payload_77042(buffer, tree, msgid, offset, limit, pinfo)
         padded = buffer
     end
     tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_QGC_ABORT_target_system, tvbrange)
+    subtree = tree:add_le(f.LEAF_DO_EMERGENCY_ABORT_target_system, tvbrange)
 end
 -- dissect payload of message type LEAF_SETPOINT_OFFSET
 function payload_fns.payload_77043(buffer, tree, msgid, offset, limit, pinfo)
