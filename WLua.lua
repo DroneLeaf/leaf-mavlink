@@ -83,6 +83,7 @@ messageName = {
     [77041] = 'LEAF_ACK_MISSION_ABORT',
     [77042] = 'LEAF_DO_EMERGENCY_ABORT',
     [77043] = 'LEAF_SETPOINT_OFFSET',
+    [77044] = 'LEAF_MISSION_HEARTBEAT',
     [1] = 'SYS_STATUS',
     [2] = 'SYSTEM_TIME',
     [4] = 'PING',
@@ -378,6 +379,13 @@ local enumEntryName = {
         [0] = "DISABLED",
         [1] = "ENABLED_ALWAYS",
         [2] = "ENABLED_ON_PAUSE",
+    },
+    ["LEAF_PREDEFINED_ACTIONS_STATUS"] = {
+        [0] = "NOT_STARTED",
+        [1] = "TAKING_OFF",
+        [2] = "LANDING",
+        [3] = "RETURNING_TO_LAUNCH",
+        [4] = "GOTO_XYZ",
     },
     ["FIRMWARE_VERSION_TYPE"] = {
         [0] = "FIRMWARE_VERSION_TYPE_DEV",
@@ -5781,6 +5789,27 @@ f.LEAF_SETPOINT_OFFSET_x = ProtoField.new("x (float) [m]",
                             "mavlink_proto.LEAF_SETPOINT_OFFSET_yaw",
                             ftypes.FLOAT,
                             nil)
+    
+f.LEAF_MISSION_HEARTBEAT_mission_status = ProtoField.new("mission_status (LEAF_MISSION_STATE)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_mission_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_MISSION_STATE)
+    f.LEAF_MISSION_HEARTBEAT_joystick_mode = ProtoField.new("joystick_mode (JoystickMode)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_joystick_mode",
+                            ftypes.UINT8,
+                            enumEntryName.JoystickMode)
+    f.LEAF_MISSION_HEARTBEAT_mission_id = ProtoField.new("mission_id (char)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_mission_id",
+                            ftypes.STRING,
+                            nil)
+    f.LEAF_MISSION_HEARTBEAT_queue_count = ProtoField.new("queue_count (uint8_t)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_queue_count",
+                            ftypes.UINT8,
+                            nil)
+    f.LEAF_MISSION_HEARTBEAT_predefined_actions_status = ProtoField.new("predefined_actions_status (LEAF_PREDEFINED_ACTIONS_STATUS)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_predefined_actions_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_PREDEFINED_ACTIONS_STATUS)
     
 f.SYS_STATUS_onboard_control_sensors_present = ProtoField.new("onboard_control_sensors_present (MAV_SYS_STATUS_SENSOR)",
                             "mavlink_proto.SYS_STATUS_onboard_control_sensors_present",
@@ -31010,6 +31039,27 @@ function payload_fns.payload_77043(buffer, tree, msgid, offset, limit, pinfo)
     subtree = tree:add_le(f.LEAF_SETPOINT_OFFSET_yaw, tvbrange)
     value = tvbrange:le_float()
     subtree:append_text(string.format(" (%g deg)",value*180/math.pi))
+end
+-- dissect payload of message type LEAF_MISSION_HEARTBEAT
+function payload_fns.payload_77044(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 68 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 68)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_mission_status, tvbrange)
+    tvbrange = padded(offset + 1, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_joystick_mode, tvbrange)
+    tvbrange = padded(offset + 2, 64)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_mission_id, tvbrange)
+    tvbrange = padded(offset + 66, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_queue_count, tvbrange)
+    tvbrange = padded(offset + 67, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_predefined_actions_status, tvbrange)
 end
 -- dissect payload of message type SYS_STATUS
 function payload_fns.payload_1(buffer, tree, msgid, offset, limit, pinfo)

@@ -146,6 +146,23 @@
         <description>Joystick is enabled only on pause</description>
       </entry>
     </enum>
+    <enum name="LEAF_PREDEFINED_ACTIONS_STATUS">
+      <entry value="0" name="NOT_STARTED">
+        <description>Predefined actions have not started</description>
+      </entry>
+      <entry value="1" name="TAKING_OFF">
+        <description>Predefined actions are taking off</description>
+      </entry>
+      <entry value="2" name="LANDING">
+        <description>Predefined actions are landing</description>
+      </entry>
+      <entry value="3" name="RETURNING_TO_LAUNCH">
+        <description>Predefined actions are returning to launch</description>
+      </entry>
+      <entry value="4" name="GOTO_XYZ">
+        <description>Going to single location</description>
+      </entry>
+    </enum>
   </enums>
   <messages>
     <message id="77000" name="LEAF_MODE">
@@ -369,6 +386,14 @@
       <field type="float" name="y" units="m">Y position</field>
       <field type="float" name="z" units="m">Z position</field>
       <field type="float" name="yaw" units="rad">Yaw angle</field>
+    </message>
+    <message id="77044" name="LEAF_MISSION_HEARTBEAT">
+      <description>The mission heartbeat message</description>
+      <field type="uint8_t" name="mission_status" enum="LEAF_MISSION_STATE">The mission status</field>
+      <field type="uint8_t" name="joystick_mode" enum="JoystickMode">The joystick mode</field>
+      <field type="char[64]" name="mission_id">The id of the mission</field>
+      <field type="uint8_t" name="queue_count">The number of missions in the queue</field>
+      <field type="uint8_t" name="predefined_actions_status" enum="LEAF_PREDEFINED_ACTIONS_STATUS">The predefined actions status</field>
     </message>
   </messages>
 </mavlink>
