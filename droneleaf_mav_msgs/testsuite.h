@@ -802,47 +802,46 @@ static void mavlink_test_leaf_do_switch_mrft_y(uint8_t system_id, uint8_t compon
 #endif
 }
 
-static void mavlink_test_leaf_control_cmd(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_leaf_set_mission_state(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_CONTROL_CMD >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_SET_MISSION_STATE >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_leaf_control_cmd_t packet_in = {
-        5,72,139,"DEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMN"
+    mavlink_leaf_set_mission_state_t packet_in = {
+        5,72,"CDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLM"
     };
-    mavlink_leaf_control_cmd_t packet1, packet2;
+    mavlink_leaf_set_mission_state_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.target_system = packet_in.target_system;
-        packet1.cmd = packet_in.cmd;
-        packet1.action = packet_in.action;
+        packet1.state = packet_in.state;
         
         mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_CONTROL_CMD_MIN_LEN);
+           memset(MAVLINK_MSG_ID_LEAF_SET_MISSION_STATE_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_SET_MISSION_STATE_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_control_cmd_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_control_cmd_decode(&msg, &packet2);
+    mavlink_msg_leaf_set_mission_state_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_set_mission_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_control_cmd_pack(system_id, component_id, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
-    mavlink_msg_leaf_control_cmd_decode(&msg, &packet2);
+    mavlink_msg_leaf_set_mission_state_pack(system_id, component_id, &msg , packet1.target_system , packet1.state , packet1.mission_id );
+    mavlink_msg_leaf_set_mission_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_control_cmd_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
-    mavlink_msg_leaf_control_cmd_decode(&msg, &packet2);
+    mavlink_msg_leaf_set_mission_state_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.state , packet1.mission_id );
+    mavlink_msg_leaf_set_mission_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -850,17 +849,17 @@ static void mavlink_test_leaf_control_cmd(uint8_t system_id, uint8_t component_i
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_leaf_control_cmd_decode(last_msg, &packet2);
+    mavlink_msg_leaf_set_mission_state_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_control_cmd_send(MAVLINK_COMM_1 , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
-    mavlink_msg_leaf_control_cmd_decode(last_msg, &packet2);
+    mavlink_msg_leaf_set_mission_state_send(MAVLINK_COMM_1 , packet1.target_system , packet1.state , packet1.mission_id );
+    mavlink_msg_leaf_set_mission_state_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
 #ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_CONTROL_CMD") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_CONTROL_CMD) != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_SET_MISSION_STATE") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_SET_MISSION_STATE) != NULL);
 #endif
 }
 
@@ -1725,46 +1724,44 @@ static void mavlink_test_leaf_external_trajectory_offset_enu_ori(uint8_t system_
 #endif
 }
 
-static void mavlink_test_leaf_do_mission_run(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_leaf_qgc_reserved_message_77032(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77032 >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_leaf_do_mission_run_t packet_in = {
-        5,"BCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",8
+    mavlink_leaf_qgc_reserved_message_77032_t packet_in = {
+        5
     };
-    mavlink_leaf_do_mission_run_t packet1, packet2;
+    mavlink_leaf_qgc_reserved_message_77032_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
-        packet1.target_system = packet_in.target_system;
-        packet1.forced = packet_in.forced;
+        packet1.reserved = packet_in.reserved;
         
-        mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN_MIN_LEN);
+           memset(MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77032_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77032_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_mission_run_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_do_mission_run_decode(&msg, &packet2);
+    mavlink_msg_leaf_qgc_reserved_message_77032_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_qgc_reserved_message_77032_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_mission_run_pack(system_id, component_id, &msg , packet1.target_system , packet1.mission_id , packet1.forced );
-    mavlink_msg_leaf_do_mission_run_decode(&msg, &packet2);
+    mavlink_msg_leaf_qgc_reserved_message_77032_pack(system_id, component_id, &msg , packet1.reserved );
+    mavlink_msg_leaf_qgc_reserved_message_77032_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_mission_run_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.mission_id , packet1.forced );
-    mavlink_msg_leaf_do_mission_run_decode(&msg, &packet2);
+    mavlink_msg_leaf_qgc_reserved_message_77032_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.reserved );
+    mavlink_msg_leaf_qgc_reserved_message_77032_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -1772,17 +1769,17 @@ static void mavlink_test_leaf_do_mission_run(uint8_t system_id, uint8_t componen
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_leaf_do_mission_run_decode(last_msg, &packet2);
+    mavlink_msg_leaf_qgc_reserved_message_77032_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_mission_run_send(MAVLINK_COMM_1 , packet1.target_system , packet1.mission_id , packet1.forced );
-    mavlink_msg_leaf_do_mission_run_decode(last_msg, &packet2);
+    mavlink_msg_leaf_qgc_reserved_message_77032_send(MAVLINK_COMM_1 , packet1.reserved );
+    mavlink_msg_leaf_qgc_reserved_message_77032_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
 #ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_DO_MISSION_RUN") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_DO_MISSION_RUN) != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_QGC_RESERVED_MESSAGE_77032") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77032) != NULL);
 #endif
 }
 
@@ -1847,21 +1844,21 @@ static void mavlink_test_leaf_ack_mission_run(uint8_t system_id, uint8_t compone
 #endif
 }
 
-static void mavlink_test_leaf_done_mission_run(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_leaf_ack_mission_complete(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_ACK_MISSION_COMPLETE >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_leaf_done_mission_run_t packet_in = {
+    mavlink_leaf_ack_mission_complete_t packet_in = {
         5,"BCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL"
     };
-    mavlink_leaf_done_mission_run_t packet1, packet2;
+    mavlink_leaf_ack_mission_complete_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.target_system = packet_in.target_system;
         
@@ -1870,22 +1867,22 @@ static void mavlink_test_leaf_done_mission_run(uint8_t system_id, uint8_t compon
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN_MIN_LEN);
+           memset(MAVLINK_MSG_ID_LEAF_ACK_MISSION_COMPLETE_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_ACK_MISSION_COMPLETE_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_done_mission_run_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_done_mission_run_decode(&msg, &packet2);
+    mavlink_msg_leaf_ack_mission_complete_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_ack_mission_complete_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_done_mission_run_pack(system_id, component_id, &msg , packet1.target_system , packet1.mission_id );
-    mavlink_msg_leaf_done_mission_run_decode(&msg, &packet2);
+    mavlink_msg_leaf_ack_mission_complete_pack(system_id, component_id, &msg , packet1.target_system , packet1.mission_id );
+    mavlink_msg_leaf_ack_mission_complete_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_done_mission_run_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.mission_id );
-    mavlink_msg_leaf_done_mission_run_decode(&msg, &packet2);
+    mavlink_msg_leaf_ack_mission_complete_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.mission_id );
+    mavlink_msg_leaf_ack_mission_complete_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -1893,17 +1890,17 @@ static void mavlink_test_leaf_done_mission_run(uint8_t system_id, uint8_t compon
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_leaf_done_mission_run_decode(last_msg, &packet2);
+    mavlink_msg_leaf_ack_mission_complete_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_done_mission_run_send(MAVLINK_COMM_1 , packet1.target_system , packet1.mission_id );
-    mavlink_msg_leaf_done_mission_run_decode(last_msg, &packet2);
+    mavlink_msg_leaf_ack_mission_complete_send(MAVLINK_COMM_1 , packet1.target_system , packet1.mission_id );
+    mavlink_msg_leaf_ack_mission_complete_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
 #ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_DONE_MISSION_RUN") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_DONE_MISSION_RUN) != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_ACK_MISSION_COMPLETE") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_ACK_MISSION_COMPLETE) != NULL);
 #endif
 }
 
@@ -1919,11 +1916,12 @@ static void mavlink_test_leaf_mission_status(uint8_t system_id, uint8_t componen
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_mission_status_t packet_in = {
-        5
+        5,72
     };
     mavlink_leaf_mission_status_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.status = packet_in.status;
+        packet1.joystick_mode = packet_in.joystick_mode;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -1938,12 +1936,12 @@ static void mavlink_test_leaf_mission_status(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_mission_status_pack(system_id, component_id, &msg , packet1.status );
+    mavlink_msg_leaf_mission_status_pack(system_id, component_id, &msg , packet1.status , packet1.joystick_mode );
     mavlink_msg_leaf_mission_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_mission_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.status );
+    mavlink_msg_leaf_mission_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.status , packet1.joystick_mode );
     mavlink_msg_leaf_mission_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -1956,7 +1954,7 @@ static void mavlink_test_leaf_mission_status(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_mission_status_send(MAVLINK_COMM_1 , packet1.status );
+    mavlink_msg_leaf_mission_status_send(MAVLINK_COMM_1 , packet1.status , packet1.joystick_mode );
     mavlink_msg_leaf_mission_status_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -1966,47 +1964,46 @@ static void mavlink_test_leaf_mission_status(uint8_t system_id, uint8_t componen
 #endif
 }
 
-static void mavlink_test_leaf_qgc_control_cmd(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_leaf_do_qgc_mission_control_cmd(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_DO_QGC_MISSION_CONTROL_CMD >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_leaf_qgc_control_cmd_t packet_in = {
-        5,72,139,"DEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMN"
+    mavlink_leaf_do_qgc_mission_control_cmd_t packet_in = {
+        5,72,"CDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLM"
     };
-    mavlink_leaf_qgc_control_cmd_t packet1, packet2;
+    mavlink_leaf_do_qgc_mission_control_cmd_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.target_system = packet_in.target_system;
         packet1.cmd = packet_in.cmd;
-        packet1.action = packet_in.action;
         
         mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD_MIN_LEN);
+           memset(MAVLINK_MSG_ID_LEAF_DO_QGC_MISSION_CONTROL_CMD_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_DO_QGC_MISSION_CONTROL_CMD_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_control_cmd_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_qgc_control_cmd_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_control_cmd_pack(system_id, component_id, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
-    mavlink_msg_leaf_qgc_control_cmd_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_pack(system_id, component_id, &msg , packet1.target_system , packet1.cmd , packet1.mission_id );
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_control_cmd_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
-    mavlink_msg_leaf_qgc_control_cmd_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.cmd , packet1.mission_id );
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -2014,94 +2011,94 @@ static void mavlink_test_leaf_qgc_control_cmd(uint8_t system_id, uint8_t compone
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_leaf_qgc_control_cmd_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_control_cmd_send(MAVLINK_COMM_1 , packet1.target_system , packet1.cmd , packet1.action , packet1.mission_id );
-    mavlink_msg_leaf_qgc_control_cmd_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_send(MAVLINK_COMM_1 , packet1.target_system , packet1.cmd , packet1.mission_id );
+    mavlink_msg_leaf_do_qgc_mission_control_cmd_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
 #ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_QGC_CONTROL_CMD") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_QGC_CONTROL_CMD) != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_DO_QGC_MISSION_CONTROL_CMD") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_DO_QGC_MISSION_CONTROL_CMD) != NULL);
 #endif
 }
 
-static void mavlink_test_leaf_qgc_mission_start(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_leaf_qgc_reserved_message_77037(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_QGC_MISSION_START >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77037 >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_leaf_qgc_mission_start_t packet_in = {
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJK"
-    };
-    mavlink_leaf_qgc_mission_start_t packet1, packet2;
-        memset(&packet1, 0, sizeof(packet1));
-        
-        mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
-        
-#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
-        if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
-           // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_QGC_MISSION_START_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_QGC_MISSION_START_MIN_LEN);
-        }
-#endif
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_mission_start_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_qgc_mission_start_decode(&msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_mission_start_pack(system_id, component_id, &msg , packet1.mission_id );
-    mavlink_msg_leaf_qgc_mission_start_decode(&msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_mission_start_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.mission_id );
-    mavlink_msg_leaf_qgc_mission_start_decode(&msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-
-        memset(&packet2, 0, sizeof(packet2));
-        mavlink_msg_to_send_buffer(buffer, &msg);
-        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
-            comm_send_ch(MAVLINK_COMM_0, buffer[i]);
-        }
-    mavlink_msg_leaf_qgc_mission_start_decode(last_msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-        
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_mission_start_send(MAVLINK_COMM_1 , packet1.mission_id );
-    mavlink_msg_leaf_qgc_mission_start_decode(last_msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-
-#ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_QGC_MISSION_START") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_QGC_MISSION_START) != NULL);
-#endif
-}
-
-static void mavlink_test_leaf_qgc_rtl(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
-{
-#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
-    mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_QGC_RTL >= 256) {
-            return;
-        }
-#endif
-    mavlink_message_t msg;
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        uint16_t i;
-    mavlink_leaf_qgc_rtl_t packet_in = {
+    mavlink_leaf_qgc_reserved_message_77037_t packet_in = {
         5
     };
-    mavlink_leaf_qgc_rtl_t packet1, packet2;
+    mavlink_leaf_qgc_reserved_message_77037_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        packet1.reserved = packet_in.reserved;
+        
+        
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+        if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
+           // cope with extensions
+           memset(MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77037_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77037_MIN_LEN);
+        }
+#endif
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_qgc_reserved_message_77037_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_qgc_reserved_message_77037_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_qgc_reserved_message_77037_pack(system_id, component_id, &msg , packet1.reserved );
+    mavlink_msg_leaf_qgc_reserved_message_77037_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_qgc_reserved_message_77037_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.reserved );
+    mavlink_msg_leaf_qgc_reserved_message_77037_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+            comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+    mavlink_msg_leaf_qgc_reserved_message_77037_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_qgc_reserved_message_77037_send(MAVLINK_COMM_1 , packet1.reserved );
+    mavlink_msg_leaf_qgc_reserved_message_77037_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+#ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_QGC_RESERVED_MESSAGE_77037") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77037) != NULL);
+#endif
+}
+
+static void mavlink_test_leaf_do_emergency_rtl(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+    mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_RTL >= 256) {
+            return;
+        }
+#endif
+    mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+    mavlink_leaf_do_emergency_rtl_t packet_in = {
+        5
+    };
+    mavlink_leaf_do_emergency_rtl_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.target_system = packet_in.target_system;
         
@@ -2109,22 +2106,22 @@ static void mavlink_test_leaf_qgc_rtl(uint8_t system_id, uint8_t component_id, m
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_QGC_RTL_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_QGC_RTL_MIN_LEN);
+           memset(MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_RTL_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_RTL_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_rtl_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_qgc_rtl_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_emergency_rtl_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_do_emergency_rtl_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_rtl_pack(system_id, component_id, &msg , packet1.target_system );
-    mavlink_msg_leaf_qgc_rtl_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_emergency_rtl_pack(system_id, component_id, &msg , packet1.target_system );
+    mavlink_msg_leaf_do_emergency_rtl_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_rtl_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system );
-    mavlink_msg_leaf_qgc_rtl_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_emergency_rtl_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system );
+    mavlink_msg_leaf_do_emergency_rtl_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -2132,17 +2129,17 @@ static void mavlink_test_leaf_qgc_rtl(uint8_t system_id, uint8_t component_id, m
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_leaf_qgc_rtl_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_emergency_rtl_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_rtl_send(MAVLINK_COMM_1 , packet1.target_system );
-    mavlink_msg_leaf_qgc_rtl_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_emergency_rtl_send(MAVLINK_COMM_1 , packet1.target_system );
+    mavlink_msg_leaf_do_emergency_rtl_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
 #ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_QGC_RTL") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_QGC_RTL) != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_DO_EMERGENCY_RTL") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_RTL) != NULL);
 #endif
 }
 
@@ -2329,21 +2326,21 @@ static void mavlink_test_leaf_ack_mission_abort(uint8_t system_id, uint8_t compo
 #endif
 }
 
-static void mavlink_test_leaf_qgc_abort(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_leaf_do_emergency_abort(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_QGC_ABORT >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_ABORT >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_leaf_qgc_abort_t packet_in = {
+    mavlink_leaf_do_emergency_abort_t packet_in = {
         5
     };
-    mavlink_leaf_qgc_abort_t packet1, packet2;
+    mavlink_leaf_do_emergency_abort_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.target_system = packet_in.target_system;
         
@@ -2351,22 +2348,22 @@ static void mavlink_test_leaf_qgc_abort(uint8_t system_id, uint8_t component_id,
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_QGC_ABORT_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_QGC_ABORT_MIN_LEN);
+           memset(MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_ABORT_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_ABORT_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_abort_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_qgc_abort_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_emergency_abort_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_do_emergency_abort_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_abort_pack(system_id, component_id, &msg , packet1.target_system );
-    mavlink_msg_leaf_qgc_abort_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_emergency_abort_pack(system_id, component_id, &msg , packet1.target_system );
+    mavlink_msg_leaf_do_emergency_abort_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_abort_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system );
-    mavlink_msg_leaf_qgc_abort_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_emergency_abort_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system );
+    mavlink_msg_leaf_do_emergency_abort_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -2374,17 +2371,17 @@ static void mavlink_test_leaf_qgc_abort(uint8_t system_id, uint8_t component_id,
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_leaf_qgc_abort_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_emergency_abort_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_qgc_abort_send(MAVLINK_COMM_1 , packet1.target_system );
-    mavlink_msg_leaf_qgc_abort_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_emergency_abort_send(MAVLINK_COMM_1 , packet1.target_system );
+    mavlink_msg_leaf_do_emergency_abort_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
 #ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_QGC_ABORT") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_QGC_ABORT) != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_DO_EMERGENCY_ABORT") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_ABORT) != NULL);
 #endif
 }
 
@@ -2450,6 +2447,69 @@ static void mavlink_test_leaf_setpoint_offset(uint8_t system_id, uint8_t compone
 #endif
 }
 
+static void mavlink_test_leaf_mission_heartbeat(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+    mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT >= 256) {
+            return;
+        }
+#endif
+    mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+    mavlink_leaf_mission_heartbeat_t packet_in = {
+        5,72,"CDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLM",75,142
+    };
+    mavlink_leaf_mission_heartbeat_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        packet1.mission_status = packet_in.mission_status;
+        packet1.joystick_mode = packet_in.joystick_mode;
+        packet1.queue_count = packet_in.queue_count;
+        packet1.predefined_actions_status = packet_in.predefined_actions_status;
+        
+        mav_array_memcpy(packet1.mission_id, packet_in.mission_id, sizeof(char)*64);
+        
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+        if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
+           // cope with extensions
+           memset(MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_MIN_LEN);
+        }
+#endif
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_mission_heartbeat_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_mission_heartbeat_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_mission_heartbeat_pack(system_id, component_id, &msg , packet1.mission_status , packet1.joystick_mode , packet1.mission_id , packet1.queue_count , packet1.predefined_actions_status );
+    mavlink_msg_leaf_mission_heartbeat_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_mission_heartbeat_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.mission_status , packet1.joystick_mode , packet1.mission_id , packet1.queue_count , packet1.predefined_actions_status );
+    mavlink_msg_leaf_mission_heartbeat_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+            comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+    mavlink_msg_leaf_mission_heartbeat_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_mission_heartbeat_send(MAVLINK_COMM_1 , packet1.mission_status , packet1.joystick_mode , packet1.mission_id , packet1.queue_count , packet1.predefined_actions_status );
+    mavlink_msg_leaf_mission_heartbeat_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+#ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_MISSION_HEARTBEAT") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT) != NULL);
+#endif
+}
+
 static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
     mavlink_test_leaf_mode(system_id, component_id, last_msg);
@@ -2465,7 +2525,7 @@ static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component
     mavlink_test_leaf_do_switch_mrft_alt(system_id, component_id, last_msg);
     mavlink_test_leaf_do_switch_mrft_x(system_id, component_id, last_msg);
     mavlink_test_leaf_do_switch_mrft_y(system_id, component_id, last_msg);
-    mavlink_test_leaf_control_cmd(system_id, component_id, last_msg);
+    mavlink_test_leaf_set_mission_state(system_id, component_id, last_msg);
     mavlink_test_leaf_say_to_qgc(system_id, component_id, last_msg);
     mavlink_test_leaf_do_arm_idle(system_id, component_id, last_msg);
     mavlink_test_leaf_client_tagname(system_id, component_id, last_msg);
@@ -2480,18 +2540,19 @@ static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component
     mavlink_test_leaf_ack_terminate_external_trajectory_ori(system_id, component_id, last_msg);
     mavlink_test_leaf_external_trajectory_offset_enu_pos(system_id, component_id, last_msg);
     mavlink_test_leaf_external_trajectory_offset_enu_ori(system_id, component_id, last_msg);
-    mavlink_test_leaf_do_mission_run(system_id, component_id, last_msg);
+    mavlink_test_leaf_qgc_reserved_message_77032(system_id, component_id, last_msg);
     mavlink_test_leaf_ack_mission_run(system_id, component_id, last_msg);
-    mavlink_test_leaf_done_mission_run(system_id, component_id, last_msg);
+    mavlink_test_leaf_ack_mission_complete(system_id, component_id, last_msg);
     mavlink_test_leaf_mission_status(system_id, component_id, last_msg);
-    mavlink_test_leaf_qgc_control_cmd(system_id, component_id, last_msg);
-    mavlink_test_leaf_qgc_mission_start(system_id, component_id, last_msg);
-    mavlink_test_leaf_qgc_rtl(system_id, component_id, last_msg);
+    mavlink_test_leaf_do_qgc_mission_control_cmd(system_id, component_id, last_msg);
+    mavlink_test_leaf_qgc_reserved_message_77037(system_id, component_id, last_msg);
+    mavlink_test_leaf_do_emergency_rtl(system_id, component_id, last_msg);
     mavlink_test_leaf_ack_mission_pause(system_id, component_id, last_msg);
     mavlink_test_leaf_ack_mission_resume(system_id, component_id, last_msg);
     mavlink_test_leaf_ack_mission_abort(system_id, component_id, last_msg);
-    mavlink_test_leaf_qgc_abort(system_id, component_id, last_msg);
+    mavlink_test_leaf_do_emergency_abort(system_id, component_id, last_msg);
     mavlink_test_leaf_setpoint_offset(system_id, component_id, last_msg);
+    mavlink_test_leaf_mission_heartbeat(system_id, component_id, last_msg);
 }
 
 #ifdef __cplusplus
