@@ -72,7 +72,6 @@
       <entry value="10" name="LEAF_STATUS_NOT_READY">
         <description>Leaf is not ready to fly yet</description>
       </entry>
-
       <entry value="20" name="LEAF_STATUS_MISSION_PAUSED">
         <description>Leaf has paused the mission</description>
       </entry>
