@@ -3,6 +3,94 @@
   <include>common.xml</include>
   <version>1</version>
   <enums>
+    <enum name="LEAF_ARM_STAGE">
+      <entry value="0" name="DISARMED">
+        <description>Vehicle is not armed</description>
+      </entry>
+      <entry value="1" name="IDLING">
+        <description>Vehicle is in idle state</description>
+      </entry>
+      <entry value="2" name="ARMED">
+        <description>Vehicle is armed</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_LANDING_STATUS">
+      <entry value="0" name="LEAF_LANDING_NOT_LANDING">
+        <description>Landing not started yet</description>
+      </entry>
+      <entry value="1" name="LEAF_LANDING_LANDING">
+        <description>Vehicle is landing</description>
+      </entry>
+      <entry value="2" name="LEAF_LANDING_LANDING_COMPLETED">
+        <description>Vehicle has completed landing</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_LEARNING_STATUS">
+      <entry value="0" name="NOT_LEARNING">
+        <description>Learning not started</description>
+      </entry>
+      <entry value="1" name="LEARNING_IN_PROGRESS">
+        <description>Vehicle is learning</description>
+      </entry>
+      <entry value="2" name="LEARNING_COMPLETED">
+        <description>Vehicle has completed learning</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_MISSION_CONTROL_COMMAND">
+      <entry value="0" name="LEAF_MISSION_CONTROL_PAUSE">
+        <description>Pause the exection of the current mission</description>
+      </entry>
+      <entry value="1" name="LEAF_MISSION_CONTROL_RESUME">
+        <description>Resume the exection of the current mission</description>
+      </entry>
+      <entry value="2" name="LEAF_MISSION_CONTROL_ABORT">
+        <description>Abort the exection of the current mission</description>
+      </entry>
+      <entry value="3" name="LEAF_MISSION_CONTROL_LAND_IN_PLACE">
+        <description>Land in place</description>
+      </entry>
+      <entry value="4" name="LEAF_MISSION_CONTROL_RETURN_TO_LAUNCH">
+        <description>Return to launch</description>
+      </entry>
+      <entry value="5" name="LEAF_MISSION_CONTROL_READY">
+        <description>Set the vehicle to mission ready state</description>
+      </entry>
+      <entry value="6" name="LEAF_MISSION_CONTROL_START">
+        <description>Start the mission</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_MISSION_STATE">
+      <entry value="0" name="LEAF_MISSION_STATE_IDLE">
+        <description>Queue is empty, no mission loaded</description>
+      </entry>
+      <entry value="1" name="LEAF_MISSION_STATE_READY">
+        <description>Current mission is ready to execute</description>
+      </entry>
+      <entry value="2" name="LEAF_MISSION_STATE_RUNNING">
+        <description>Current mission is running</description>
+      </entry>
+      <entry value="3" name="LEAF_MISSION_STATE_SCHEDULED_PAUSE">
+        <description>Current mission is running but has a scheduled pause</description>
+      </entry>
+      <entry value="4" name="LEAF_MISSION_STATE_PAUSED_MID_STEP">
+        <description>Current mission is paused mid-step</description>
+      </entry>
+      <entry value="5" name="LEAF_MISSION_STATE_PAUSED_BETWEEN_STEPS">
+        <description>Current mission is paused between steps</description>
+      </entry>
+      <entry value="6" name="LEAF_MISSION_STATE_COMPLETED">
+        <description>Current mission completed successfully</description>
+      </entry>
+      <entry value="7" name="LEAF_MISSION_STATE_FAILED">
+        <description>Current mission failed</description>
+      </entry>
+      <entry value="8" name="LEAF_MISSION_STATE_CANCELLED">
+        <description>Current mission was cancelled</description>
+      </entry>
+      <entry value="9" name="LEAF_MISSION_STATE_SAFETY">
+        <description>Critical safety state, FC decides what to do</description>
+      </entry>
+    </enum>
     <enum name="LEAF_MODE">
       <entry value="0" name="LEAF_MODE_RC_Stabilized">
         <description>Remote control stabilized mode</description>
@@ -79,72 +167,6 @@
         <description>Leaf is heading to base</description>
       </entry>
     </enum>
-    <enum name="LEAF_MISSION_STATE">
-      <entry value="0" name="LEAF_MISSION_STATE_IDLE">
-        <description>Queue is empty, no mission loaded</description>
-      </entry>
-      <entry value="1" name="LEAF_MISSION_STATE_READY">
-        <description>Current mission is ready to execute</description>
-      </entry>
-      <entry value="2" name="LEAF_MISSION_STATE_RUNNING">
-        <description>Current mission is running</description>
-      </entry>
-      <entry value="3" name="LEAF_MISSION_STATE_SCHEDULED_PAUSE">
-        <description>Current mission is running but has a scheduled pause</description>
-      </entry>
-      <entry value="4" name="LEAF_MISSION_STATE_PAUSED_MID_STEP">
-        <description>Current mission is paused mid-step</description>
-      </entry>
-      <entry value="5" name="LEAF_MISSION_STATE_PAUSED_BETWEEN_STEPS">
-        <description>Current mission is paused between steps</description>
-      </entry>
-      <entry value="6" name="LEAF_MISSION_STATE_COMPLETED">
-        <description>Current mission completed successfully</description>
-      </entry>
-      <entry value="7" name="LEAF_MISSION_STATE_FAILED">
-        <description>Current mission failed</description>
-      </entry>
-      <entry value="8" name="LEAF_MISSION_STATE_CANCELLED">
-        <description>Current mission was cancelled</description>
-      </entry>
-      <entry value="9" name="LEAF_MISSION_STATE_SAFETY">
-        <description>Critical safety state, FC decides what to do</description>
-      </entry>
-    </enum>
-    <enum name="LEAF_MISSION_CONTROL_COMMAND">
-      <entry value="0" name="LEAF_MISSION_CONTROL_PAUSE">
-        <description>Pause the exection of the current mission</description>
-      </entry>
-      <entry value="1" name="LEAF_MISSION_CONTROL_RESUME">
-        <description>Resume the exection of the current mission</description>
-      </entry>
-      <entry value="2" name="LEAF_MISSION_CONTROL_ABORT">
-        <description>Abort the exection of the current mission</description>
-      </entry>
-      <entry value="3" name="LEAF_MISSION_CONTROL_LAND_IN_PLACE">
-        <description>Land in place</description>
-      </entry>
-      <entry value="4" name="LEAF_MISSION_CONTROL_RETURN_TO_LAUNCH">
-        <description>Return to launch</description>
-      </entry>
-      <entry value="5" name="LEAF_MISSION_CONTROL_READY">
-        <description>Set the vehicle to mission ready state</description>
-      </entry>
-      <entry value="6" name="LEAF_MISSION_CONTROL_START">
-        <description>Start the mission</description>
-      </entry>
-    </enum>
-    <enum name="JoystickMode">
-      <entry value="0" name="DISABLED">
-        <description>Joystick is disabled</description>
-      </entry>
-      <entry value="1" name="ENABLED_ALWAYS">
-        <description>Joystick is always enabled</description>
-      </entry>
-      <entry value="2" name="ENABLED_ON_PAUSE">
-        <description>Joystick is enabled only on pause</description>
-      </entry>
-    </enum>
     <enum name="LEAF_PREDEFINED_ACTIONS_STATUS">
       <entry value="0" name="NOT_STARTED">
         <description>Predefined actions have not started</description>
@@ -160,6 +182,36 @@
       </entry>
       <entry value="4" name="GOTO_XYZ">
         <description>Going to single location</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_PRE_IDLE_CHECK_STATUS">
+      <entry value="0" name="OK">
+        <description>Pre-idle checks have passed</description>
+      </entry>
+      <entry value="1" name="FAILED">
+        <description>Pre-idle checks have failed</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_TAKEOFF_STATUS">
+      <entry value="0" name="LEAF_TAKEOFF_ON_GROUND">
+        <description>Vehicle is on ground</description>
+      </entry>
+      <entry value="1" name="LEAF_TAKEOFF_TAKING_OFF">
+        <description>Vehicle is taking off</description>
+      </entry>
+      <entry value="2" name="LEAF_TAKEOFF_COMPLETED">
+        <description>Vehicle has completed taking off</description>
+      </entry>
+    </enum>
+    <enum name="JoystickMode">
+      <entry value="0" name="DISABLED">
+        <description>Joystick is disabled</description>
+      </entry>
+      <entry value="1" name="ENABLED_ALWAYS">
+        <description>Joystick is always enabled</description>
+      </entry>
+      <entry value="2" name="ENABLED_ON_PAUSE">
+        <description>Joystick is enabled only on pause</description>
       </entry>
     </enum>
   </enums>
@@ -393,6 +445,14 @@
       <field type="char[64]" name="mission_id">The id of the mission</field>
       <field type="uint8_t" name="queue_count">The number of missions in the queue</field>
       <field type="uint8_t" name="predefined_actions_status" enum="LEAF_PREDEFINED_ACTIONS_STATUS">The predefined actions status</field>
+    </message>
+    <message id="77045" name="LEAF_SYS_STATUS">
+      <description>The system status message</description>
+      <field type="uint8_t" name="arm_stage" enum="LEAF_ARM_STAGE">The arm stage</field>
+      <field type="uint8_t" name="landing_status" enum="LEAF_LANDING_STATUS">The landing status</field>
+      <field type="uint8_t" name="learning_status" enum="LEAF_LEARNING_STATUS">The learning status</field>
+      <field type="uint8_t" name="pre_idle_check_status" enum="LEAF_PRE_IDLE_CHECK_STATUS">The pre-idle check status</field>
+      <field type="uint8_t" name="takeoff_status" enum="LEAF_TAKEOFF_STATUS">The takeoff status</field>
     </message>
   </messages>
 </mavlink>
