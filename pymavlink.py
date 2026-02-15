@@ -8259,6 +8259,16 @@ enums["MOTION_PLATFORM_HEALTH"][3] = EnumEntry("MOTION_PLATFORM_HEALTH_CRITICAL"
 MOTION_PLATFORM_HEALTH_ENUM_END = 4
 enums["MOTION_PLATFORM_HEALTH"][4] = EnumEntry("MOTION_PLATFORM_HEALTH_ENUM_END", """""")
 
+# LEAF_AIRBORNE_STATUS
+enums["LEAF_AIRBORNE_STATUS"] = Enum()
+enums["LEAF_AIRBORNE_STATUS"].bitmask = False
+ON_GROUND = 0
+enums["LEAF_AIRBORNE_STATUS"][0] = EnumEntry("ON_GROUND", """Vehicle is on the ground""")
+AIRBORNE = 1
+enums["LEAF_AIRBORNE_STATUS"][1] = EnumEntry("AIRBORNE", """Vehicle is airborne""")
+LEAF_AIRBORNE_STATUS_ENUM_END = 2
+enums["LEAF_AIRBORNE_STATUS"][2] = EnumEntry("LEAF_AIRBORNE_STATUS_ENUM_END", """""")
+
 # LEAF_ARM_STAGE
 enums["LEAF_ARM_STAGE"] = Enum()
 enums["LEAF_ARM_STAGE"].bitmask = False
@@ -28808,34 +28818,41 @@ class MAVLink_leaf_sys_status_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_SYS_STATUS
     msgname = "LEAF_SYS_STATUS"
-    fieldnames = ["arm_stage", "landing_status", "learning_status", "pre_idle_check_status", "takeoff_status"]
-    ordered_fieldnames = ["arm_stage", "landing_status", "learning_status", "pre_idle_check_status", "takeoff_status"]
-    fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
+    fieldnames = ["airborne_status", "arm_stage", "alt_axis_learning_status", "landing_status", "learning_status", "pitch_axis_learning_status", "pre_idle_check_status", "roll_axis_learning_status", "takeoff_status", "x_axis_learning_status", "y_axis_learning_status", "yaw_axis_learning_status"]
+    ordered_fieldnames = ["airborne_status", "arm_stage", "alt_axis_learning_status", "landing_status", "learning_status", "pitch_axis_learning_status", "pre_idle_check_status", "roll_axis_learning_status", "takeoff_status", "x_axis_learning_status", "y_axis_learning_status", "yaw_axis_learning_status"]
+    fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"arm_stage": "LEAF_ARM_STAGE", "landing_status": "LEAF_LANDING_STATUS", "learning_status": "LEAF_LEARNING_STATUS", "pre_idle_check_status": "LEAF_PRE_IDLE_CHECK_STATUS", "takeoff_status": "LEAF_TAKEOFF_STATUS"}
+    fieldenums_by_name: Dict[str, str] = {"airborne_status": "LEAF_AIRBORNE_STATUS", "arm_stage": "LEAF_ARM_STAGE", "alt_axis_learning_status": "LEAF_LEARNING_STATUS", "landing_status": "LEAF_LANDING_STATUS", "learning_status": "LEAF_LEARNING_STATUS", "pitch_axis_learning_status": "LEAF_LEARNING_STATUS", "pre_idle_check_status": "LEAF_PRE_IDLE_CHECK_STATUS", "roll_axis_learning_status": "LEAF_LEARNING_STATUS", "takeoff_status": "LEAF_TAKEOFF_STATUS", "x_axis_learning_status": "LEAF_LEARNING_STATUS", "y_axis_learning_status": "LEAF_LEARNING_STATUS", "yaw_axis_learning_status": "LEAF_LEARNING_STATUS"}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<BBBBB")
-    orders = [0, 1, 2, 3, 4]
-    lengths = [1, 1, 1, 1, 1]
-    array_lengths = [0, 0, 0, 0, 0]
-    crc_extra = 62
-    unpacker = struct.Struct("<BBBBB")
+    native_format = bytearray(b"<BBBBBBBBBBBB")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 56
+    unpacker = struct.Struct("<BBBBBBBBBBBB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, arm_stage: int, landing_status: int, learning_status: int, pre_idle_check_status: int, takeoff_status: int):
+    def __init__(self, airborne_status: int, arm_stage: int, alt_axis_learning_status: int, landing_status: int, learning_status: int, pitch_axis_learning_status: int, pre_idle_check_status: int, roll_axis_learning_status: int, takeoff_status: int, x_axis_learning_status: int, y_axis_learning_status: int, yaw_axis_learning_status: int):
         MAVLink_message.__init__(self, MAVLink_leaf_sys_status_message.id, MAVLink_leaf_sys_status_message.msgname)
         self._fieldnames = MAVLink_leaf_sys_status_message.fieldnames
         self._instance_field = MAVLink_leaf_sys_status_message.instance_field
         self._instance_offset = MAVLink_leaf_sys_status_message.instance_offset
+        self.airborne_status = airborne_status
         self.arm_stage = arm_stage
+        self.alt_axis_learning_status = alt_axis_learning_status
         self.landing_status = landing_status
         self.learning_status = learning_status
+        self.pitch_axis_learning_status = pitch_axis_learning_status
         self.pre_idle_check_status = pre_idle_check_status
+        self.roll_axis_learning_status = roll_axis_learning_status
         self.takeoff_status = takeoff_status
+        self.x_axis_learning_status = x_axis_learning_status
+        self.y_axis_learning_status = y_axis_learning_status
+        self.yaw_axis_learning_status = yaw_axis_learning_status
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.arm_stage, self.landing_status, self.learning_status, self.pre_idle_check_status, self.takeoff_status), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.airborne_status, self.arm_stage, self.alt_axis_learning_status, self.landing_status, self.learning_status, self.pitch_axis_learning_status, self.pre_idle_check_status, self.roll_axis_learning_status, self.takeoff_status, self.x_axis_learning_status, self.y_axis_learning_status, self.yaw_axis_learning_status), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -44480,31 +44497,45 @@ class MAVLink(object):
         """
         self.send(self.leaf_mission_heartbeat_encode(mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status), force_mavlink1=force_mavlink1)
 
-    def leaf_sys_status_encode(self, arm_stage: int, landing_status: int, learning_status: int, pre_idle_check_status: int, takeoff_status: int) -> MAVLink_leaf_sys_status_message:
+    def leaf_sys_status_encode(self, airborne_status: int, arm_stage: int, alt_axis_learning_status: int, landing_status: int, learning_status: int, pitch_axis_learning_status: int, pre_idle_check_status: int, roll_axis_learning_status: int, takeoff_status: int, x_axis_learning_status: int, y_axis_learning_status: int, yaw_axis_learning_status: int) -> MAVLink_leaf_sys_status_message:
         """
         The system status message
 
+        airborne_status           : The airborne status (type:uint8_t, values:LEAF_AIRBORNE_STATUS)
         arm_stage                 : The arm stage (type:uint8_t, values:LEAF_ARM_STAGE)
+        alt_axis_learning_status        : The altitude axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
         landing_status            : The landing status (type:uint8_t, values:LEAF_LANDING_STATUS)
         learning_status           : The learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
+        pitch_axis_learning_status        : The pitch axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
         pre_idle_check_status        : The pre-idle check status (type:uint8_t, values:LEAF_PRE_IDLE_CHECK_STATUS)
+        roll_axis_learning_status        : The roll axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
         takeoff_status            : The takeoff status (type:uint8_t, values:LEAF_TAKEOFF_STATUS)
+        x_axis_learning_status        : The x axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
+        y_axis_learning_status        : The y axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
+        yaw_axis_learning_status        : The yaw axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
 
         """
-        return MAVLink_leaf_sys_status_message(arm_stage, landing_status, learning_status, pre_idle_check_status, takeoff_status)
+        return MAVLink_leaf_sys_status_message(airborne_status, arm_stage, alt_axis_learning_status, landing_status, learning_status, pitch_axis_learning_status, pre_idle_check_status, roll_axis_learning_status, takeoff_status, x_axis_learning_status, y_axis_learning_status, yaw_axis_learning_status)
 
-    def leaf_sys_status_send(self, arm_stage: int, landing_status: int, learning_status: int, pre_idle_check_status: int, takeoff_status: int, force_mavlink1: bool = False) -> None:
+    def leaf_sys_status_send(self, airborne_status: int, arm_stage: int, alt_axis_learning_status: int, landing_status: int, learning_status: int, pitch_axis_learning_status: int, pre_idle_check_status: int, roll_axis_learning_status: int, takeoff_status: int, x_axis_learning_status: int, y_axis_learning_status: int, yaw_axis_learning_status: int, force_mavlink1: bool = False) -> None:
         """
         The system status message
 
+        airborne_status           : The airborne status (type:uint8_t, values:LEAF_AIRBORNE_STATUS)
         arm_stage                 : The arm stage (type:uint8_t, values:LEAF_ARM_STAGE)
+        alt_axis_learning_status        : The altitude axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
         landing_status            : The landing status (type:uint8_t, values:LEAF_LANDING_STATUS)
         learning_status           : The learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
+        pitch_axis_learning_status        : The pitch axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
         pre_idle_check_status        : The pre-idle check status (type:uint8_t, values:LEAF_PRE_IDLE_CHECK_STATUS)
+        roll_axis_learning_status        : The roll axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
         takeoff_status            : The takeoff status (type:uint8_t, values:LEAF_TAKEOFF_STATUS)
+        x_axis_learning_status        : The x axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
+        y_axis_learning_status        : The y axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
+        yaw_axis_learning_status        : The yaw axis learning status (type:uint8_t, values:LEAF_LEARNING_STATUS)
 
         """
-        self.send(self.leaf_sys_status_encode(arm_stage, landing_status, learning_status, pre_idle_check_status, takeoff_status), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_sys_status_encode(airborne_status, arm_stage, alt_axis_learning_status, landing_status, learning_status, pitch_axis_learning_status, pre_idle_check_status, roll_axis_learning_status, takeoff_status, x_axis_learning_status, y_axis_learning_status, yaw_axis_learning_status), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """

@@ -3,6 +3,14 @@
   <include>common.xml</include>
   <version>1</version>
   <enums>
+    <enum name="LEAF_AIRBORNE_STATUS">
+      <entry value="0" name="ON_GROUND">
+        <description>Vehicle is on the ground</description>
+      </entry>
+      <entry value="1" name="AIRBORNE">
+        <description>Vehicle is airborne</description>
+      </entry>
+    </enum>
     <enum name="LEAF_ARM_STAGE">
       <entry value="0" name="DISARMED">
         <description>Vehicle is not armed</description>
@@ -448,11 +456,18 @@
     </message>
     <message id="77045" name="LEAF_SYS_STATUS">
       <description>The system status message</description>
+      <field type="uint8_t" name="airborne_status" enum="LEAF_AIRBORNE_STATUS">The airborne status</field>
       <field type="uint8_t" name="arm_stage" enum="LEAF_ARM_STAGE">The arm stage</field>
+      <field type="uint8_t" name="alt_axis_learning_status" enum="LEAF_LEARNING_STATUS">The altitude axis learning status</field>
       <field type="uint8_t" name="landing_status" enum="LEAF_LANDING_STATUS">The landing status</field>
       <field type="uint8_t" name="learning_status" enum="LEAF_LEARNING_STATUS">The learning status</field>
+      <field type="uint8_t" name="pitch_axis_learning_status" enum="LEAF_LEARNING_STATUS">The pitch axis learning status</field>
       <field type="uint8_t" name="pre_idle_check_status" enum="LEAF_PRE_IDLE_CHECK_STATUS">The pre-idle check status</field>
+      <field type="uint8_t" name="roll_axis_learning_status" enum="LEAF_LEARNING_STATUS">The roll axis learning status</field>
       <field type="uint8_t" name="takeoff_status" enum="LEAF_TAKEOFF_STATUS">The takeoff status</field>
+      <field type="uint8_t" name="x_axis_learning_status" enum="LEAF_LEARNING_STATUS">The x axis learning status</field>
+      <field type="uint8_t" name="y_axis_learning_status" enum="LEAF_LEARNING_STATUS">The y axis learning status</field>
+      <field type="uint8_t" name="yaw_axis_learning_status" enum="LEAF_LEARNING_STATUS">The yaw axis learning status</field>
     </message>
   </messages>
 </mavlink>

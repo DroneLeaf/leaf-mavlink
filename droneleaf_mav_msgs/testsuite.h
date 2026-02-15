@@ -2522,15 +2522,22 @@ static void mavlink_test_leaf_sys_status(uint8_t system_id, uint8_t component_id
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_sys_status_t packet_in = {
-        5,72,139,206,17
+        5,72,139,206,17,84,151,218,29,96,163,230
     };
     mavlink_leaf_sys_status_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
+        packet1.airborne_status = packet_in.airborne_status;
         packet1.arm_stage = packet_in.arm_stage;
+        packet1.alt_axis_learning_status = packet_in.alt_axis_learning_status;
         packet1.landing_status = packet_in.landing_status;
         packet1.learning_status = packet_in.learning_status;
+        packet1.pitch_axis_learning_status = packet_in.pitch_axis_learning_status;
         packet1.pre_idle_check_status = packet_in.pre_idle_check_status;
+        packet1.roll_axis_learning_status = packet_in.roll_axis_learning_status;
         packet1.takeoff_status = packet_in.takeoff_status;
+        packet1.x_axis_learning_status = packet_in.x_axis_learning_status;
+        packet1.y_axis_learning_status = packet_in.y_axis_learning_status;
+        packet1.yaw_axis_learning_status = packet_in.yaw_axis_learning_status;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -2545,12 +2552,12 @@ static void mavlink_test_leaf_sys_status(uint8_t system_id, uint8_t component_id
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_sys_status_pack(system_id, component_id, &msg , packet1.arm_stage , packet1.landing_status , packet1.learning_status , packet1.pre_idle_check_status , packet1.takeoff_status );
+    mavlink_msg_leaf_sys_status_pack(system_id, component_id, &msg , packet1.airborne_status , packet1.arm_stage , packet1.alt_axis_learning_status , packet1.landing_status , packet1.learning_status , packet1.pitch_axis_learning_status , packet1.pre_idle_check_status , packet1.roll_axis_learning_status , packet1.takeoff_status , packet1.x_axis_learning_status , packet1.y_axis_learning_status , packet1.yaw_axis_learning_status );
     mavlink_msg_leaf_sys_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_sys_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.arm_stage , packet1.landing_status , packet1.learning_status , packet1.pre_idle_check_status , packet1.takeoff_status );
+    mavlink_msg_leaf_sys_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.airborne_status , packet1.arm_stage , packet1.alt_axis_learning_status , packet1.landing_status , packet1.learning_status , packet1.pitch_axis_learning_status , packet1.pre_idle_check_status , packet1.roll_axis_learning_status , packet1.takeoff_status , packet1.x_axis_learning_status , packet1.y_axis_learning_status , packet1.yaw_axis_learning_status );
     mavlink_msg_leaf_sys_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -2563,7 +2570,7 @@ static void mavlink_test_leaf_sys_status(uint8_t system_id, uint8_t component_id
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_sys_status_send(MAVLINK_COMM_1 , packet1.arm_stage , packet1.landing_status , packet1.learning_status , packet1.pre_idle_check_status , packet1.takeoff_status );
+    mavlink_msg_leaf_sys_status_send(MAVLINK_COMM_1 , packet1.airborne_status , packet1.arm_stage , packet1.alt_axis_learning_status , packet1.landing_status , packet1.learning_status , packet1.pitch_axis_learning_status , packet1.pre_idle_check_status , packet1.roll_axis_learning_status , packet1.takeoff_status , packet1.x_axis_learning_status , packet1.y_axis_learning_status , packet1.yaw_axis_learning_status );
     mavlink_msg_leaf_sys_status_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
