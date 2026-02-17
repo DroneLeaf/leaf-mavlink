@@ -469,5 +469,10 @@
       <field type="uint8_t" name="y_axis_learning_status" enum="LEAF_LEARNING_STATUS">The y axis learning status</field>
       <field type="uint8_t" name="yaw_axis_learning_status" enum="LEAF_LEARNING_STATUS">The yaw axis learning status</field>
     </message>
+    <message id="77046" name="LEAF_DO_SWITCH_MRFT_YAW">
+      <description>Commands the leaf to switch to MRFT yaw controller</description>
+      <field type="uint8_t" name="target_system">The system needs to switch to MRFT yaw controller</field>
+      <field type="uint8_t" name="enable">1 to switch on, 0 to switch back off</field>
+    </message>
   </messages>
 </mavlink>

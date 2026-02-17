@@ -8896,6 +8896,7 @@ MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_ABORT = 77042
 MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET = 77043
 MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT = 77044
 MAVLINK_MSG_ID_LEAF_SYS_STATUS = 77045
+MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW = 77046
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -28860,6 +28861,45 @@ class MAVLink_leaf_sys_status_message(MAVLink_message):
 setattr(MAVLink_leaf_sys_status_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_do_switch_mrft_yaw_message(MAVLink_message):
+    """
+    Commands the leaf to switch to MRFT yaw controller
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW
+    msgname = "LEAF_DO_SWITCH_MRFT_YAW"
+    fieldnames = ["target_system", "enable"]
+    ordered_fieldnames = ["target_system", "enable"]
+    fieldtypes = ["uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<BB")
+    orders = [0, 1]
+    lengths = [1, 1]
+    array_lengths = [0, 0]
+    crc_extra = 65
+    unpacker = struct.Struct("<BB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, target_system: int, enable: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_do_switch_mrft_yaw_message.id, MAVLink_leaf_do_switch_mrft_yaw_message.msgname)
+        self._fieldnames = MAVLink_leaf_do_switch_mrft_yaw_message.fieldnames
+        self._instance_field = MAVLink_leaf_do_switch_mrft_yaw_message.instance_field
+        self._instance_offset = MAVLink_leaf_do_switch_mrft_yaw_message.instance_offset
+        self.target_system = target_system
+        self.enable = enable
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.enable), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_do_switch_mrft_yaw_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -29355,6 +29395,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET: MAVLink_leaf_setpoint_offset_message,
     MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT: MAVLink_leaf_mission_heartbeat_message,
     MAVLINK_MSG_ID_LEAF_SYS_STATUS: MAVLink_leaf_sys_status_message,
+    MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW: MAVLink_leaf_do_switch_mrft_yaw_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -44536,6 +44577,26 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_sys_status_encode(airborne_status, arm_stage, alt_axis_learning_status, landing_status, learning_status, pitch_axis_learning_status, pre_idle_check_status, roll_axis_learning_status, takeoff_status, x_axis_learning_status, y_axis_learning_status, yaw_axis_learning_status), force_mavlink1=force_mavlink1)
+
+    def leaf_do_switch_mrft_yaw_encode(self, target_system: int, enable: int) -> MAVLink_leaf_do_switch_mrft_yaw_message:
+        """
+        Commands the leaf to switch to MRFT yaw controller
+
+        target_system             : The system needs to switch to MRFT yaw controller (type:uint8_t)
+        enable                    : 1 to switch on, 0 to switch back off (type:uint8_t)
+
+        """
+        return MAVLink_leaf_do_switch_mrft_yaw_message(target_system, enable)
+
+    def leaf_do_switch_mrft_yaw_send(self, target_system: int, enable: int, force_mavlink1: bool = False) -> None:
+        """
+        Commands the leaf to switch to MRFT yaw controller
+
+        target_system             : The system needs to switch to MRFT yaw controller (type:uint8_t)
+        enable                    : 1 to switch on, 0 to switch back off (type:uint8_t)
+
+        """
+        self.send(self.leaf_do_switch_mrft_yaw_encode(target_system, enable), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """
