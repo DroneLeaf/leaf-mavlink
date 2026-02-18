@@ -6059,6 +6059,7 @@ MAVLINK_MSG_ID_LEAF_ACK_MISSION_ABORT = 77041
 MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_ABORT = 77042
 MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET = 77043
 MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT = 77044
+MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2 = 77046
 MAVLINK_MSG_ID_LEAF_SYS_STATUS = 77045
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
@@ -7906,6 +7907,49 @@ class MAVLink_leaf_mission_heartbeat_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT
     msgname = "LEAF_MISSION_HEARTBEAT"
+    fieldnames = ["mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status"]
+    ordered_fieldnames = ["mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status"]
+    fieldtypes = ["uint8_t", "uint8_t", "char", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {"mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JoystickMode", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS"}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<BBcBB")
+    orders = [0, 1, 2, 3, 4]
+    lengths = [1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 64, 0, 0]
+    crc_extra = 10
+    unpacker = struct.Struct("<BB64sBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_mission_heartbeat_message.id, MAVLink_leaf_mission_heartbeat_message.msgname)
+        self._fieldnames = MAVLink_leaf_mission_heartbeat_message.fieldnames
+        self._instance_field = MAVLink_leaf_mission_heartbeat_message.instance_field
+        self._instance_offset = MAVLink_leaf_mission_heartbeat_message.instance_offset
+        self.mission_status = mission_status
+        self.joystick_mode = joystick_mode
+        self._mission_id_raw = mission_id
+        self.mission_id = mission_id.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+        self.queue_count = queue_count
+        self.predefined_actions_status = predefined_actions_status
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.mission_status, self.joystick_mode, self._mission_id_raw, self.queue_count, self.predefined_actions_status), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_mission_heartbeat_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_mission_heartbeat_v2_message(MAVLink_message):
+    """
+    The mission heartbeat message
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2
+    msgname = "LEAF_MISSION_HEARTBEAT_V2"
     fieldnames = ["LeafFC_mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status", "SDK_status", "mission_name", "step_type", "step_name"]
     ordered_fieldnames = ["LeafFC_mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status", "SDK_status", "mission_name", "step_type", "step_name"]
     fieldtypes = ["uint8_t", "uint8_t", "char", "uint8_t", "uint8_t", "uint8_t", "char", "uint8_t", "char"]
@@ -7916,16 +7960,16 @@ class MAVLink_leaf_mission_heartbeat_message(MAVLink_message):
     orders = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1]
     array_lengths = [0, 0, 64, 0, 0, 0, 64, 0, 64]
-    crc_extra = 198
+    crc_extra = 110
     unpacker = struct.Struct("<BB64sBBB64sB64s")
     instance_field = None
     instance_offset = -1
 
     def __init__(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes):
-        MAVLink_message.__init__(self, MAVLink_leaf_mission_heartbeat_message.id, MAVLink_leaf_mission_heartbeat_message.msgname)
-        self._fieldnames = MAVLink_leaf_mission_heartbeat_message.fieldnames
-        self._instance_field = MAVLink_leaf_mission_heartbeat_message.instance_field
-        self._instance_offset = MAVLink_leaf_mission_heartbeat_message.instance_offset
+        MAVLink_message.__init__(self, MAVLink_leaf_mission_heartbeat_v2_message.id, MAVLink_leaf_mission_heartbeat_v2_message.msgname)
+        self._fieldnames = MAVLink_leaf_mission_heartbeat_v2_message.fieldnames
+        self._instance_field = MAVLink_leaf_mission_heartbeat_v2_message.instance_field
+        self._instance_offset = MAVLink_leaf_mission_heartbeat_v2_message.instance_offset
         self.LeafFC_mission_status = LeafFC_mission_status
         self.joystick_mode = joystick_mode
         self._mission_id_raw = mission_id
@@ -7945,7 +7989,7 @@ class MAVLink_leaf_mission_heartbeat_message(MAVLink_message):
 
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_leaf_mission_heartbeat_message, "name", mavlink_msg_deprecated_name_property())
+setattr(MAVLink_leaf_mission_heartbeat_v2_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_leaf_sys_status_message(MAVLink_message):
@@ -19513,6 +19557,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_ABORT: MAVLink_leaf_do_emergency_abort_message,
     MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET: MAVLink_leaf_setpoint_offset_message,
     MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT: MAVLink_leaf_mission_heartbeat_message,
+    MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2: MAVLink_leaf_mission_heartbeat_v2_message,
     MAVLINK_MSG_ID_LEAF_SYS_STATUS: MAVLink_leaf_sys_status_message,
     MAVLINK_MSG_ID_SYS_STATUS: MAVLink_sys_status_message,
     MAVLINK_MSG_ID_SYSTEM_TIME: MAVLink_system_time_message,
@@ -21008,7 +21053,33 @@ class MAVLink(object):
         """
         self.send(self.leaf_setpoint_offset_encode(x, y, z, yaw), force_mavlink1=force_mavlink1)
 
-    def leaf_mission_heartbeat_encode(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes) -> MAVLink_leaf_mission_heartbeat_message:
+    def leaf_mission_heartbeat_encode(self, mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int) -> MAVLink_leaf_mission_heartbeat_message:
+        """
+        The mission heartbeat message
+
+        mission_status            : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        mission_id                : The id of the mission (type:char)
+        queue_count               : The number of missions in the queue (type:uint8_t)
+        predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
+
+        """
+        return MAVLink_leaf_mission_heartbeat_message(mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status)
+
+    def leaf_mission_heartbeat_send(self, mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, force_mavlink1: bool = False) -> None:
+        """
+        The mission heartbeat message
+
+        mission_status            : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        mission_id                : The id of the mission (type:char)
+        queue_count               : The number of missions in the queue (type:uint8_t)
+        predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
+
+        """
+        self.send(self.leaf_mission_heartbeat_encode(mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status), force_mavlink1=force_mavlink1)
+
+    def leaf_mission_heartbeat_v2_encode(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes) -> MAVLink_leaf_mission_heartbeat_v2_message:
         """
         The mission heartbeat message
 
@@ -21023,9 +21094,9 @@ class MAVLink(object):
         step_name                 : The name of the current step (type:char)
 
         """
-        return MAVLink_leaf_mission_heartbeat_message(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name)
+        return MAVLink_leaf_mission_heartbeat_v2_message(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name)
 
-    def leaf_mission_heartbeat_send(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes, force_mavlink1: bool = False) -> None:
+    def leaf_mission_heartbeat_v2_send(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes, force_mavlink1: bool = False) -> None:
         """
         The mission heartbeat message
 
@@ -21040,7 +21111,7 @@ class MAVLink(object):
         step_name                 : The name of the current step (type:char)
 
         """
-        self.send(self.leaf_mission_heartbeat_encode(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_mission_heartbeat_v2_encode(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name), force_mavlink1=force_mavlink1)
 
     def leaf_sys_status_encode(self, airborne_status: int, arm_stage: int, alt_axis_learning_status: int, landing_status: int, learning_status: int, pitch_axis_learning_status: int, pre_idle_check_status: int, roll_axis_learning_status: int, takeoff_status: int, x_axis_learning_status: int, y_axis_learning_status: int, yaw_axis_learning_status: int) -> MAVLink_leaf_sys_status_message:
         """
