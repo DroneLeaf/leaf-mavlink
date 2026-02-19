@@ -1,7 +1,7 @@
 #pragma once
 // MESSAGE LEAF_MISSION_HEARTBEAT_V2 PACKING
 
-#define MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2 77046
+#define MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2 77047
 
 
 typedef struct __mavlink_leaf_mission_heartbeat_v2_t {
@@ -18,11 +18,11 @@ typedef struct __mavlink_leaf_mission_heartbeat_v2_t {
 
 #define MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2_LEN 198
 #define MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2_MIN_LEN 198
-#define MAVLINK_MSG_ID_77046_LEN 198
-#define MAVLINK_MSG_ID_77046_MIN_LEN 198
+#define MAVLINK_MSG_ID_77047_LEN 198
+#define MAVLINK_MSG_ID_77047_MIN_LEN 198
 
 #define MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2_CRC 110
-#define MAVLINK_MSG_ID_77046_CRC 110
+#define MAVLINK_MSG_ID_77047_CRC 110
 
 #define MAVLINK_MSG_LEAF_MISSION_HEARTBEAT_V2_FIELD_MISSION_ID_LEN 64
 #define MAVLINK_MSG_LEAF_MISSION_HEARTBEAT_V2_FIELD_MISSION_NAME_LEN 64
@@ -30,7 +30,7 @@ typedef struct __mavlink_leaf_mission_heartbeat_v2_t {
 
 #if MAVLINK_COMMAND_24BIT
 #define MAVLINK_MESSAGE_INFO_LEAF_MISSION_HEARTBEAT_V2 { \
-    77046, \
+    77047, \
     "LEAF_MISSION_HEARTBEAT_V2", \
     9, \
     {  { "LeafFC_mission_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_mission_heartbeat_v2_t, LeafFC_mission_status) }, \
