@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_DRONELEAF_MAV_MSGS.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH 7122683623744536359
+#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -5723532717336725949
 
 #ifdef __cplusplus
 extern "C" {
@@ -113,6 +113,20 @@ typedef enum LEAF_MISSION_STATE
    LEAF_MISSION_STATE_SAFETY=9, /* Critical safety state, FC decides what to do | */
    LEAF_MISSION_STATE_ENUM_END=10, /*  | */
 } LEAF_MISSION_STATE;
+#endif
+
+/** @brief  */
+#ifndef HAVE_ENUM_LEAF_SDK_STATUS
+#define HAVE_ENUM_LEAF_SDK_STATUS
+typedef enum LEAF_SDK_STATUS
+{
+   LEAF_SDK_STATUS_OK=0, /* SDK is operating normally | */
+   LEAF_SDK_STATUS_READY=1, /* Mission loaded and ready, waiting for start command | */
+   LEAF_SDK_STATUS_JOYSTICK_TIMEOUT=2, /* FC did not confirm joystick mode change within timeout | */
+   LEAF_SDK_STATUS_JOYSTICK_MISMATCH=3, /* FC reported joystick mode does not match the requested mode | */
+   LEAF_SDK_STATUS_MISSION_STATE_TIMEOUT=4, /* FC did not confirm mission state transition within timeout | */
+   LEAF_SDK_STATUS_ENUM_END=5, /*  | */
+} LEAF_SDK_STATUS;
 #endif
 
 /** @brief  */

@@ -8351,6 +8351,22 @@ enums["LEAF_MISSION_STATE"][9] = EnumEntry("LEAF_MISSION_STATE_SAFETY", """Criti
 LEAF_MISSION_STATE_ENUM_END = 10
 enums["LEAF_MISSION_STATE"][10] = EnumEntry("LEAF_MISSION_STATE_ENUM_END", """""")
 
+# LEAF_SDK_STATUS
+enums["LEAF_SDK_STATUS"] = Enum()
+enums["LEAF_SDK_STATUS"].bitmask = False
+LEAF_SDK_STATUS_HEALTHY = 0
+enums["LEAF_SDK_STATUS"][0] = EnumEntry("LEAF_SDK_STATUS_HEALTHY", """SDK is operating normally""")
+LEAF_SDK_STATUS_UNHEALTHY = 1
+enums["LEAF_SDK_STATUS"][1] = EnumEntry("LEAF_SDK_STATUS_UNHEALTHY", """SDK is abnormally unhealthy""")
+LEAF_SDK_STATUS_JOYSTICK_MISMATCH = 2
+enums["LEAF_SDK_STATUS"][2] = EnumEntry("LEAF_SDK_STATUS_JOYSTICK_MISMATCH", """FC reported joystick mode does not match the requested mode""")
+LEAF_SDK_STATUS_JOYSTICK_TIMEOUT = 3
+enums["LEAF_SDK_STATUS"][3] = EnumEntry("LEAF_SDK_STATUS_JOYSTICK_TIMEOUT", """FC did not confirm joystick mode change within timeout""")
+LEAF_SDK_STATUS_MISSION_STATE_TIMEOUT = 4
+enums["LEAF_SDK_STATUS"][4] = EnumEntry("LEAF_SDK_STATUS_MISSION_STATE_TIMEOUT", """FC did not confirm mission state transition within timeout""")
+LEAF_SDK_STATUS_ENUM_END = 5
+enums["LEAF_SDK_STATUS"][5] = EnumEntry("LEAF_SDK_STATUS_ENUM_END", """""")
+
 # LEAF_MODE
 enums["LEAF_MODE"] = Enum()
 enums["LEAF_MODE"].bitmask = False
@@ -28849,7 +28865,7 @@ class MAVLink_leaf_mission_heartbeat_v2_message(MAVLink_message):
     ordered_fieldnames = ["LeafFC_mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status", "SDK_status", "mission_name", "step_type", "step_name"]
     fieldtypes = ["uint8_t", "uint8_t", "char", "uint8_t", "uint8_t", "uint8_t", "char", "uint8_t", "char"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"LeafFC_mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JoystickMode", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS", "SDK_status": "LEAF_MISSION_STATE", "step_type": "LEAF_MISSION_STEP_TYPE"}
+    fieldenums_by_name: Dict[str, str] = {"LeafFC_mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JoystickMode", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS", "SDK_status": "LEAF_SDK_STATUS", "step_type": "LEAF_MISSION_STEP_TYPE"}
     fieldunits_by_name: Dict[str, str] = {}
     native_format = bytearray(b"<BBcBBBcBc")
     orders = [0, 1, 2, 3, 4, 5, 6, 7, 8]
@@ -44583,7 +44599,7 @@ class MAVLink(object):
         mission_id                : The id of the mission (type:char)
         queue_count               : The number of missions in the queue (type:uint8_t)
         predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
-        SDK_status                : SDK mission status (type:uint8_t, values:LEAF_MISSION_STATE)
+        SDK_status                : SDK execution health status (type:uint8_t, values:LEAF_SDK_STATUS)
         mission_name              : The name of the mission (type:char)
         step_type                 : The number of missions in the queue (type:uint8_t, values:LEAF_MISSION_STEP_TYPE)
         step_name                 : The name of the current step (type:char)
@@ -44600,7 +44616,7 @@ class MAVLink(object):
         mission_id                : The id of the mission (type:char)
         queue_count               : The number of missions in the queue (type:uint8_t)
         predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
-        SDK_status                : SDK mission status (type:uint8_t, values:LEAF_MISSION_STATE)
+        SDK_status                : SDK execution health status (type:uint8_t, values:LEAF_SDK_STATUS)
         mission_name              : The name of the mission (type:char)
         step_type                 : The number of missions in the queue (type:uint8_t, values:LEAF_MISSION_STEP_TYPE)
         step_name                 : The name of the current step (type:char)

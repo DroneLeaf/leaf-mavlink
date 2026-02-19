@@ -10,7 +10,7 @@ typedef struct __mavlink_leaf_mission_heartbeat_v2_t {
  char mission_id[64]; /*<  The id of the mission*/
  uint8_t queue_count; /*<  The number of missions in the queue*/
  uint8_t predefined_actions_status; /*<  The predefined actions status*/
- uint8_t SDK_status; /*<  SDK mission status*/
+ uint8_t SDK_status; /*<  SDK execution health status*/
  char mission_name[64]; /*<  The name of the mission*/
  uint8_t step_type; /*<  The number of missions in the queue*/
  char step_name[64]; /*<  The name of the current step*/
@@ -72,7 +72,7 @@ typedef struct __mavlink_leaf_mission_heartbeat_v2_t {
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
  * @param predefined_actions_status  The predefined actions status
- * @param SDK_status  SDK mission status
+ * @param SDK_status  SDK execution health status
  * @param mission_name  The name of the mission
  * @param step_type  The number of missions in the queue
  * @param step_name  The name of the current step
@@ -123,7 +123,7 @@ static inline uint16_t mavlink_msg_leaf_mission_heartbeat_v2_pack(uint8_t system
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
  * @param predefined_actions_status  The predefined actions status
- * @param SDK_status  SDK mission status
+ * @param SDK_status  SDK execution health status
  * @param mission_name  The name of the mission
  * @param step_type  The number of missions in the queue
  * @param step_name  The name of the current step
@@ -177,7 +177,7 @@ static inline uint16_t mavlink_msg_leaf_mission_heartbeat_v2_pack_status(uint8_t
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
  * @param predefined_actions_status  The predefined actions status
- * @param SDK_status  SDK mission status
+ * @param SDK_status  SDK execution health status
  * @param mission_name  The name of the mission
  * @param step_type  The number of missions in the queue
  * @param step_name  The name of the current step
@@ -267,7 +267,7 @@ static inline uint16_t mavlink_msg_leaf_mission_heartbeat_v2_encode_status(uint8
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
  * @param predefined_actions_status  The predefined actions status
- * @param SDK_status  SDK mission status
+ * @param SDK_status  SDK execution health status
  * @param mission_name  The name of the mission
  * @param step_type  The number of missions in the queue
  * @param step_name  The name of the current step
@@ -413,7 +413,7 @@ static inline uint8_t mavlink_msg_leaf_mission_heartbeat_v2_get_predefined_actio
 /**
  * @brief Get field SDK_status from leaf_mission_heartbeat_v2 message
  *
- * @return  SDK mission status
+ * @return  SDK execution health status
  */
 static inline uint8_t mavlink_msg_leaf_mission_heartbeat_v2_get_SDK_status(const mavlink_message_t* msg)
 {
