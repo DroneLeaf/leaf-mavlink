@@ -99,6 +99,23 @@
         <description>Critical safety state, FC decides what to do</description>
       </entry>
     </enum>
+    <enum name="LEAF_SDK_STATUS">
+      <entry value="0" name="LEAF_SDK_STATUS_HEALTHY">
+        <description>SDK is operating normally</description>
+      </entry>
+      <entry value="1" name="LEAF_SDK_STATUS_UNHEALTHY">
+        <description>SDK is abnormally unhealthy</description>
+      </entry>
+      <entry value="2" name="LEAF_SDK_STATUS_JOYSTICK_MISMATCH">
+        <description>FC reported joystick mode does not match the requested mode</description>
+      </entry>
+      <entry value="3" name="LEAF_SDK_STATUS_JOYSTICK_TIMEOUT">
+        <description>FC did not confirm joystick mode change within timeout</description>
+      </entry>
+      <entry value="4" name="LEAF_SDK_STATUS_MISSION_STATE_TIMEOUT">
+        <description>FC did not confirm mission state transition within timeout</description>
+      </entry>
+    </enum>
     <enum name="LEAF_MODE">
       <entry value="0" name="LEAF_MODE_RC_Stabilized">
         <description>Remote control stabilized mode</description>
@@ -190,6 +207,38 @@
       </entry>
       <entry value="4" name="GOTO_XYZ">
         <description>Going to single location</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_MISSION_STEP_TYPE">
+      <entry value="0" name="IDLE">
+        <description>Idle</description>
+      </entry>
+      <entry value="1" name="GOTO_GPS_WAYPOINT">
+        <description>Going to GPS waypoint</description>
+      </entry>
+      <entry value="2" name="GOTO_LOCAL_POSITION">
+        <description>Goto local position</description>
+      </entry>
+      <entry value="3" name="GOTO_RELATIVE">
+        <description>Goto relative position</description>
+      </entry>
+      <entry value="4" name="YAW_ABSOLUTE">
+        <description>Yaw absolute</description>
+      </entry>
+      <entry value="5" name="YAW_RELATIVE">
+        <description>Yaw relative</description>
+      </entry>
+      <entry value="6" name="TAKEOFF">
+        <description>Takeoff</description>
+      </entry>
+      <entry value="7" name="WAIT">
+        <description>Wait</description>
+      </entry>
+      <entry value="8" name="LAND">
+        <description>Land</description>
+      </entry>
+      <entry value="9" name="RETURN_TO_LAUNCH">
+        <description>Return to launch</description>
       </entry>
     </enum>
     <enum name="LEAF_PRE_IDLE_CHECK_STATUS">
@@ -448,7 +497,7 @@
     </message>
     <message id="77044" name="LEAF_MISSION_HEARTBEAT">
       <description>The mission heartbeat message</description>
-      <field type="uint8_t" name="mission_status" enum="LEAF_MISSION_STATE">The mission status</field>
+      <field type="uint8_t" name="mission_status" enum="LEAF_MISSION_STATE">LeafFC mission status</field>
       <field type="uint8_t" name="joystick_mode" enum="JoystickMode">The joystick mode</field>
       <field type="char[64]" name="mission_id">The id of the mission</field>
       <field type="uint8_t" name="queue_count">The number of missions in the queue</field>
@@ -473,6 +522,18 @@
       <description>Commands the leaf to switch to MRFT yaw controller</description>
       <field type="uint8_t" name="target_system">The system needs to switch to MRFT yaw controller</field>
       <field type="uint8_t" name="enable">1 to switch on, 0 to switch back off</field>
+    </message>
+    <message id="77047" name="LEAF_MISSION_HEARTBEAT_V2">
+      <description>The mission heartbeat message</description>
+      <field type="uint8_t" name="LeafFC_mission_status" enum="LEAF_MISSION_STATE">LeafFC mission status</field>
+      <field type="uint8_t" name="joystick_mode" enum="JoystickMode">The joystick mode</field>
+      <field type="char[64]" name="mission_id">The id of the mission</field>
+      <field type="uint8_t" name="queue_count">The number of missions in the queue</field>
+      <field type="uint8_t" name="predefined_actions_status" enum="LEAF_PREDEFINED_ACTIONS_STATUS">The predefined actions status</field>
+      <field type="uint8_t" name="SDK_status" enum="LEAF_SDK_STATUS">SDK execution health status</field>
+      <field type="char[64]" name="mission_name">The name of the mission</field>
+      <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The number of missions in the queue</field>
+      <field type="char[64]" name="step_name">The name of the current step</field>
     </message>
   </messages>
 </mavlink>

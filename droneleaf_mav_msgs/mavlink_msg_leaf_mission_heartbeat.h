@@ -5,7 +5,7 @@
 
 
 typedef struct __mavlink_leaf_mission_heartbeat_t {
- uint8_t mission_status; /*<  The mission status*/
+ uint8_t mission_status; /*<  LeafFC mission status*/
  uint8_t joystick_mode; /*<  The joystick mode*/
  char mission_id[64]; /*<  The id of the mission*/
  uint8_t queue_count; /*<  The number of missions in the queue*/
@@ -53,7 +53,7 @@ typedef struct __mavlink_leaf_mission_heartbeat_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param mission_status  The mission status
+ * @param mission_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_leaf_mission_heartbeat_pack(uint8_t system_id
  * @param status MAVLink status structure
  * @param msg The MAVLink message to compress the data into
  *
- * @param mission_status  The mission status
+ * @param mission_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -134,7 +134,7 @@ static inline uint16_t mavlink_msg_leaf_mission_heartbeat_pack_status(uint8_t sy
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param mission_status  The mission status
+ * @param mission_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -212,7 +212,7 @@ static inline uint16_t mavlink_msg_leaf_mission_heartbeat_encode_status(uint8_t 
  * @brief Send a leaf_mission_heartbeat message
  * @param chan MAVLink channel to send the message
  *
- * @param mission_status  The mission status
+ * @param mission_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -293,7 +293,7 @@ static inline void mavlink_msg_leaf_mission_heartbeat_send_buf(mavlink_message_t
 /**
  * @brief Get field mission_status from leaf_mission_heartbeat message
  *
- * @return  The mission status
+ * @return  LeafFC mission status
  */
 static inline uint8_t mavlink_msg_leaf_mission_heartbeat_get_mission_status(const mavlink_message_t* msg)
 {
