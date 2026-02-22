@@ -28904,6 +28904,94 @@ class MAVLink_leaf_sys_status_message(MAVLink_message):
 setattr(MAVLink_leaf_sys_status_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_do_switch_mrft_yaw_message(MAVLink_message):
+    """
+    Commands the leaf to switch to MRFT yaw controller
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW
+    msgname = "LEAF_DO_SWITCH_MRFT_YAW"
+    fieldnames = ["target_system", "enable"]
+    ordered_fieldnames = ["target_system", "enable"]
+    fieldtypes = ["uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<BB")
+    orders = [0, 1]
+    lengths = [1, 1]
+    array_lengths = [0, 0]
+    crc_extra = 65
+    unpacker = struct.Struct("<BB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, target_system: int, enable: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_do_switch_mrft_yaw_message.id, MAVLink_leaf_do_switch_mrft_yaw_message.msgname)
+        self._fieldnames = MAVLink_leaf_do_switch_mrft_yaw_message.fieldnames
+        self._instance_field = MAVLink_leaf_do_switch_mrft_yaw_message.instance_field
+        self._instance_offset = MAVLink_leaf_do_switch_mrft_yaw_message.instance_offset
+        self.target_system = target_system
+        self.enable = enable
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.enable), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_do_switch_mrft_yaw_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_mission_heartbeat_v2_message(MAVLink_message):
+    """
+    The mission heartbeat message
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2
+    msgname = "LEAF_MISSION_HEARTBEAT_V2"
+    fieldnames = ["LeafFC_mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status", "SDK_status", "mission_name", "step_type", "step_name"]
+    ordered_fieldnames = ["LeafFC_mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status", "SDK_status", "mission_name", "step_type", "step_name"]
+    fieldtypes = ["uint8_t", "uint8_t", "char", "uint8_t", "uint8_t", "uint8_t", "char", "uint8_t", "char"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {"LeafFC_mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JoystickMode", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS", "SDK_status": "LEAF_SDK_STATUS", "step_type": "LEAF_MISSION_STEP_TYPE"}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<BBcBBBcBc")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 64, 0, 0, 0, 64, 0, 64]
+    crc_extra = 110
+    unpacker = struct.Struct("<BB64sBBB64sB64s")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes):
+        MAVLink_message.__init__(self, MAVLink_leaf_mission_heartbeat_v2_message.id, MAVLink_leaf_mission_heartbeat_v2_message.msgname)
+        self._fieldnames = MAVLink_leaf_mission_heartbeat_v2_message.fieldnames
+        self._instance_field = MAVLink_leaf_mission_heartbeat_v2_message.instance_field
+        self._instance_offset = MAVLink_leaf_mission_heartbeat_v2_message.instance_offset
+        self.LeafFC_mission_status = LeafFC_mission_status
+        self.joystick_mode = joystick_mode
+        self._mission_id_raw = mission_id
+        self.mission_id = mission_id.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+        self.queue_count = queue_count
+        self.predefined_actions_status = predefined_actions_status
+        self.SDK_status = SDK_status
+        self._mission_name_raw = mission_name
+        self.mission_name = mission_name.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+        self.step_type = step_type
+        self._step_name_raw = step_name
+        self.step_name = step_name.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.LeafFC_mission_status, self.joystick_mode, self._mission_id_raw, self.queue_count, self.predefined_actions_status, self.SDK_status, self._mission_name_raw, self.step_type, self._step_name_raw), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_mission_heartbeat_v2_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -29399,6 +29487,8 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_SETPOINT_OFFSET: MAVLink_leaf_setpoint_offset_message,
     MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT: MAVLink_leaf_mission_heartbeat_message,
     MAVLINK_MSG_ID_LEAF_SYS_STATUS: MAVLink_leaf_sys_status_message,
+    MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW: MAVLink_leaf_do_switch_mrft_yaw_message,
+    MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2: MAVLink_leaf_mission_heartbeat_v2_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -44580,6 +44670,60 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_sys_status_encode(airborne_status, arm_stage, alt_axis_learning_status, landing_status, learning_status, pitch_axis_learning_status, pre_idle_check_status, roll_axis_learning_status, takeoff_status, x_axis_learning_status, y_axis_learning_status, yaw_axis_learning_status), force_mavlink1=force_mavlink1)
+
+    def leaf_do_switch_mrft_yaw_encode(self, target_system: int, enable: int) -> MAVLink_leaf_do_switch_mrft_yaw_message:
+        """
+        Commands the leaf to switch to MRFT yaw controller
+
+        target_system             : The system needs to switch to MRFT yaw controller (type:uint8_t)
+        enable                    : 1 to switch on, 0 to switch back off (type:uint8_t)
+
+        """
+        return MAVLink_leaf_do_switch_mrft_yaw_message(target_system, enable)
+
+    def leaf_do_switch_mrft_yaw_send(self, target_system: int, enable: int, force_mavlink1: bool = False) -> None:
+        """
+        Commands the leaf to switch to MRFT yaw controller
+
+        target_system             : The system needs to switch to MRFT yaw controller (type:uint8_t)
+        enable                    : 1 to switch on, 0 to switch back off (type:uint8_t)
+
+        """
+        self.send(self.leaf_do_switch_mrft_yaw_encode(target_system, enable), force_mavlink1=force_mavlink1)
+
+    def leaf_mission_heartbeat_v2_encode(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes) -> MAVLink_leaf_mission_heartbeat_v2_message:
+        """
+        The mission heartbeat message
+
+        LeafFC_mission_status        : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        mission_id                : The id of the mission (type:char)
+        queue_count               : The number of missions in the queue (type:uint8_t)
+        predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
+        SDK_status                : SDK execution health status (type:uint8_t, values:LEAF_SDK_STATUS)
+        mission_name              : The name of the mission (type:char)
+        step_type                 : The number of missions in the queue (type:uint8_t, values:LEAF_MISSION_STEP_TYPE)
+        step_name                 : The name of the current step (type:char)
+
+        """
+        return MAVLink_leaf_mission_heartbeat_v2_message(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name)
+
+    def leaf_mission_heartbeat_v2_send(self, LeafFC_mission_status: int, joystick_mode: int, mission_id: bytes, queue_count: int, predefined_actions_status: int, SDK_status: int, mission_name: bytes, step_type: int, step_name: bytes, force_mavlink1: bool = False) -> None:
+        """
+        The mission heartbeat message
+
+        LeafFC_mission_status        : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        mission_id                : The id of the mission (type:char)
+        queue_count               : The number of missions in the queue (type:uint8_t)
+        predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
+        SDK_status                : SDK execution health status (type:uint8_t, values:LEAF_SDK_STATUS)
+        mission_name              : The name of the mission (type:char)
+        step_type                 : The number of missions in the queue (type:uint8_t, values:LEAF_MISSION_STEP_TYPE)
+        step_name                 : The name of the current step (type:char)
+
+        """
+        self.send(self.leaf_mission_heartbeat_v2_encode(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """

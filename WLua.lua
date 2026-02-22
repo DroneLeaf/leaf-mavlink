@@ -3177,6 +3177,53 @@ local enumEntryName = {
         [2] = "MOTION_PLATFORM_HEALTH_ERROR",
         [3] = "MOTION_PLATFORM_HEALTH_CRITICAL",
     },
+    ["LEAF_AIRBORNE_STATUS"] = {
+        [0] = "ON_GROUND",
+        [1] = "AIRBORNE",
+    },
+    ["LEAF_ARM_STAGE"] = {
+        [0] = "DISARMED",
+        [1] = "IDLING",
+        [2] = "ARMED",
+    },
+    ["LEAF_LANDING_STATUS"] = {
+        [0] = "LEAF_LANDING_NOT_LANDING",
+        [1] = "LEAF_LANDING_LANDING",
+        [2] = "LEAF_LANDING_LANDING_COMPLETED",
+    },
+    ["LEAF_LEARNING_STATUS"] = {
+        [0] = "NOT_LEARNING",
+        [1] = "LEARNING_IN_PROGRESS",
+        [2] = "LEARNING_COMPLETED",
+    },
+    ["LEAF_MISSION_CONTROL_COMMAND"] = {
+        [0] = "LEAF_MISSION_CONTROL_PAUSE",
+        [1] = "LEAF_MISSION_CONTROL_RESUME",
+        [2] = "LEAF_MISSION_CONTROL_ABORT",
+        [3] = "LEAF_MISSION_CONTROL_LAND_IN_PLACE",
+        [4] = "LEAF_MISSION_CONTROL_RETURN_TO_LAUNCH",
+        [5] = "LEAF_MISSION_CONTROL_READY",
+        [6] = "LEAF_MISSION_CONTROL_START",
+    },
+    ["LEAF_MISSION_STATE"] = {
+        [0] = "LEAF_MISSION_STATE_IDLE",
+        [1] = "LEAF_MISSION_STATE_READY",
+        [2] = "LEAF_MISSION_STATE_RUNNING",
+        [3] = "LEAF_MISSION_STATE_SCHEDULED_PAUSE",
+        [4] = "LEAF_MISSION_STATE_PAUSED_MID_STEP",
+        [5] = "LEAF_MISSION_STATE_PAUSED_BETWEEN_STEPS",
+        [6] = "LEAF_MISSION_STATE_COMPLETED",
+        [7] = "LEAF_MISSION_STATE_FAILED",
+        [8] = "LEAF_MISSION_STATE_CANCELLED",
+        [9] = "LEAF_MISSION_STATE_SAFETY",
+    },
+    ["LEAF_SDK_STATUS"] = {
+        [0] = "LEAF_SDK_STATUS_HEALTHY",
+        [1] = "LEAF_SDK_STATUS_UNHEALTHY",
+        [2] = "LEAF_SDK_STATUS_JOYSTICK_MISMATCH",
+        [3] = "LEAF_SDK_STATUS_JOYSTICK_TIMEOUT",
+        [4] = "LEAF_SDK_STATUS_MISSION_STATE_TIMEOUT",
+    },
     ["LEAF_MODE"] = {
         [0] = "LEAF_MODE_RC_Stabilized",
         [1] = "LEAF_MODE_RC_POSITION",
@@ -3211,6 +3258,32 @@ local enumEntryName = {
         [2] = "LANDING",
         [3] = "RETURNING_TO_LAUNCH",
         [4] = "GOTO_XYZ",
+    },
+    ["LEAF_MISSION_STEP_TYPE"] = {
+        [0] = "IDLE",
+        [1] = "GOTO_GPS_WAYPOINT",
+        [2] = "GOTO_LOCAL_POSITION",
+        [3] = "GOTO_RELATIVE",
+        [4] = "YAW_ABSOLUTE",
+        [5] = "YAW_RELATIVE",
+        [6] = "TAKEOFF",
+        [7] = "WAIT",
+        [8] = "LAND",
+        [9] = "RETURN_TO_LAUNCH",
+    },
+    ["LEAF_PRE_IDLE_CHECK_STATUS"] = {
+        [0] = "OK",
+        [1] = "FAILED",
+    },
+    ["LEAF_TAKEOFF_STATUS"] = {
+        [0] = "LEAF_TAKEOFF_ON_GROUND",
+        [1] = "LEAF_TAKEOFF_TAKING_OFF",
+        [2] = "LEAF_TAKEOFF_COMPLETED",
+    },
+    ["JoystickMode"] = {
+        [0] = "DISABLED",
+        [1] = "ENABLED_ALWAYS",
+        [2] = "ENABLED_ON_PAUSE",
     },
 }
 f.magic = ProtoField.uint8("mavlink_proto.magic", "Magic value / version", base.HEX, protocolVersions)
@@ -44149,6 +44222,101 @@ f.LEAF_MISSION_HEARTBEAT_mission_status = ProtoField.new("mission_status (LEAF_M
                             "mavlink_proto.LEAF_MISSION_HEARTBEAT_predefined_actions_status",
                             ftypes.UINT8,
                             enumEntryName.LEAF_PREDEFINED_ACTIONS_STATUS)
+    
+f.LEAF_SYS_STATUS_airborne_status = ProtoField.new("airborne_status (LEAF_AIRBORNE_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_airborne_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_AIRBORNE_STATUS)
+    f.LEAF_SYS_STATUS_arm_stage = ProtoField.new("arm_stage (LEAF_ARM_STAGE)",
+                            "mavlink_proto.LEAF_SYS_STATUS_arm_stage",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_ARM_STAGE)
+    f.LEAF_SYS_STATUS_alt_axis_learning_status = ProtoField.new("alt_axis_learning_status (LEAF_LEARNING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_alt_axis_learning_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LEARNING_STATUS)
+    f.LEAF_SYS_STATUS_landing_status = ProtoField.new("landing_status (LEAF_LANDING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_landing_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LANDING_STATUS)
+    f.LEAF_SYS_STATUS_learning_status = ProtoField.new("learning_status (LEAF_LEARNING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_learning_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LEARNING_STATUS)
+    f.LEAF_SYS_STATUS_pitch_axis_learning_status = ProtoField.new("pitch_axis_learning_status (LEAF_LEARNING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_pitch_axis_learning_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LEARNING_STATUS)
+    f.LEAF_SYS_STATUS_pre_idle_check_status = ProtoField.new("pre_idle_check_status (LEAF_PRE_IDLE_CHECK_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_pre_idle_check_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_PRE_IDLE_CHECK_STATUS)
+    f.LEAF_SYS_STATUS_roll_axis_learning_status = ProtoField.new("roll_axis_learning_status (LEAF_LEARNING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_roll_axis_learning_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LEARNING_STATUS)
+    f.LEAF_SYS_STATUS_takeoff_status = ProtoField.new("takeoff_status (LEAF_TAKEOFF_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_takeoff_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_TAKEOFF_STATUS)
+    f.LEAF_SYS_STATUS_x_axis_learning_status = ProtoField.new("x_axis_learning_status (LEAF_LEARNING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_x_axis_learning_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LEARNING_STATUS)
+    f.LEAF_SYS_STATUS_y_axis_learning_status = ProtoField.new("y_axis_learning_status (LEAF_LEARNING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_y_axis_learning_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LEARNING_STATUS)
+    f.LEAF_SYS_STATUS_yaw_axis_learning_status = ProtoField.new("yaw_axis_learning_status (LEAF_LEARNING_STATUS)",
+                            "mavlink_proto.LEAF_SYS_STATUS_yaw_axis_learning_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_LEARNING_STATUS)
+    
+f.LEAF_DO_SWITCH_MRFT_YAW_target_system = ProtoField.new("target_system (uint8_t)",
+                            "mavlink_proto.LEAF_DO_SWITCH_MRFT_YAW_target_system",
+                            ftypes.UINT8,
+                            nil)
+    f.LEAF_DO_SWITCH_MRFT_YAW_enable = ProtoField.new("enable (uint8_t)",
+                            "mavlink_proto.LEAF_DO_SWITCH_MRFT_YAW_enable",
+                            ftypes.UINT8,
+                            nil)
+    
+f.LEAF_MISSION_HEARTBEAT_V2_LeafFC_mission_status = ProtoField.new("LeafFC_mission_status (LEAF_MISSION_STATE)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_LeafFC_mission_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_MISSION_STATE)
+    f.LEAF_MISSION_HEARTBEAT_V2_joystick_mode = ProtoField.new("joystick_mode (JoystickMode)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_joystick_mode",
+                            ftypes.UINT8,
+                            enumEntryName.JoystickMode)
+    f.LEAF_MISSION_HEARTBEAT_V2_mission_id = ProtoField.new("mission_id (char)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_mission_id",
+                            ftypes.STRING,
+                            nil)
+    f.LEAF_MISSION_HEARTBEAT_V2_queue_count = ProtoField.new("queue_count (uint8_t)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_queue_count",
+                            ftypes.UINT8,
+                            nil)
+    f.LEAF_MISSION_HEARTBEAT_V2_predefined_actions_status = ProtoField.new("predefined_actions_status (LEAF_PREDEFINED_ACTIONS_STATUS)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_predefined_actions_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_PREDEFINED_ACTIONS_STATUS)
+    f.LEAF_MISSION_HEARTBEAT_V2_SDK_status = ProtoField.new("SDK_status (LEAF_SDK_STATUS)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_SDK_status",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_SDK_STATUS)
+    f.LEAF_MISSION_HEARTBEAT_V2_mission_name = ProtoField.new("mission_name (char)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_mission_name",
+                            ftypes.STRING,
+                            nil)
+    f.LEAF_MISSION_HEARTBEAT_V2_step_type = ProtoField.new("step_type (LEAF_MISSION_STEP_TYPE)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_step_type",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_MISSION_STEP_TYPE)
+    f.LEAF_MISSION_HEARTBEAT_V2_step_name = ProtoField.new("step_name (char)",
+                            "mavlink_proto.LEAF_MISSION_HEARTBEAT_V2_step_name",
+                            ftypes.STRING,
+                            nil)
     
 f.LOWEHEISER_GOV_EFI_volt_batt = ProtoField.new("volt_batt (float) [V]",
                             "mavlink_proto.LOWEHEISER_GOV_EFI_volt_batt",
@@ -101259,6 +101427,85 @@ function payload_fns.payload_77044(buffer, tree, msgid, offset, limit, pinfo)
     subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_queue_count, tvbrange)
     tvbrange = padded(offset + 67, 1)
     subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_predefined_actions_status, tvbrange)
+end
+-- dissect payload of message type LEAF_SYS_STATUS
+function payload_fns.payload_77045(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 12 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 12)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_airborne_status, tvbrange)
+    tvbrange = padded(offset + 1, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_arm_stage, tvbrange)
+    tvbrange = padded(offset + 2, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_alt_axis_learning_status, tvbrange)
+    tvbrange = padded(offset + 3, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_landing_status, tvbrange)
+    tvbrange = padded(offset + 4, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_learning_status, tvbrange)
+    tvbrange = padded(offset + 5, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_pitch_axis_learning_status, tvbrange)
+    tvbrange = padded(offset + 6, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_pre_idle_check_status, tvbrange)
+    tvbrange = padded(offset + 7, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_roll_axis_learning_status, tvbrange)
+    tvbrange = padded(offset + 8, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_takeoff_status, tvbrange)
+    tvbrange = padded(offset + 9, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_x_axis_learning_status, tvbrange)
+    tvbrange = padded(offset + 10, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_y_axis_learning_status, tvbrange)
+    tvbrange = padded(offset + 11, 1)
+    subtree = tree:add_le(f.LEAF_SYS_STATUS_yaw_axis_learning_status, tvbrange)
+end
+-- dissect payload of message type LEAF_DO_SWITCH_MRFT_YAW
+function payload_fns.payload_77046(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 2 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 2)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_DO_SWITCH_MRFT_YAW_target_system, tvbrange)
+    tvbrange = padded(offset + 1, 1)
+    subtree = tree:add_le(f.LEAF_DO_SWITCH_MRFT_YAW_enable, tvbrange)
+end
+-- dissect payload of message type LEAF_MISSION_HEARTBEAT_V2
+function payload_fns.payload_77047(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 198 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 198)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_LeafFC_mission_status, tvbrange)
+    tvbrange = padded(offset + 1, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_joystick_mode, tvbrange)
+    tvbrange = padded(offset + 2, 64)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_mission_id, tvbrange)
+    tvbrange = padded(offset + 66, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_queue_count, tvbrange)
+    tvbrange = padded(offset + 67, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_predefined_actions_status, tvbrange)
+    tvbrange = padded(offset + 68, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_SDK_status, tvbrange)
+    tvbrange = padded(offset + 69, 64)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_mission_name, tvbrange)
+    tvbrange = padded(offset + 133, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_step_type, tvbrange)
+    tvbrange = padded(offset + 134, 64)
+    subtree = tree:add_le(f.LEAF_MISSION_HEARTBEAT_V2_step_name, tvbrange)
 end
 -- dissect payload of message type LOWEHEISER_GOV_EFI
 function payload_fns.payload_10151(buffer, tree, msgid, offset, limit, pinfo)
