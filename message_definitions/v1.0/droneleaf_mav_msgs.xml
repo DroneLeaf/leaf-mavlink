@@ -242,10 +242,10 @@
       </entry>
     </enum>
     <enum name="LEAF_PRE_IDLE_CHECK_STATUS">
-      <entry value="0" name="OK">
+      <entry value="0" name="LEAF_PRE_IDLE_CHECK_STATUS_OK">
         <description>Pre-idle checks have passed</description>
       </entry>
-      <entry value="1" name="FAILED">
+      <entry value="1" name="LEAF_PRE_IDLE_CHECK_STATUS_FAILED">
         <description>Pre-idle checks have failed</description>
       </entry>
     </enum>
