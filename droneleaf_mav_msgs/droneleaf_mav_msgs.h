@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_DRONELEAF_MAV_MSGS.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -7754953989014778290
+#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -5040117209892629139
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,8 +38,8 @@ extern "C" {
 #define HAVE_ENUM_LEAF_AIRBORNE_STATUS
 typedef enum LEAF_AIRBORNE_STATUS
 {
-   ON_GROUND=0, /* Vehicle is on the ground | */
-   AIRBORNE=1, /* Vehicle is airborne | */
+   LEAF_AIRBORNE_STATUS_ON_GROUND=0, /* Vehicle is on the ground | */
+   LEAF_AIRBORNE_STATUS_AIRBORNE=1, /* Vehicle is airborne | */
    LEAF_AIRBORNE_STATUS_ENUM_END=2, /*  | */
 } LEAF_AIRBORNE_STATUS;
 #endif
@@ -49,9 +49,9 @@ typedef enum LEAF_AIRBORNE_STATUS
 #define HAVE_ENUM_LEAF_ARM_STAGE
 typedef enum LEAF_ARM_STAGE
 {
-   DISARMED=0, /* Vehicle is not armed | */
-   IDLING=1, /* Vehicle is in idle state | */
-   ARMED=2, /* Vehicle is armed | */
+   LEAF_ARM_STAGE_DISARMED=0, /* Vehicle is not armed | */
+   LEAF_ARM_STAGE_IDLING=1, /* Vehicle is in idle state | */
+   LEAF_ARM_STAGE_ARMED=2, /* Vehicle is armed | */
    LEAF_ARM_STAGE_ENUM_END=3, /*  | */
 } LEAF_ARM_STAGE;
 #endif

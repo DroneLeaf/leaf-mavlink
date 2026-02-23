@@ -4,21 +4,21 @@
   <version>1</version>
   <enums>
     <enum name="LEAF_AIRBORNE_STATUS">
-      <entry value="0" name="ON_GROUND">
+      <entry value="0" name="LEAF_AIRBORNE_STATUS_ON_GROUND">
         <description>Vehicle is on the ground</description>
       </entry>
-      <entry value="1" name="AIRBORNE">
+      <entry value="1" name="LEAF_AIRBORNE_STATUS_AIRBORNE">
         <description>Vehicle is airborne</description>
       </entry>
     </enum>
     <enum name="LEAF_ARM_STAGE">
-      <entry value="0" name="DISARMED">
+      <entry value="0" name="LEAF_ARM_STAGE_DISARMED">
         <description>Vehicle is not armed</description>
       </entry>
-      <entry value="1" name="IDLING">
+      <entry value="1" name="LEAF_ARM_STAGE_IDLING">
         <description>Vehicle is in idle state</description>
       </entry>
-      <entry value="2" name="ARMED">
+      <entry value="2" name="LEAF_ARM_STAGE_ARMED">
         <description>Vehicle is armed</description>
       </entry>
     </enum>
