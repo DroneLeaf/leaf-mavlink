@@ -8262,22 +8262,22 @@ enums["MOTION_PLATFORM_HEALTH"][4] = EnumEntry("MOTION_PLATFORM_HEALTH_ENUM_END"
 # LEAF_AIRBORNE_STATUS
 enums["LEAF_AIRBORNE_STATUS"] = Enum()
 enums["LEAF_AIRBORNE_STATUS"].bitmask = False
-ON_GROUND = 0
-enums["LEAF_AIRBORNE_STATUS"][0] = EnumEntry("ON_GROUND", """Vehicle is on the ground""")
-AIRBORNE = 1
-enums["LEAF_AIRBORNE_STATUS"][1] = EnumEntry("AIRBORNE", """Vehicle is airborne""")
+LEAF_AIRBORNE_STATUS_ON_GROUND = 0
+enums["LEAF_AIRBORNE_STATUS"][0] = EnumEntry("LEAF_AIRBORNE_STATUS_ON_GROUND", """Vehicle is on the ground""")
+LEAF_AIRBORNE_STATUS_AIRBORNE = 1
+enums["LEAF_AIRBORNE_STATUS"][1] = EnumEntry("LEAF_AIRBORNE_STATUS_AIRBORNE", """Vehicle is airborne""")
 LEAF_AIRBORNE_STATUS_ENUM_END = 2
 enums["LEAF_AIRBORNE_STATUS"][2] = EnumEntry("LEAF_AIRBORNE_STATUS_ENUM_END", """""")
 
 # LEAF_ARM_STAGE
 enums["LEAF_ARM_STAGE"] = Enum()
 enums["LEAF_ARM_STAGE"].bitmask = False
-DISARMED = 0
-enums["LEAF_ARM_STAGE"][0] = EnumEntry("DISARMED", """Vehicle is not armed""")
-IDLING = 1
-enums["LEAF_ARM_STAGE"][1] = EnumEntry("IDLING", """Vehicle is in idle state""")
-ARMED = 2
-enums["LEAF_ARM_STAGE"][2] = EnumEntry("ARMED", """Vehicle is armed""")
+LEAF_ARM_STAGE_DISARMED = 0
+enums["LEAF_ARM_STAGE"][0] = EnumEntry("LEAF_ARM_STAGE_DISARMED", """Vehicle is not armed""")
+LEAF_ARM_STAGE_IDLING = 1
+enums["LEAF_ARM_STAGE"][1] = EnumEntry("LEAF_ARM_STAGE_IDLING", """Vehicle is in idle state""")
+LEAF_ARM_STAGE_ARMED = 2
+enums["LEAF_ARM_STAGE"][2] = EnumEntry("LEAF_ARM_STAGE_ARMED", """Vehicle is armed""")
 LEAF_ARM_STAGE_ENUM_END = 3
 enums["LEAF_ARM_STAGE"][3] = EnumEntry("LEAF_ARM_STAGE_ENUM_END", """""")
 
@@ -8472,10 +8472,10 @@ enums["LEAF_MISSION_STEP_TYPE"][10] = EnumEntry("LEAF_MISSION_STEP_TYPE_ENUM_END
 # LEAF_PRE_IDLE_CHECK_STATUS
 enums["LEAF_PRE_IDLE_CHECK_STATUS"] = Enum()
 enums["LEAF_PRE_IDLE_CHECK_STATUS"].bitmask = False
-OK = 0
-enums["LEAF_PRE_IDLE_CHECK_STATUS"][0] = EnumEntry("OK", """Pre-idle checks have passed""")
-FAILED = 1
-enums["LEAF_PRE_IDLE_CHECK_STATUS"][1] = EnumEntry("FAILED", """Pre-idle checks have failed""")
+LEAF_PRE_IDLE_CHECK_STATUS_OK = 0
+enums["LEAF_PRE_IDLE_CHECK_STATUS"][0] = EnumEntry("LEAF_PRE_IDLE_CHECK_STATUS_OK", """Pre-idle checks have passed""")
+LEAF_PRE_IDLE_CHECK_STATUS_FAILED = 1
+enums["LEAF_PRE_IDLE_CHECK_STATUS"][1] = EnumEntry("LEAF_PRE_IDLE_CHECK_STATUS_FAILED", """Pre-idle checks have failed""")
 LEAF_PRE_IDLE_CHECK_STATUS_ENUM_END = 2
 enums["LEAF_PRE_IDLE_CHECK_STATUS"][2] = EnumEntry("LEAF_PRE_IDLE_CHECK_STATUS_ENUM_END", """""")
 
