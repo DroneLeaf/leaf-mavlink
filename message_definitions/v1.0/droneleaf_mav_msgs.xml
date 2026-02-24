@@ -271,6 +271,17 @@
         <description>Joystick is enabled only on pause</description>
       </entry>
     </enum>
+    <enum name="LEAF_GPS_MANAGER_STATUS">
+      <entry value="0" name="LEAF_GPS_MANAGER_STATUS_NO_GPS_DATA">
+        <description>No GPS data received from PX4 yet</description>
+      </entry>
+      <entry value="1" name="LEAF_GPS_MANAGER_STATUS_COMPUTING_ORIGIN_FROM_NED">
+        <description>GPS fix obtained — computing origin from NED + GPS position</description>
+      </entry>
+      <entry value="2" name="LEAF_GPS_MANAGER_STATUS_ORIGIN_SET">
+        <description>GPS origin is set and valid</description>
+      </entry>
+    </enum>
   </enums>
   <messages>
     <message id="77000" name="LEAF_MODE">
@@ -534,6 +545,13 @@
       <field type="char[64]" name="mission_name">The name of the mission</field>
       <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The number of missions in the queue</field>
       <field type="char[64]" name="step_name">The name of the current step</field>
+    </message>
+    <message id="77048" name="LEAF_GPS_ORIGIN_STATUS">
+      <description>GPS origin coordinates (lat/lon/alt) and GPS manager operational state</description>
+      <field type="int32_t" name="latitude" units="degE7">GPS origin latitude in degE7</field>
+      <field type="int32_t" name="longitude" units="degE7">GPS origin longitude in degE7</field>
+      <field type="int32_t" name="altitude" units="mm">GPS origin altitude in mm (positive up)</field>
+      <field type="uint8_t" name="manager_status" enum="LEAF_GPS_MANAGER_STATUS">GPS manager operational state</field>
     </message>
   </messages>
 </mavlink>

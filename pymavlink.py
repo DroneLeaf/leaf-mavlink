@@ -8503,6 +8503,18 @@ enums["JoystickMode"][2] = EnumEntry("ENABLED_ON_PAUSE", """Joystick is enabled 
 JoystickMode_ENUM_END = 3
 enums["JoystickMode"][3] = EnumEntry("JoystickMode_ENUM_END", """""")
 
+# LEAF_GPS_MANAGER_STATUS
+enums["LEAF_GPS_MANAGER_STATUS"] = Enum()
+enums["LEAF_GPS_MANAGER_STATUS"].bitmask = False
+LEAF_GPS_MANAGER_STATUS_NO_GPS_DATA = 0
+enums["LEAF_GPS_MANAGER_STATUS"][0] = EnumEntry("LEAF_GPS_MANAGER_STATUS_NO_GPS_DATA", """No GPS data received from PX4 yet""")
+LEAF_GPS_MANAGER_STATUS_COMPUTING_ORIGIN_FROM_NED = 1
+enums["LEAF_GPS_MANAGER_STATUS"][1] = EnumEntry("LEAF_GPS_MANAGER_STATUS_COMPUTING_ORIGIN_FROM_NED", """GPS fix obtained — computing origin from NED + GPS position""")
+LEAF_GPS_MANAGER_STATUS_ORIGIN_SET = 2
+enums["LEAF_GPS_MANAGER_STATUS"][2] = EnumEntry("LEAF_GPS_MANAGER_STATUS_ORIGIN_SET", """GPS origin is set and valid""")
+LEAF_GPS_MANAGER_STATUS_ENUM_END = 3
+enums["LEAF_GPS_MANAGER_STATUS"][3] = EnumEntry("LEAF_GPS_MANAGER_STATUS_ENUM_END", """""")
+
 # message IDs
 MAVLINK_MSG_ID_BAD_DATA = -1
 MAVLINK_MSG_ID_UNKNOWN = -2
@@ -8940,6 +8952,7 @@ MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT = 77044
 MAVLINK_MSG_ID_LEAF_SYS_STATUS = 77045
 MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW = 77046
 MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2 = 77047
+MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS = 77048
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -28992,6 +29005,48 @@ class MAVLink_leaf_mission_heartbeat_v2_message(MAVLink_message):
 setattr(MAVLink_leaf_mission_heartbeat_v2_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_gps_origin_status_message(MAVLink_message):
+    """
+    GPS origin coordinates (lat/lon/alt) and GPS manager operational
+    state
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS
+    msgname = "LEAF_GPS_ORIGIN_STATUS"
+    fieldnames = ["latitude", "longitude", "altitude", "manager_status"]
+    ordered_fieldnames = ["latitude", "longitude", "altitude", "manager_status"]
+    fieldtypes = ["int32_t", "int32_t", "int32_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {"manager_status": "LEAF_GPS_MANAGER_STATUS"}
+    fieldunits_by_name: Dict[str, str] = {"latitude": "degE7", "longitude": "degE7", "altitude": "mm"}
+    native_format = bytearray(b"<iiiB")
+    orders = [0, 1, 2, 3]
+    lengths = [1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0]
+    crc_extra = 225
+    unpacker = struct.Struct("<iiiB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, latitude: int, longitude: int, altitude: int, manager_status: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gps_origin_status_message.id, MAVLink_leaf_gps_origin_status_message.msgname)
+        self._fieldnames = MAVLink_leaf_gps_origin_status_message.fieldnames
+        self._instance_field = MAVLink_leaf_gps_origin_status_message.instance_field
+        self._instance_offset = MAVLink_leaf_gps_origin_status_message.instance_offset
+        self.latitude = latitude
+        self.longitude = longitude
+        self.altitude = altitude
+        self.manager_status = manager_status
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.latitude, self.longitude, self.altitude, self.manager_status), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gps_origin_status_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -29489,6 +29544,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_SYS_STATUS: MAVLink_leaf_sys_status_message,
     MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW: MAVLink_leaf_do_switch_mrft_yaw_message,
     MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2: MAVLink_leaf_mission_heartbeat_v2_message,
+    MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS: MAVLink_leaf_gps_origin_status_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -44724,6 +44780,30 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_mission_heartbeat_v2_encode(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name), force_mavlink1=force_mavlink1)
+
+    def leaf_gps_origin_status_encode(self, latitude: int, longitude: int, altitude: int, manager_status: int) -> MAVLink_leaf_gps_origin_status_message:
+        """
+        GPS origin coordinates (lat/lon/alt) and GPS manager operational state
+
+        latitude                  : GPS origin latitude in degE7 [degE7] (type:int32_t)
+        longitude                 : GPS origin longitude in degE7 [degE7] (type:int32_t)
+        altitude                  : GPS origin altitude in mm (positive up) [mm] (type:int32_t)
+        manager_status            : GPS manager operational state (type:uint8_t, values:LEAF_GPS_MANAGER_STATUS)
+
+        """
+        return MAVLink_leaf_gps_origin_status_message(latitude, longitude, altitude, manager_status)
+
+    def leaf_gps_origin_status_send(self, latitude: int, longitude: int, altitude: int, manager_status: int, force_mavlink1: bool = False) -> None:
+        """
+        GPS origin coordinates (lat/lon/alt) and GPS manager operational state
+
+        latitude                  : GPS origin latitude in degE7 [degE7] (type:int32_t)
+        longitude                 : GPS origin longitude in degE7 [degE7] (type:int32_t)
+        altitude                  : GPS origin altitude in mm (positive up) [mm] (type:int32_t)
+        manager_status            : GPS manager operational state (type:uint8_t, values:LEAF_GPS_MANAGER_STATUS)
+
+        """
+        self.send(self.leaf_gps_origin_status_encode(latitude, longitude, altitude, manager_status), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """
