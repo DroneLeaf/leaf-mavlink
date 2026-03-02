@@ -151,47 +151,6 @@
         <description>Learning all loops mode - no real-time tuning</description>
       </entry>
     </enum>
-    <enum name="LEAF_STATUS">
-      <entry value="0" name="LEAF_STATUS_READY_TO_LEARN">
-        <description>Leaf is ready to learn</description>
-      </entry>
-      <entry value="1" name="LEAF_STATUS_LEARNING">
-        <description>Leaf is learning</description>
-      </entry>
-      <entry value="2" name="LEAF_STATUS_READY_TO_FLY">
-        <description>Leaf is ready to fly</description>
-      </entry>
-      <entry value="3" name="LEAF_STATUS_TAKING_OFF">
-        <description>Leaf is taking off</description>
-      </entry>
-      <entry value="4" name="LEAF_STATUS_FLYING">
-        <description>Leaf is flying</description>
-      </entry>
-      <entry value="5" name="LEAF_STATUS_LANDING">
-        <description>Leaf is landing</description>
-      </entry>
-      <entry value="6" name="LEAF_STATUS_LANDED">
-        <description>Leaf has landed</description>
-      </entry>
-      <entry value="7" name="LEAF_STATUS_ARMED_IDLE">
-        <description>Leaf is in idle mode</description>
-      </entry>
-      <entry value="8" name="LEAF_STATUS_ARMED">
-        <description>Leaf is armed</description>
-      </entry>
-      <entry value="9" name="LEAF_STATUS_DISARMED">
-        <description>Leaf is disarmed</description>
-      </entry>
-      <entry value="10" name="LEAF_STATUS_NOT_READY">
-        <description>Leaf is not ready to fly yet</description>
-      </entry>
-      <entry value="20" name="LEAF_STATUS_MISSION_PAUSED">
-        <description>Leaf has paused the mission</description>
-      </entry>
-      <entry value="21" name="LEAF_STATUS_RETURNING_TO_BASE">
-        <description>Leaf is heading to base</description>
-      </entry>
-    </enum>
     <enum name="LEAF_PREDEFINED_ACTIONS_STATUS">
       <entry value="0" name="NOT_STARTED">
         <description>Predefined actions have not started</description>
@@ -293,10 +252,6 @@
       <field type="uint8_t" name="target_system">The system setting the mode</field>
       <field type="uint8_t" name="mode" enum="LEAF_MODE">The new leaf mode.</field>
     </message>
-    <message id="77002" name="LEAF_STATUS">
-      <description>The system status, as defined by enum LEAF_STATUS</description>
-      <field type="uint8_t" name="status" enum="LEAF_STATUS">The new leaf status.</field>
-    </message>
     <message id="77003" name="LEAF_DO_ARM">
       <description>Arms the leaf</description>
       <field type="uint8_t" name="target_system">The system needs to be armed</field>
@@ -370,7 +325,6 @@
     </message>
     <message id="77022" name="LEAF_HEARTBEAT">
       <description>The heartbeat message</description>
-      <field type="uint8_t" name="status" enum="LEAF_STATUS">The status of the system</field>
       <field type="uint8_t" name="mode" enum="LEAF_MODE">The mode of the system</field>
       <field type="char[64]" name="profile">The profile of the system</field>
       <field type="char[64]" name="version">The version of the system</field>
@@ -437,10 +391,6 @@
       <field type="float" name="y" units="rad">Y orientation in rad</field>
       <field type="float" name="z" units="rad">Z orientation in rad</field>
     </message>
-    <message id="77032" name="LEAF_QGC_RESERVED_MESSAGE_77032">
-      <description>Reserved message for QGC.</description>
-      <field type="uint8_t" name="reserved">Reserved field</field>
-    </message>
     <message id="77033" name="LEAF_ACK_MISSION_RUN">
       <description>Acknowledges that the mission run command has been received.</description>
       <field type="uint8_t" name="target_system">The system that received the mission run command</field>
@@ -462,10 +412,6 @@
       <field type="uint8_t" name="target_system">The system needs to execute a mission control command</field>
       <field type="uint8_t" name="cmd" enum="LEAF_MISSION_CONTROL_COMMAND">The mission control command to execute</field>
       <field type="char[64]" name="mission_id">The id of the mission to control</field>
-    </message>
-    <message id="77037" name="LEAF_QGC_RESERVED_MESSAGE_77037">
-      <description>Reserved message 77037</description>
-      <field type="uint8_t" name="reserved">Reserved field</field>
     </message>
     <message id="77038" name="LEAF_DO_EMERGENCY_RTL">
       <description>Commands the leaf to return to launch</description>

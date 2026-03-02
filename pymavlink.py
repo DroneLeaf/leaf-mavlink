@@ -8395,38 +8395,6 @@ enums["LEAF_MODE"][11] = EnumEntry("LEAF_MODE_LEARNING_FULL_DATA_COLLECTION", ""
 LEAF_MODE_ENUM_END = 12
 enums["LEAF_MODE"][12] = EnumEntry("LEAF_MODE_ENUM_END", """""")
 
-# LEAF_STATUS
-enums["LEAF_STATUS"] = Enum()
-enums["LEAF_STATUS"].bitmask = False
-LEAF_STATUS_READY_TO_LEARN = 0
-enums["LEAF_STATUS"][0] = EnumEntry("LEAF_STATUS_READY_TO_LEARN", """Leaf is ready to learn""")
-LEAF_STATUS_LEARNING = 1
-enums["LEAF_STATUS"][1] = EnumEntry("LEAF_STATUS_LEARNING", """Leaf is learning""")
-LEAF_STATUS_READY_TO_FLY = 2
-enums["LEAF_STATUS"][2] = EnumEntry("LEAF_STATUS_READY_TO_FLY", """Leaf is ready to fly""")
-LEAF_STATUS_TAKING_OFF = 3
-enums["LEAF_STATUS"][3] = EnumEntry("LEAF_STATUS_TAKING_OFF", """Leaf is taking off""")
-LEAF_STATUS_FLYING = 4
-enums["LEAF_STATUS"][4] = EnumEntry("LEAF_STATUS_FLYING", """Leaf is flying""")
-LEAF_STATUS_LANDING = 5
-enums["LEAF_STATUS"][5] = EnumEntry("LEAF_STATUS_LANDING", """Leaf is landing""")
-LEAF_STATUS_LANDED = 6
-enums["LEAF_STATUS"][6] = EnumEntry("LEAF_STATUS_LANDED", """Leaf has landed""")
-LEAF_STATUS_ARMED_IDLE = 7
-enums["LEAF_STATUS"][7] = EnumEntry("LEAF_STATUS_ARMED_IDLE", """Leaf is in idle mode""")
-LEAF_STATUS_ARMED = 8
-enums["LEAF_STATUS"][8] = EnumEntry("LEAF_STATUS_ARMED", """Leaf is armed""")
-LEAF_STATUS_DISARMED = 9
-enums["LEAF_STATUS"][9] = EnumEntry("LEAF_STATUS_DISARMED", """Leaf is disarmed""")
-LEAF_STATUS_NOT_READY = 10
-enums["LEAF_STATUS"][10] = EnumEntry("LEAF_STATUS_NOT_READY", """Leaf is not ready to fly yet""")
-LEAF_STATUS_MISSION_PAUSED = 20
-enums["LEAF_STATUS"][20] = EnumEntry("LEAF_STATUS_MISSION_PAUSED", """Leaf has paused the mission""")
-LEAF_STATUS_RETURNING_TO_BASE = 21
-enums["LEAF_STATUS"][21] = EnumEntry("LEAF_STATUS_RETURNING_TO_BASE", """Leaf is heading to base""")
-LEAF_STATUS_ENUM_END = 22
-enums["LEAF_STATUS"][22] = EnumEntry("LEAF_STATUS_ENUM_END", """""")
-
 # LEAF_PREDEFINED_ACTIONS_STATUS
 enums["LEAF_PREDEFINED_ACTIONS_STATUS"] = Enum()
 enums["LEAF_PREDEFINED_ACTIONS_STATUS"].bitmask = False
@@ -8910,7 +8878,6 @@ MAVLINK_MSG_ID_MOTION_CUE_EXTRA = 52504
 MAVLINK_MSG_ID_EYE_TRACKING_DATA = 52505
 MAVLINK_MSG_ID_LEAF_MODE = 77000
 MAVLINK_MSG_ID_LEAF_SET_MODE = 77001
-MAVLINK_MSG_ID_LEAF_STATUS = 77002
 MAVLINK_MSG_ID_LEAF_DO_ARM = 77003
 MAVLINK_MSG_ID_LEAF_DO_TAKEOFF = 77005
 MAVLINK_MSG_ID_LEAF_DO_LAND = 77006
@@ -8935,12 +8902,10 @@ MAVLINK_MSG_ID_LEAF_ACK_TERMINATE_EXTERNAL_TRAJECTORY_POS = 77028
 MAVLINK_MSG_ID_LEAF_ACK_TERMINATE_EXTERNAL_TRAJECTORY_ORI = 77029
 MAVLINK_MSG_ID_LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_POS = 77030
 MAVLINK_MSG_ID_LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_ORI = 77031
-MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77032 = 77032
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_RUN = 77033
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_COMPLETE = 77034
 MAVLINK_MSG_ID_LEAF_MISSION_STATUS = 77035
 MAVLINK_MSG_ID_LEAF_DO_QGC_MISSION_CONTROL_CMD = 77036
-MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77037 = 77037
 MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_RTL = 77038
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_PAUSE = 77039
 MAVLINK_MSG_ID_LEAF_ACK_MISSION_RESUME = 77040
@@ -27304,44 +27269,6 @@ class MAVLink_leaf_set_mode_message(MAVLink_message):
 setattr(MAVLink_leaf_set_mode_message, "name", mavlink_msg_deprecated_name_property())
 
 
-class MAVLink_leaf_status_message(MAVLink_message):
-    """
-    The system status, as defined by enum LEAF_STATUS
-    """
-
-    id = MAVLINK_MSG_ID_LEAF_STATUS
-    msgname = "LEAF_STATUS"
-    fieldnames = ["status"]
-    ordered_fieldnames = ["status"]
-    fieldtypes = ["uint8_t"]
-    fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"status": "LEAF_STATUS"}
-    fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<B")
-    orders = [0]
-    lengths = [1]
-    array_lengths = [0]
-    crc_extra = 121
-    unpacker = struct.Struct("<B")
-    instance_field = None
-    instance_offset = -1
-
-    def __init__(self, status: int):
-        MAVLink_message.__init__(self, MAVLink_leaf_status_message.id, MAVLink_leaf_status_message.msgname)
-        self._fieldnames = MAVLink_leaf_status_message.fieldnames
-        self._instance_field = MAVLink_leaf_status_message.instance_field
-        self._instance_offset = MAVLink_leaf_status_message.instance_offset
-        self.status = status
-
-    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.status), force_mavlink1=force_mavlink1)
-
-
-# Define name on the class for backwards compatibility (it is now msgname).
-# Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_leaf_status_message, "name", mavlink_msg_deprecated_name_property())
-
-
 class MAVLink_leaf_do_arm_message(MAVLink_message):
     """
     Arms the leaf
@@ -27899,27 +27826,26 @@ class MAVLink_leaf_heartbeat_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_HEARTBEAT
     msgname = "LEAF_HEARTBEAT"
-    fieldnames = ["status", "mode", "profile", "version"]
-    ordered_fieldnames = ["status", "mode", "profile", "version"]
-    fieldtypes = ["uint8_t", "uint8_t", "char", "char"]
+    fieldnames = ["mode", "profile", "version"]
+    ordered_fieldnames = ["mode", "profile", "version"]
+    fieldtypes = ["uint8_t", "char", "char"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"status": "LEAF_STATUS", "mode": "LEAF_MODE"}
+    fieldenums_by_name: Dict[str, str] = {"mode": "LEAF_MODE"}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<BBcc")
-    orders = [0, 1, 2, 3]
-    lengths = [1, 1, 1, 1]
-    array_lengths = [0, 0, 64, 64]
-    crc_extra = 7
-    unpacker = struct.Struct("<BB64s64s")
+    native_format = bytearray(b"<Bcc")
+    orders = [0, 1, 2]
+    lengths = [1, 1, 1]
+    array_lengths = [0, 64, 64]
+    crc_extra = 60
+    unpacker = struct.Struct("<B64s64s")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, status: int, mode: int, profile: bytes, version: bytes):
+    def __init__(self, mode: int, profile: bytes, version: bytes):
         MAVLink_message.__init__(self, MAVLink_leaf_heartbeat_message.id, MAVLink_leaf_heartbeat_message.msgname)
         self._fieldnames = MAVLink_leaf_heartbeat_message.fieldnames
         self._instance_field = MAVLink_leaf_heartbeat_message.instance_field
         self._instance_offset = MAVLink_leaf_heartbeat_message.instance_offset
-        self.status = status
         self.mode = mode
         self._profile_raw = profile
         self.profile = profile.split(b"\x00", 1)[0].decode("ascii", errors="replace")
@@ -27927,7 +27853,7 @@ class MAVLink_leaf_heartbeat_message(MAVLink_message):
         self.version = version.split(b"\x00", 1)[0].decode("ascii", errors="replace")
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.status, self.mode, self._profile_raw, self._version_raw), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.mode, self._profile_raw, self._version_raw), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -28304,44 +28230,6 @@ class MAVLink_leaf_external_trajectory_offset_enu_ori_message(MAVLink_message):
 setattr(MAVLink_leaf_external_trajectory_offset_enu_ori_message, "name", mavlink_msg_deprecated_name_property())
 
 
-class MAVLink_leaf_qgc_reserved_message_77032_message(MAVLink_message):
-    """
-    Reserved message for QGC.
-    """
-
-    id = MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77032
-    msgname = "LEAF_QGC_RESERVED_MESSAGE_77032"
-    fieldnames = ["reserved"]
-    ordered_fieldnames = ["reserved"]
-    fieldtypes = ["uint8_t"]
-    fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {}
-    fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<B")
-    orders = [0]
-    lengths = [1]
-    array_lengths = [0]
-    crc_extra = 90
-    unpacker = struct.Struct("<B")
-    instance_field = None
-    instance_offset = -1
-
-    def __init__(self, reserved: int):
-        MAVLink_message.__init__(self, MAVLink_leaf_qgc_reserved_message_77032_message.id, MAVLink_leaf_qgc_reserved_message_77032_message.msgname)
-        self._fieldnames = MAVLink_leaf_qgc_reserved_message_77032_message.fieldnames
-        self._instance_field = MAVLink_leaf_qgc_reserved_message_77032_message.instance_field
-        self._instance_offset = MAVLink_leaf_qgc_reserved_message_77032_message.instance_offset
-        self.reserved = reserved
-
-    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.reserved), force_mavlink1=force_mavlink1)
-
-
-# Define name on the class for backwards compatibility (it is now msgname).
-# Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_leaf_qgc_reserved_message_77032_message, "name", mavlink_msg_deprecated_name_property())
-
-
 class MAVLink_leaf_ack_mission_run_message(MAVLink_message):
     """
     Acknowledges that the mission run command has been received.
@@ -28502,44 +28390,6 @@ class MAVLink_leaf_do_qgc_mission_control_cmd_message(MAVLink_message):
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
 setattr(MAVLink_leaf_do_qgc_mission_control_cmd_message, "name", mavlink_msg_deprecated_name_property())
-
-
-class MAVLink_leaf_qgc_reserved_message_77037_message(MAVLink_message):
-    """
-    Reserved message 77037
-    """
-
-    id = MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77037
-    msgname = "LEAF_QGC_RESERVED_MESSAGE_77037"
-    fieldnames = ["reserved"]
-    ordered_fieldnames = ["reserved"]
-    fieldtypes = ["uint8_t"]
-    fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {}
-    fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<B")
-    orders = [0]
-    lengths = [1]
-    array_lengths = [0]
-    crc_extra = 219
-    unpacker = struct.Struct("<B")
-    instance_field = None
-    instance_offset = -1
-
-    def __init__(self, reserved: int):
-        MAVLink_message.__init__(self, MAVLink_leaf_qgc_reserved_message_77037_message.id, MAVLink_leaf_qgc_reserved_message_77037_message.msgname)
-        self._fieldnames = MAVLink_leaf_qgc_reserved_message_77037_message.fieldnames
-        self._instance_field = MAVLink_leaf_qgc_reserved_message_77037_message.instance_field
-        self._instance_offset = MAVLink_leaf_qgc_reserved_message_77037_message.instance_offset
-        self.reserved = reserved
-
-    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.reserved), force_mavlink1=force_mavlink1)
-
-
-# Define name on the class for backwards compatibility (it is now msgname).
-# Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_leaf_qgc_reserved_message_77037_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_leaf_do_emergency_rtl_message(MAVLink_message):
@@ -29416,7 +29266,6 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_EYE_TRACKING_DATA: MAVLink_eye_tracking_data_message,
     MAVLINK_MSG_ID_LEAF_MODE: MAVLink_leaf_mode_message,
     MAVLINK_MSG_ID_LEAF_SET_MODE: MAVLink_leaf_set_mode_message,
-    MAVLINK_MSG_ID_LEAF_STATUS: MAVLink_leaf_status_message,
     MAVLINK_MSG_ID_LEAF_DO_ARM: MAVLink_leaf_do_arm_message,
     MAVLINK_MSG_ID_LEAF_DO_TAKEOFF: MAVLink_leaf_do_takeoff_message,
     MAVLINK_MSG_ID_LEAF_DO_LAND: MAVLink_leaf_do_land_message,
@@ -29441,12 +29290,10 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_ACK_TERMINATE_EXTERNAL_TRAJECTORY_ORI: MAVLink_leaf_ack_terminate_external_trajectory_ori_message,
     MAVLINK_MSG_ID_LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_POS: MAVLink_leaf_external_trajectory_offset_enu_pos_message,
     MAVLINK_MSG_ID_LEAF_EXTERNAL_TRAJECTORY_OFFSET_ENU_ORI: MAVLink_leaf_external_trajectory_offset_enu_ori_message,
-    MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77032: MAVLink_leaf_qgc_reserved_message_77032_message,
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_RUN: MAVLink_leaf_ack_mission_run_message,
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_COMPLETE: MAVLink_leaf_ack_mission_complete_message,
     MAVLINK_MSG_ID_LEAF_MISSION_STATUS: MAVLink_leaf_mission_status_message,
     MAVLINK_MSG_ID_LEAF_DO_QGC_MISSION_CONTROL_CMD: MAVLink_leaf_do_qgc_mission_control_cmd_message,
-    MAVLINK_MSG_ID_LEAF_QGC_RESERVED_MESSAGE_77037: MAVLink_leaf_qgc_reserved_message_77037_message,
     MAVLINK_MSG_ID_LEAF_DO_EMERGENCY_RTL: MAVLink_leaf_do_emergency_rtl_message,
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_PAUSE: MAVLink_leaf_ack_mission_pause_message,
     MAVLINK_MSG_ID_LEAF_ACK_MISSION_RESUME: MAVLink_leaf_ack_mission_resume_message,
@@ -43765,24 +43612,6 @@ class MAVLink(object):
         """
         self.send(self.leaf_set_mode_encode(target_system, mode), force_mavlink1=force_mavlink1)
 
-    def leaf_status_encode(self, status: int) -> MAVLink_leaf_status_message:
-        """
-        The system status, as defined by enum LEAF_STATUS
-
-        status                    : The new leaf status. (type:uint8_t, values:LEAF_STATUS)
-
-        """
-        return MAVLink_leaf_status_message(status)
-
-    def leaf_status_send(self, status: int, force_mavlink1: bool = False) -> None:
-        """
-        The system status, as defined by enum LEAF_STATUS
-
-        status                    : The new leaf status. (type:uint8_t, values:LEAF_STATUS)
-
-        """
-        self.send(self.leaf_status_encode(status), force_mavlink1=force_mavlink1)
-
     def leaf_do_arm_encode(self, target_system: int, arm: int) -> MAVLink_leaf_do_arm_message:
         """
         Arms the leaf
@@ -44065,29 +43894,27 @@ class MAVLink(object):
         """
         self.send(self.leaf_mrft_status_encode(roll, pitch, alt, x, y), force_mavlink1=force_mavlink1)
 
-    def leaf_heartbeat_encode(self, status: int, mode: int, profile: bytes, version: bytes) -> MAVLink_leaf_heartbeat_message:
+    def leaf_heartbeat_encode(self, mode: int, profile: bytes, version: bytes) -> MAVLink_leaf_heartbeat_message:
         """
         The heartbeat message
 
-        status                    : The status of the system (type:uint8_t, values:LEAF_STATUS)
         mode                      : The mode of the system (type:uint8_t, values:LEAF_MODE)
         profile                   : The profile of the system (type:char)
         version                   : The version of the system (type:char)
 
         """
-        return MAVLink_leaf_heartbeat_message(status, mode, profile, version)
+        return MAVLink_leaf_heartbeat_message(mode, profile, version)
 
-    def leaf_heartbeat_send(self, status: int, mode: int, profile: bytes, version: bytes, force_mavlink1: bool = False) -> None:
+    def leaf_heartbeat_send(self, mode: int, profile: bytes, version: bytes, force_mavlink1: bool = False) -> None:
         """
         The heartbeat message
 
-        status                    : The status of the system (type:uint8_t, values:LEAF_STATUS)
         mode                      : The mode of the system (type:uint8_t, values:LEAF_MODE)
         profile                   : The profile of the system (type:char)
         version                   : The version of the system (type:char)
 
         """
-        self.send(self.leaf_heartbeat_encode(status, mode, profile, version), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_heartbeat_encode(mode, profile, version), force_mavlink1=force_mavlink1)
 
     def leaf_do_queue_external_trajectory_encode(self, target_system: int, queue: int, traj_id: int) -> MAVLink_leaf_do_queue_external_trajectory_message:
         """
@@ -44305,24 +44132,6 @@ class MAVLink(object):
         """
         self.send(self.leaf_external_trajectory_offset_enu_ori_encode(x, y, z), force_mavlink1=force_mavlink1)
 
-    def leaf_qgc_reserved_message_77032_encode(self, reserved: int) -> MAVLink_leaf_qgc_reserved_message_77032_message:
-        """
-        Reserved message for QGC.
-
-        reserved                  : Reserved field (type:uint8_t)
-
-        """
-        return MAVLink_leaf_qgc_reserved_message_77032_message(reserved)
-
-    def leaf_qgc_reserved_message_77032_send(self, reserved: int, force_mavlink1: bool = False) -> None:
-        """
-        Reserved message for QGC.
-
-        reserved                  : Reserved field (type:uint8_t)
-
-        """
-        self.send(self.leaf_qgc_reserved_message_77032_encode(reserved), force_mavlink1=force_mavlink1)
-
     def leaf_ack_mission_run_encode(self, target_system: int, status: int, mission_id: bytes) -> MAVLink_leaf_ack_mission_run_message:
         """
         Acknowledges that the mission run command has been received.
@@ -44406,24 +44215,6 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_do_qgc_mission_control_cmd_encode(target_system, cmd, mission_id), force_mavlink1=force_mavlink1)
-
-    def leaf_qgc_reserved_message_77037_encode(self, reserved: int) -> MAVLink_leaf_qgc_reserved_message_77037_message:
-        """
-        Reserved message 77037
-
-        reserved                  : Reserved field (type:uint8_t)
-
-        """
-        return MAVLink_leaf_qgc_reserved_message_77037_message(reserved)
-
-    def leaf_qgc_reserved_message_77037_send(self, reserved: int, force_mavlink1: bool = False) -> None:
-        """
-        Reserved message 77037
-
-        reserved                  : Reserved field (type:uint8_t)
-
-        """
-        self.send(self.leaf_qgc_reserved_message_77037_encode(reserved), force_mavlink1=force_mavlink1)
 
     def leaf_do_emergency_rtl_encode(self, target_system: int) -> MAVLink_leaf_do_emergency_rtl_message:
         """
