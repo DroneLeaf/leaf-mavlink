@@ -8491,17 +8491,17 @@ enums["LEAF_TAKEOFF_STATUS"][2] = EnumEntry("LEAF_TAKEOFF_COMPLETED", """Vehicle
 LEAF_TAKEOFF_STATUS_ENUM_END = 3
 enums["LEAF_TAKEOFF_STATUS"][3] = EnumEntry("LEAF_TAKEOFF_STATUS_ENUM_END", """""")
 
-# JoystickMode
-enums["JoystickMode"] = Enum()
-enums["JoystickMode"].bitmask = False
-DISABLED = 0
-enums["JoystickMode"][0] = EnumEntry("DISABLED", """Joystick is disabled""")
-ENABLED_ALWAYS = 1
-enums["JoystickMode"][1] = EnumEntry("ENABLED_ALWAYS", """Joystick is always enabled""")
-ENABLED_ON_PAUSE = 2
-enums["JoystickMode"][2] = EnumEntry("ENABLED_ON_PAUSE", """Joystick is enabled only on pause""")
-JoystickMode_ENUM_END = 3
-enums["JoystickMode"][3] = EnumEntry("JoystickMode_ENUM_END", """""")
+# JOYSTICK_MODE
+enums["JOYSTICK_MODE"] = Enum()
+enums["JOYSTICK_MODE"].bitmask = False
+JOYSTICK_MODE_DISABLED = 0
+enums["JOYSTICK_MODE"][0] = EnumEntry("JOYSTICK_MODE_DISABLED", """Joystick is disabled""")
+JOYSTICK_MODE_ENABLED_ALWAYS = 1
+enums["JOYSTICK_MODE"][1] = EnumEntry("JOYSTICK_MODE_ENABLED_ALWAYS", """Joystick is always enabled""")
+JOYSTICK_MODE_ENABLED_ON_PAUSE = 2
+enums["JOYSTICK_MODE"][2] = EnumEntry("JOYSTICK_MODE_ENABLED_ON_PAUSE", """Joystick is enabled only on pause""")
+JOYSTICK_MODE_ENUM_END = 3
+enums["JOYSTICK_MODE"][3] = EnumEntry("JOYSTICK_MODE_ENUM_END", """""")
 
 # LEAF_GPS_MANAGER_STATUS
 enums["LEAF_GPS_MANAGER_STATUS"] = Enum()
@@ -8921,7 +8921,6 @@ MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_PITCH = 77010
 MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_ALT = 77011
 MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_X = 77012
 MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_Y = 77013
-MAVLINK_MSG_ID_LEAF_SET_MISSION_STATE = 77015
 MAVLINK_MSG_ID_LEAF_SAY_TO_QGC = 77016
 MAVLINK_MSG_ID_LEAF_DO_ARM_IDLE = 77017
 MAVLINK_MSG_ID_LEAF_CLIENT_TAGNAME = 77018
@@ -27734,47 +27733,6 @@ class MAVLink_leaf_do_switch_mrft_y_message(MAVLink_message):
 setattr(MAVLink_leaf_do_switch_mrft_y_message, "name", mavlink_msg_deprecated_name_property())
 
 
-class MAVLink_leaf_set_mission_state_message(MAVLink_message):
-    """
-    Commands the leaf to set the mission state
-    """
-
-    id = MAVLINK_MSG_ID_LEAF_SET_MISSION_STATE
-    msgname = "LEAF_SET_MISSION_STATE"
-    fieldnames = ["target_system", "state", "mission_id"]
-    ordered_fieldnames = ["target_system", "state", "mission_id"]
-    fieldtypes = ["uint8_t", "uint8_t", "char"]
-    fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"state": "LEAF_MISSION_STATE"}
-    fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<BBc")
-    orders = [0, 1, 2]
-    lengths = [1, 1, 1]
-    array_lengths = [0, 0, 64]
-    crc_extra = 159
-    unpacker = struct.Struct("<BB64s")
-    instance_field = None
-    instance_offset = -1
-
-    def __init__(self, target_system: int, state: int, mission_id: bytes):
-        MAVLink_message.__init__(self, MAVLink_leaf_set_mission_state_message.id, MAVLink_leaf_set_mission_state_message.msgname)
-        self._fieldnames = MAVLink_leaf_set_mission_state_message.fieldnames
-        self._instance_field = MAVLink_leaf_set_mission_state_message.instance_field
-        self._instance_offset = MAVLink_leaf_set_mission_state_message.instance_offset
-        self.target_system = target_system
-        self.state = state
-        self._mission_id_raw = mission_id
-        self.mission_id = mission_id.split(b"\x00", 1)[0].decode("ascii", errors="replace")
-
-    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.state, self._mission_id_raw), force_mavlink1=force_mavlink1)
-
-
-# Define name on the class for backwards compatibility (it is now msgname).
-# Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_leaf_set_mission_state_message, "name", mavlink_msg_deprecated_name_property())
-
-
 class MAVLink_leaf_say_to_qgc_message(MAVLink_message):
     """
     Commands the leaf to say something to QGC
@@ -28478,7 +28436,7 @@ class MAVLink_leaf_mission_status_message(MAVLink_message):
     ordered_fieldnames = ["status", "joystick_mode"]
     fieldtypes = ["uint8_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"status": "LEAF_MISSION_STATE", "joystick_mode": "JoystickMode"}
+    fieldenums_by_name: Dict[str, str] = {"status": "LEAF_MISSION_STATE", "joystick_mode": "JOYSTICK_MODE"}
     fieldunits_by_name: Dict[str, str] = {}
     native_format = bytearray(b"<BB")
     orders = [0, 1]
@@ -28836,7 +28794,7 @@ class MAVLink_leaf_mission_heartbeat_message(MAVLink_message):
     ordered_fieldnames = ["mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status"]
     fieldtypes = ["uint8_t", "uint8_t", "char", "uint8_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JoystickMode", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS"}
+    fieldenums_by_name: Dict[str, str] = {"mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JOYSTICK_MODE", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS"}
     fieldunits_by_name: Dict[str, str] = {}
     native_format = bytearray(b"<BBcBB")
     orders = [0, 1, 2, 3, 4]
@@ -28967,7 +28925,7 @@ class MAVLink_leaf_mission_heartbeat_v2_message(MAVLink_message):
     ordered_fieldnames = ["LeafFC_mission_status", "joystick_mode", "mission_id", "queue_count", "predefined_actions_status", "SDK_status", "mission_name", "step_type", "step_name"]
     fieldtypes = ["uint8_t", "uint8_t", "char", "uint8_t", "uint8_t", "uint8_t", "char", "uint8_t", "char"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"LeafFC_mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JoystickMode", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS", "SDK_status": "LEAF_SDK_STATUS", "step_type": "LEAF_MISSION_STEP_TYPE"}
+    fieldenums_by_name: Dict[str, str] = {"LeafFC_mission_status": "LEAF_MISSION_STATE", "joystick_mode": "JOYSTICK_MODE", "predefined_actions_status": "LEAF_PREDEFINED_ACTIONS_STATUS", "SDK_status": "LEAF_SDK_STATUS", "step_type": "LEAF_MISSION_STEP_TYPE"}
     fieldunits_by_name: Dict[str, str] = {}
     native_format = bytearray(b"<BBcBBBcBc")
     orders = [0, 1, 2, 3, 4, 5, 6, 7, 8]
@@ -29513,7 +29471,6 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_ALT: MAVLink_leaf_do_switch_mrft_alt_message,
     MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_X: MAVLink_leaf_do_switch_mrft_x_message,
     MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_Y: MAVLink_leaf_do_switch_mrft_y_message,
-    MAVLINK_MSG_ID_LEAF_SET_MISSION_STATE: MAVLink_leaf_set_mission_state_message,
     MAVLINK_MSG_ID_LEAF_SAY_TO_QGC: MAVLink_leaf_say_to_qgc_message,
     MAVLINK_MSG_ID_LEAF_DO_ARM_IDLE: MAVLink_leaf_do_arm_idle_message,
     MAVLINK_MSG_ID_LEAF_CLIENT_TAGNAME: MAVLink_leaf_client_tagname_message,
@@ -44069,28 +44026,6 @@ class MAVLink(object):
         """
         self.send(self.leaf_do_switch_mrft_y_encode(target_system, enable), force_mavlink1=force_mavlink1)
 
-    def leaf_set_mission_state_encode(self, target_system: int, state: int, mission_id: bytes) -> MAVLink_leaf_set_mission_state_message:
-        """
-        Commands the leaf to set the mission state
-
-        target_system             : The system needs to set the mission state (type:uint8_t)
-        state                     : The mission state to set (type:uint8_t, values:LEAF_MISSION_STATE)
-        mission_id                : The id of the mission to control (type:char)
-
-        """
-        return MAVLink_leaf_set_mission_state_message(target_system, state, mission_id)
-
-    def leaf_set_mission_state_send(self, target_system: int, state: int, mission_id: bytes, force_mavlink1: bool = False) -> None:
-        """
-        Commands the leaf to set the mission state
-
-        target_system             : The system needs to set the mission state (type:uint8_t)
-        state                     : The mission state to set (type:uint8_t, values:LEAF_MISSION_STATE)
-        mission_id                : The id of the mission to control (type:char)
-
-        """
-        self.send(self.leaf_set_mission_state_encode(target_system, state, mission_id), force_mavlink1=force_mavlink1)
-
     def leaf_say_to_qgc_encode(self, target_system: int, content: bytes) -> MAVLink_leaf_say_to_qgc_message:
         """
         Commands the leaf to say something to QGC
@@ -44480,7 +44415,7 @@ class MAVLink(object):
         The mission manager status including mission state and joystick mode
 
         status                    : The current mission status. (type:uint8_t, values:LEAF_MISSION_STATE)
-        joystick_mode             : The current joystick mode. (type:uint8_t, values:JoystickMode)
+        joystick_mode             : The current joystick mode. (type:uint8_t, values:JOYSTICK_MODE)
 
         """
         return MAVLink_leaf_mission_status_message(status, joystick_mode)
@@ -44490,7 +44425,7 @@ class MAVLink(object):
         The mission manager status including mission state and joystick mode
 
         status                    : The current mission status. (type:uint8_t, values:LEAF_MISSION_STATE)
-        joystick_mode             : The current joystick mode. (type:uint8_t, values:JoystickMode)
+        joystick_mode             : The current joystick mode. (type:uint8_t, values:JOYSTICK_MODE)
 
         """
         self.send(self.leaf_mission_status_encode(status, joystick_mode), force_mavlink1=force_mavlink1)
@@ -44666,7 +44601,7 @@ class MAVLink(object):
         The mission heartbeat message
 
         mission_status            : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
-        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JOYSTICK_MODE)
         mission_id                : The id of the mission (type:char)
         queue_count               : The number of missions in the queue (type:uint8_t)
         predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
@@ -44679,7 +44614,7 @@ class MAVLink(object):
         The mission heartbeat message
 
         mission_status            : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
-        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JOYSTICK_MODE)
         mission_id                : The id of the mission (type:char)
         queue_count               : The number of missions in the queue (type:uint8_t)
         predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
@@ -44752,7 +44687,7 @@ class MAVLink(object):
         The mission heartbeat message
 
         LeafFC_mission_status        : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
-        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JOYSTICK_MODE)
         mission_id                : The id of the mission (type:char)
         queue_count               : The number of missions in the queue (type:uint8_t)
         predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)
@@ -44769,7 +44704,7 @@ class MAVLink(object):
         The mission heartbeat message
 
         LeafFC_mission_status        : LeafFC mission status (type:uint8_t, values:LEAF_MISSION_STATE)
-        joystick_mode             : The joystick mode (type:uint8_t, values:JoystickMode)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JOYSTICK_MODE)
         mission_id                : The id of the mission (type:char)
         queue_count               : The number of missions in the queue (type:uint8_t)
         predefined_actions_status        : The predefined actions status (type:uint8_t, values:LEAF_PREDEFINED_ACTIONS_STATUS)

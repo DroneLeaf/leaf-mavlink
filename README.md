@@ -32,6 +32,41 @@ You can then build the MAVLink2 C-library for `message_definitions/v1.0/common.x
 python3 -m pymavlink.tools.mavgen --lang=C --wire-protocol=2.0 --output=generated/include/mavlink/v2.0 message_definitions/v1.0/common.xml
 ```
 
+### Using Python and MAVLink 2.0
+
+- **Enable MAVLink 2.0:** add `MAVLINK20=1` (or `MAVLINK20=true`) to a `.env` file in your project root, and ensure your runtime loads that file (for example via `export` in your shell, docker-compose env, direnv, or python-dotenv).
+
+- **Generate C and Python bindings (standard leaf method):**
+
+```bash
+python3 -m pymavlink.tools.mavgen --lang=C --wire-protocol=2.0 --output=. message_definitions/v1.0/all.xml
+python3 -m pymavlink.tools.mavgen --lang=Python --wire-protocol=2.0 --output=pymavlink message_definitions/v1.0/all.xml
+```
+
+- **Install / build `pymavlink` so the generated Python dialects are available:**
+
+```bash
+cd /home/droneleaf/petal-app-manager-dev/petal-app-manager/
+pdm install -G dev
+```
+
+This will make `pymavlink.dialects.v20.<dialect>` available so tools that call `set_dialect()` will pick up the MAVLink 2.0 dialects.
+
+<!-- for manual generation of dialects, run the following bash in mavlink root directory:
+
+for xml in message_definitions/v1.0/*.xml; do name=$(basename "$xml" .xml); echo "Generating $name..."; python3 -m pymavlink.tools.mavgen --lang=Python --wire-protocol=2.0 --output="pymavlink/dialects/v20/$name" "$xml" 2>&1 | tail -1; done
+Verified import functionality after generating all dialects
+
+ -->
+### Wireshark plugin
+
+Ensure the MAVLink code in your software stack is up-to-date, then update the local Wireshark plugin using the helper:
+
+```bash
+hear-cli local_machine run_program --p mavlink_update_wireshark_plugin
+```
+
+
 ### Use from cmake
 
 To include the headers in cmake, install them locally, e.g. into the directory `install`:
