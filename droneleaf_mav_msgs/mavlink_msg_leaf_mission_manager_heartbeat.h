@@ -5,7 +5,7 @@
 
 
 typedef struct __mavlink_leaf_mission_manager_heartbeat_t {
- uint8_t LeafFC_mission_status; /*<  LeafFC mission status*/
+ uint8_t LeafFC_mission_manager_status; /*<  LeafFC mission status*/
  uint8_t joystick_mode; /*<  The joystick mode*/
  char mission_id[64]; /*<  The id of the mission*/
  uint8_t queue_count; /*<  The number of missions in the queue*/
@@ -21,8 +21,8 @@ typedef struct __mavlink_leaf_mission_manager_heartbeat_t {
 #define MAVLINK_MSG_ID_77047_LEN 198
 #define MAVLINK_MSG_ID_77047_MIN_LEN 198
 
-#define MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_CRC 207
-#define MAVLINK_MSG_ID_77047_CRC 207
+#define MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_CRC 223
+#define MAVLINK_MSG_ID_77047_CRC 223
 
 #define MAVLINK_MSG_LEAF_MISSION_MANAGER_HEARTBEAT_FIELD_MISSION_ID_LEN 64
 #define MAVLINK_MSG_LEAF_MISSION_MANAGER_HEARTBEAT_FIELD_MISSION_NAME_LEN 64
@@ -33,7 +33,7 @@ typedef struct __mavlink_leaf_mission_manager_heartbeat_t {
     77047, \
     "LEAF_MISSION_MANAGER_HEARTBEAT", \
     9, \
-    {  { "LeafFC_mission_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_mission_manager_heartbeat_t, LeafFC_mission_status) }, \
+    {  { "LeafFC_mission_manager_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_mission_manager_heartbeat_t, LeafFC_mission_manager_status) }, \
          { "joystick_mode", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_leaf_mission_manager_heartbeat_t, joystick_mode) }, \
          { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 2, offsetof(mavlink_leaf_mission_manager_heartbeat_t, mission_id) }, \
          { "queue_count", NULL, MAVLINK_TYPE_UINT8_T, 0, 66, offsetof(mavlink_leaf_mission_manager_heartbeat_t, queue_count) }, \
@@ -48,7 +48,7 @@ typedef struct __mavlink_leaf_mission_manager_heartbeat_t {
 #define MAVLINK_MESSAGE_INFO_LEAF_MISSION_MANAGER_HEARTBEAT { \
     "LEAF_MISSION_MANAGER_HEARTBEAT", \
     9, \
-    {  { "LeafFC_mission_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_mission_manager_heartbeat_t, LeafFC_mission_status) }, \
+    {  { "LeafFC_mission_manager_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_leaf_mission_manager_heartbeat_t, LeafFC_mission_manager_status) }, \
          { "joystick_mode", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_leaf_mission_manager_heartbeat_t, joystick_mode) }, \
          { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 2, offsetof(mavlink_leaf_mission_manager_heartbeat_t, mission_id) }, \
          { "queue_count", NULL, MAVLINK_TYPE_UINT8_T, 0, 66, offsetof(mavlink_leaf_mission_manager_heartbeat_t, queue_count) }, \
@@ -67,7 +67,7 @@ typedef struct __mavlink_leaf_mission_manager_heartbeat_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param LeafFC_mission_status  LeafFC mission status
+ * @param LeafFC_mission_manager_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -79,11 +79,11 @@ typedef struct __mavlink_leaf_mission_manager_heartbeat_t {
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t LeafFC_mission_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
+                               uint8_t LeafFC_mission_manager_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN];
-    _mav_put_uint8_t(buf, 0, LeafFC_mission_status);
+    _mav_put_uint8_t(buf, 0, LeafFC_mission_manager_status);
     _mav_put_uint8_t(buf, 1, joystick_mode);
     _mav_put_uint8_t(buf, 66, queue_count);
     _mav_put_uint8_t(buf, 67, predefined_actions_status);
@@ -95,7 +95,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack(uint8_t s
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN);
 #else
     mavlink_leaf_mission_manager_heartbeat_t packet;
-    packet.LeafFC_mission_status = LeafFC_mission_status;
+    packet.LeafFC_mission_manager_status = LeafFC_mission_manager_status;
     packet.joystick_mode = joystick_mode;
     packet.queue_count = queue_count;
     packet.predefined_actions_status = predefined_actions_status;
@@ -118,7 +118,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack(uint8_t s
  * @param status MAVLink status structure
  * @param msg The MAVLink message to compress the data into
  *
- * @param LeafFC_mission_status  LeafFC mission status
+ * @param LeafFC_mission_manager_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -130,11 +130,11 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack(uint8_t s
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               uint8_t LeafFC_mission_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
+                               uint8_t LeafFC_mission_manager_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN];
-    _mav_put_uint8_t(buf, 0, LeafFC_mission_status);
+    _mav_put_uint8_t(buf, 0, LeafFC_mission_manager_status);
     _mav_put_uint8_t(buf, 1, joystick_mode);
     _mav_put_uint8_t(buf, 66, queue_count);
     _mav_put_uint8_t(buf, 67, predefined_actions_status);
@@ -146,7 +146,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack_status(ui
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN);
 #else
     mavlink_leaf_mission_manager_heartbeat_t packet;
-    packet.LeafFC_mission_status = LeafFC_mission_status;
+    packet.LeafFC_mission_manager_status = LeafFC_mission_manager_status;
     packet.joystick_mode = joystick_mode;
     packet.queue_count = queue_count;
     packet.predefined_actions_status = predefined_actions_status;
@@ -172,7 +172,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack_status(ui
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param LeafFC_mission_status  LeafFC mission status
+ * @param LeafFC_mission_manager_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -185,11 +185,11 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack_status(ui
  */
 static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t LeafFC_mission_status,uint8_t joystick_mode,const char *mission_id,uint8_t queue_count,uint8_t predefined_actions_status,uint8_t SDK_status,const char *mission_name,uint8_t step_type,const char *step_name)
+                                   uint8_t LeafFC_mission_manager_status,uint8_t joystick_mode,const char *mission_id,uint8_t queue_count,uint8_t predefined_actions_status,uint8_t SDK_status,const char *mission_name,uint8_t step_type,const char *step_name)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN];
-    _mav_put_uint8_t(buf, 0, LeafFC_mission_status);
+    _mav_put_uint8_t(buf, 0, LeafFC_mission_manager_status);
     _mav_put_uint8_t(buf, 1, joystick_mode);
     _mav_put_uint8_t(buf, 66, queue_count);
     _mav_put_uint8_t(buf, 67, predefined_actions_status);
@@ -201,7 +201,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack_chan(uint
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN);
 #else
     mavlink_leaf_mission_manager_heartbeat_t packet;
-    packet.LeafFC_mission_status = LeafFC_mission_status;
+    packet.LeafFC_mission_manager_status = LeafFC_mission_manager_status;
     packet.joystick_mode = joystick_mode;
     packet.queue_count = queue_count;
     packet.predefined_actions_status = predefined_actions_status;
@@ -227,7 +227,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_pack_chan(uint
  */
 static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_mission_manager_heartbeat_t* leaf_mission_manager_heartbeat)
 {
-    return mavlink_msg_leaf_mission_manager_heartbeat_pack(system_id, component_id, msg, leaf_mission_manager_heartbeat->LeafFC_mission_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
+    return mavlink_msg_leaf_mission_manager_heartbeat_pack(system_id, component_id, msg, leaf_mission_manager_heartbeat->LeafFC_mission_manager_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
 }
 
 /**
@@ -241,7 +241,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_encode(uint8_t
  */
 static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_mission_manager_heartbeat_t* leaf_mission_manager_heartbeat)
 {
-    return mavlink_msg_leaf_mission_manager_heartbeat_pack_chan(system_id, component_id, chan, msg, leaf_mission_manager_heartbeat->LeafFC_mission_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
+    return mavlink_msg_leaf_mission_manager_heartbeat_pack_chan(system_id, component_id, chan, msg, leaf_mission_manager_heartbeat->LeafFC_mission_manager_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
 }
 
 /**
@@ -255,14 +255,14 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_encode_chan(ui
  */
 static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_mission_manager_heartbeat_t* leaf_mission_manager_heartbeat)
 {
-    return mavlink_msg_leaf_mission_manager_heartbeat_pack_status(system_id, component_id, _status, msg,  leaf_mission_manager_heartbeat->LeafFC_mission_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
+    return mavlink_msg_leaf_mission_manager_heartbeat_pack_status(system_id, component_id, _status, msg,  leaf_mission_manager_heartbeat->LeafFC_mission_manager_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
 }
 
 /**
  * @brief Send a leaf_mission_manager_heartbeat message
  * @param chan MAVLink channel to send the message
  *
- * @param LeafFC_mission_status  LeafFC mission status
+ * @param LeafFC_mission_manager_status  LeafFC mission status
  * @param joystick_mode  The joystick mode
  * @param mission_id  The id of the mission
  * @param queue_count  The number of missions in the queue
@@ -274,11 +274,11 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_encode_status(
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_mission_manager_heartbeat_send(mavlink_channel_t chan, uint8_t LeafFC_mission_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
+static inline void mavlink_msg_leaf_mission_manager_heartbeat_send(mavlink_channel_t chan, uint8_t LeafFC_mission_manager_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN];
-    _mav_put_uint8_t(buf, 0, LeafFC_mission_status);
+    _mav_put_uint8_t(buf, 0, LeafFC_mission_manager_status);
     _mav_put_uint8_t(buf, 1, joystick_mode);
     _mav_put_uint8_t(buf, 66, queue_count);
     _mav_put_uint8_t(buf, 67, predefined_actions_status);
@@ -290,7 +290,7 @@ static inline void mavlink_msg_leaf_mission_manager_heartbeat_send(mavlink_chann
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT, buf, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_CRC);
 #else
     mavlink_leaf_mission_manager_heartbeat_t packet;
-    packet.LeafFC_mission_status = LeafFC_mission_status;
+    packet.LeafFC_mission_manager_status = LeafFC_mission_manager_status;
     packet.joystick_mode = joystick_mode;
     packet.queue_count = queue_count;
     packet.predefined_actions_status = predefined_actions_status;
@@ -311,7 +311,7 @@ static inline void mavlink_msg_leaf_mission_manager_heartbeat_send(mavlink_chann
 static inline void mavlink_msg_leaf_mission_manager_heartbeat_send_struct(mavlink_channel_t chan, const mavlink_leaf_mission_manager_heartbeat_t* leaf_mission_manager_heartbeat)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_mission_manager_heartbeat_send(chan, leaf_mission_manager_heartbeat->LeafFC_mission_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
+    mavlink_msg_leaf_mission_manager_heartbeat_send(chan, leaf_mission_manager_heartbeat->LeafFC_mission_manager_status, leaf_mission_manager_heartbeat->joystick_mode, leaf_mission_manager_heartbeat->mission_id, leaf_mission_manager_heartbeat->queue_count, leaf_mission_manager_heartbeat->predefined_actions_status, leaf_mission_manager_heartbeat->SDK_status, leaf_mission_manager_heartbeat->mission_name, leaf_mission_manager_heartbeat->step_type, leaf_mission_manager_heartbeat->step_name);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT, (const char *)leaf_mission_manager_heartbeat, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_CRC);
 #endif
@@ -325,11 +325,11 @@ static inline void mavlink_msg_leaf_mission_manager_heartbeat_send_struct(mavlin
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_mission_manager_heartbeat_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t LeafFC_mission_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
+static inline void mavlink_msg_leaf_mission_manager_heartbeat_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t LeafFC_mission_manager_status, uint8_t joystick_mode, const char *mission_id, uint8_t queue_count, uint8_t predefined_actions_status, uint8_t SDK_status, const char *mission_name, uint8_t step_type, const char *step_name)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
-    _mav_put_uint8_t(buf, 0, LeafFC_mission_status);
+    _mav_put_uint8_t(buf, 0, LeafFC_mission_manager_status);
     _mav_put_uint8_t(buf, 1, joystick_mode);
     _mav_put_uint8_t(buf, 66, queue_count);
     _mav_put_uint8_t(buf, 67, predefined_actions_status);
@@ -341,7 +341,7 @@ static inline void mavlink_msg_leaf_mission_manager_heartbeat_send_buf(mavlink_m
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT, buf, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_LEN, MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT_CRC);
 #else
     mavlink_leaf_mission_manager_heartbeat_t *packet = (mavlink_leaf_mission_manager_heartbeat_t *)msgbuf;
-    packet->LeafFC_mission_status = LeafFC_mission_status;
+    packet->LeafFC_mission_manager_status = LeafFC_mission_manager_status;
     packet->joystick_mode = joystick_mode;
     packet->queue_count = queue_count;
     packet->predefined_actions_status = predefined_actions_status;
@@ -361,11 +361,11 @@ static inline void mavlink_msg_leaf_mission_manager_heartbeat_send_buf(mavlink_m
 
 
 /**
- * @brief Get field LeafFC_mission_status from leaf_mission_manager_heartbeat message
+ * @brief Get field LeafFC_mission_manager_status from leaf_mission_manager_heartbeat message
  *
  * @return  LeafFC mission status
  */
-static inline uint8_t mavlink_msg_leaf_mission_manager_heartbeat_get_LeafFC_mission_status(const mavlink_message_t* msg)
+static inline uint8_t mavlink_msg_leaf_mission_manager_heartbeat_get_LeafFC_mission_manager_status(const mavlink_message_t* msg)
 {
     return _MAV_RETURN_uint8_t(msg,  0);
 }
@@ -459,7 +459,7 @@ static inline uint16_t mavlink_msg_leaf_mission_manager_heartbeat_get_step_name(
 static inline void mavlink_msg_leaf_mission_manager_heartbeat_decode(const mavlink_message_t* msg, mavlink_leaf_mission_manager_heartbeat_t* leaf_mission_manager_heartbeat)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    leaf_mission_manager_heartbeat->LeafFC_mission_status = mavlink_msg_leaf_mission_manager_heartbeat_get_LeafFC_mission_status(msg);
+    leaf_mission_manager_heartbeat->LeafFC_mission_manager_status = mavlink_msg_leaf_mission_manager_heartbeat_get_LeafFC_mission_manager_status(msg);
     leaf_mission_manager_heartbeat->joystick_mode = mavlink_msg_leaf_mission_manager_heartbeat_get_joystick_mode(msg);
     mavlink_msg_leaf_mission_manager_heartbeat_get_mission_id(msg, leaf_mission_manager_heartbeat->mission_id);
     leaf_mission_manager_heartbeat->queue_count = mavlink_msg_leaf_mission_manager_heartbeat_get_queue_count(msg);
