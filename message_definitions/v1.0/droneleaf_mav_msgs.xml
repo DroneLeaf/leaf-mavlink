@@ -468,7 +468,7 @@
     </message>
     <message id="77047" name="LEAF_MISSION_MANAGER_HEARTBEAT">
       <description>The mission heartbeat message</description>
-      <field type="uint8_t" name="LeafFC_mission_status" enum="LEAF_MISSION_MANAGER_STATE">LeafFC mission status</field>
+      <field type="uint8_t" name="LeafFC_mission_manager_status" enum="LEAF_MISSION_MANAGER_STATE">LeafFC mission status</field>
       <field type="uint8_t" name="joystick_mode" enum="JOYSTICK_MODE">The joystick mode</field>
       <field type="char[64]" name="mission_id">The id of the mission</field>
       <field type="uint8_t" name="queue_count">The number of missions in the queue</field>
