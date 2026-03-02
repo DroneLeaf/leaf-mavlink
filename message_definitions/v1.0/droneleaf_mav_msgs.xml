@@ -346,12 +346,6 @@
       <field type="uint8_t" name="target_system">The system needs to switch to MRFT y controller</field>
       <field type="uint8_t" name="enable">1 to switch on, 0 to switch back off</field>
     </message>
-    <message id="77015" name="LEAF_SET_MISSION_STATE">
-      <description>Commands the leaf to set the mission state</description>
-      <field type="uint8_t" name="target_system">The system needs to set the mission state</field>
-      <field type="uint8_t" name="state" enum="LEAF_MISSION_STATE">The mission state to set</field>
-      <field type="char[64]" name="mission_id">The id of the mission to control</field>
-    </message>
     <message id="77016" name="LEAF_SAY_TO_QGC">
       <description>Commands the leaf to say something to QGC</description>
       <field type="uint8_t" name="target_system">The system needs to say something to QGC</field>
