@@ -3216,9 +3216,6 @@ local enumEntryName = {
     ["LEAF_SDK_STATUS"] = {
         [0] = "LEAF_SDK_STATUS_HEALTHY",
         [1] = "LEAF_SDK_STATUS_UNHEALTHY",
-        [2] = "LEAF_SDK_STATUS_JOYSTICK_MISMATCH",
-        [3] = "LEAF_SDK_STATUS_JOYSTICK_TIMEOUT",
-        [4] = "LEAF_SDK_STATUS_MISSION_STATE_TIMEOUT",
     },
     ["LEAF_MODE"] = {
         [0] = "LEAF_MODE_RC_Stabilized",

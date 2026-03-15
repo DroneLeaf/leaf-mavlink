@@ -69,34 +69,52 @@
     </enum>
     <enum name="LEAF_MISSION_MANAGER_STATE">
       <entry value="0" name="LEAF_MISSION_MANAGER_STATE_IDLE">
-        <description>Queue is empty, no mission loaded</description>
+        <description>No mission is active</description>
       </entry>
-      <entry value="1" name="LEAF_MISSION_MANAGER_STATE_READY">
-        <description>Current mission is ready to execute</description>
+      <entry value="1" name="LEAF_MISSION_MANAGER_STATE_EXECUTING">
+        <description>A mission is currently executing</description>
       </entry>
-      <entry value="2" name="LEAF_MISSION_MANAGER_STATE_RUNNING">
-        <description>Current mission is running</description>
+      <entry value="2" name="LEAF_MISSION_MANAGER_STATE_PAUSED">
+        <description>A mission is loaded and paused</description>
       </entry>
-      <entry value="3" name="LEAF_MISSION_MANAGER_STATE_SCHEDULED_PAUSE">
-        <description>Current mission is running but has a scheduled pause</description>
+    </enum>
+    <enum name="LEAF_MISSION_PAUSE_STAGE">
+      <entry value="0" name="LEAF_MISSION_PAUSE_STAGE_NONE">
+        <description>Not paused and no pause scheduled</description>
       </entry>
-      <entry value="4" name="LEAF_MISSION_MANAGER_STATE_PAUSED_MID_STEP">
-        <description>Current mission is paused mid-step</description>
+      <entry value="1" name="LEAF_MISSION_PAUSE_STAGE_SCHEDULED">
+        <description>A pause is scheduled but not yet active</description>
       </entry>
-      <entry value="5" name="LEAF_MISSION_MANAGER_STATE_PAUSED_BETWEEN_STEPS">
-        <description>Current mission is paused between steps</description>
+      <entry value="2" name="LEAF_MISSION_PAUSE_STAGE_BETWEEN_STEPS">
+        <description>Paused between two steps</description>
       </entry>
-      <entry value="6" name="LEAF_MISSION_MANAGER_STATE_COMPLETED">
-        <description>Current mission completed successfully</description>
+      <entry value="3" name="LEAF_MISSION_PAUSE_STAGE_MID_STEP">
+        <description>Paused in the middle of an executing step</description>
       </entry>
-      <entry value="7" name="LEAF_MISSION_MANAGER_STATE_FAILED">
-        <description>Current mission failed</description>
+    </enum>
+    <enum name="LEAF_QUEUE_STATE">
+      <entry value="0" name="LEAF_QUEUE_STATE_EMPTY">
+        <description>No missions in the queue</description>
       </entry>
-      <entry value="8" name="LEAF_MISSION_MANAGER_STATE_CANCELLED">
-        <description>Current mission was cancelled</description>
+      <entry value="1" name="LEAF_QUEUE_STATE_PARTIAL">
+        <description>Queue has missions but is not full</description>
       </entry>
-      <entry value="9" name="LEAF_MISSION_MANAGER_STATE_SAFETY">
-        <description>Critical safety state, FC decides what to do</description>
+      <entry value="2" name="LEAF_QUEUE_STATE_FULL">
+        <description>Queue is at maximum capacity</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_MISSION_COMPLETION_STATE">
+      <entry value="0" name="LEAF_MISSION_COMPLETION_STATE_NONE">
+        <description>No previous mission, or mission has not completed yet</description>
+      </entry>
+      <entry value="1" name="LEAF_MISSION_COMPLETION_STATE_SUCCESS">
+        <description>Last mission completed successfully</description>
+      </entry>
+      <entry value="2" name="LEAF_MISSION_COMPLETION_STATE_ABORTED">
+        <description>Last mission was aborted</description>
+      </entry>
+      <entry value="3" name="LEAF_MISSION_COMPLETION_STATE_FAILED">
+        <description>Last mission failed</description>
       </entry>
     </enum>
     <enum name="LEAF_SDK_STATUS">
@@ -105,15 +123,6 @@
       </entry>
       <entry value="1" name="LEAF_SDK_STATUS_UNHEALTHY">
         <description>SDK is abnormally unhealthy</description>
-      </entry>
-      <entry value="2" name="LEAF_SDK_STATUS_JOYSTICK_MISMATCH">
-        <description>FC reported joystick mode does not match the requested mode</description>
-      </entry>
-      <entry value="3" name="LEAF_SDK_STATUS_JOYSTICK_TIMEOUT">
-        <description>FC did not confirm joystick mode change within timeout</description>
-      </entry>
-      <entry value="4" name="LEAF_SDK_STATUS_MISSION_STATE_TIMEOUT">
-        <description>FC did not confirm mission state transition within timeout</description>
       </entry>
     </enum>
     <enum name="LEAF_MODE">
@@ -151,21 +160,15 @@
         <description>Learning all loops mode - no real-time tuning</description>
       </entry>
     </enum>
-    <enum name="LEAF_PREDEFINED_ACTIONS_STATUS">
-      <entry value="0" name="NOT_STARTED">
-        <description>Predefined actions have not started</description>
+    <enum name="LEAF_MISSION_TYPE">
+      <entry value="0" name="LEAF_MISSION_TYPE_LEAF_SCRIPT">
+        <description>Mission loaded from a LeafScript file</description>
       </entry>
-      <entry value="1" name="TAKING_OFF">
-        <description>Predefined actions are taking off</description>
+      <entry value="1" name="LEAF_MISSION_TYPE_QGC">
+        <description>Mission loaded from a QGroundControl plan</description>
       </entry>
-      <entry value="2" name="LANDING">
-        <description>Predefined actions are landing</description>
-      </entry>
-      <entry value="3" name="RETURNING_TO_LAUNCH">
-        <description>Predefined actions are returning to launch</description>
-      </entry>
-      <entry value="4" name="GOTO_XYZ">
-        <description>Going to single location</description>
+      <entry value="2" name="LEAF_MISSION_TYPE_INTERACTIVE_MISSION">
+        <description>Mission created interactively at runtime</description>
       </entry>
     </enum>
     <enum name="LEAF_MISSION_STEP_TYPE">
@@ -391,17 +394,6 @@
       <field type="float" name="y" units="rad">Y orientation in rad</field>
       <field type="float" name="z" units="rad">Z orientation in rad</field>
     </message>
-    <message id="77033" name="LEAF_ACK_MISSION_RUN">
-      <description>Acknowledges that the mission run command has been received.</description>
-      <field type="uint8_t" name="target_system">The system that received the mission run command</field>
-      <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
-      <field type="char[64]" name="mission_id">The id of the mission</field>
-    </message>
-    <message id="77034" name="LEAF_ACK_MISSION_COMPLETE">
-      <description>Notifies the leaf that the mission has been completed.</description>
-      <field type="uint8_t" name="target_system">The system that completed the mission</field>
-      <field type="char[64]" name="mission_id">The id of the completed mission</field>
-    </message>
     <message id="77035" name="LEAF_MISSION_MANAGER_STATUS">
       <description>The mission manager status including mission state and joystick mode</description>
       <field type="uint8_t" name="status" enum="LEAF_MISSION_MANAGER_STATE">The current mission status.</field>
@@ -416,24 +408,6 @@
     <message id="77038" name="LEAF_DO_EMERGENCY_RTL">
       <description>Commands the leaf to return to launch</description>
       <field type="uint8_t" name="target_system">The system needs to execute a control command</field>
-    </message>
-    <message id="77039" name="LEAF_ACK_MISSION_PAUSE">
-      <description>Acknowledges that the mission pause command has been received.</description>
-      <field type="uint8_t" name="target_system">The system that received the mission pause command</field>
-      <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
-      <field type="char[64]" name="mission_id">The id of the mission</field>
-    </message>
-    <message id="77040" name="LEAF_ACK_MISSION_RESUME">
-      <description>Acknowledges that the mission resume command has been received.</description>
-      <field type="uint8_t" name="target_system">The system that received the mission resume command</field>
-      <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
-      <field type="char[64]" name="mission_id">The id of the mission</field>
-    </message>
-    <message id="77041" name="LEAF_ACK_MISSION_ABORT">
-      <description>Acknowledges that the mission abort command has been received.</description>
-      <field type="uint8_t" name="target_system">The system that received the mission abort command</field>
-      <field type="uint8_t" name="status">1 for ack, 0 for nack</field>
-      <field type="char[64]" name="mission_id">The id of the mission</field>
     </message>
     <message id="77042" name="LEAF_DO_EMERGENCY_ABORT">
       <description>Commands the leaf to abort the mission</description>
@@ -468,15 +442,24 @@
     </message>
     <message id="77047" name="LEAF_MISSION_MANAGER_HEARTBEAT">
       <description>The mission heartbeat message</description>
-      <field type="uint8_t" name="LeafFC_mission_manager_status" enum="LEAF_MISSION_MANAGER_STATE">LeafFC mission status</field>
+      <!-- Primary state -->
+      <field type="uint8_t" name="mission_manager_status" enum="LEAF_MISSION_MANAGER_STATE">Authoritative primary state: IDLE, EXECUTING, or PAUSED</field>
+      <field type="uint8_t" name="is_healthy" enum="BOOL">1 if the SDK is operating normally, 0 if unhealthy</field>
+      <!-- Queue -->
+      <field type="uint8_t" name="queue_count">Number of missions currently in the queue</field>
+      <!-- Execution state -->
+      <field type="uint8_t" name="mission_pause_stage" enum="LEAF_MISSION_PAUSE_STAGE">Pause stage: NONE, SCHEDULED, BETWEEN_STEPS, or MID_STEP</field>
+      <field type="uint8_t" name="last_mission_completion_state" enum="LEAF_MISSION_COMPLETION_STATE">Completion state of the most recently finished mission</field>
+      <!-- Derived convenience flags -->
+      <field type="uint8_t" name="derived_state_is_paused" enum="BOOL">Derived: 1 if mission_manager_status == PAUSED</field>
+      <field type="uint8_t" name="derived_state_is_ready_to_start" enum="BOOL">Derived: 1 if a mission is loaded and ready to start</field>
+      <!-- Mission identity -->
       <field type="uint8_t" name="joystick_mode" enum="JOYSTICK_MODE">The joystick mode</field>
-      <field type="char[64]" name="mission_id">The id of the mission</field>
-      <field type="uint8_t" name="queue_count">The number of missions in the queue</field>
-      <field type="uint8_t" name="predefined_actions_status" enum="LEAF_PREDEFINED_ACTIONS_STATUS">The predefined actions status</field>
-      <field type="uint8_t" name="SDK_status" enum="LEAF_SDK_STATUS">SDK execution health status</field>
-      <field type="char[64]" name="mission_name">The name of the mission</field>
-      <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The number of missions in the queue</field>
-      <field type="char[64]" name="step_name">The name of the current step</field>
+      <field type="char[64]" name="mission_id">The id of the active mission</field>
+      <field type="uint8_t" name="mission_type" enum="LEAF_MISSION_TYPE">The type of mission currently loaded</field>
+      <field type="char[64]" name="mission_name">The name of the active mission</field>
+      <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The type of the currently executing step</field>
+      <field type="char[64]" name="step_name">The name of the currently executing step</field>
     </message>
     <message id="77048" name="LEAF_GPS_ORIGIN_STATUS">
       <description>GPS origin coordinates (lat/lon/alt) and GPS manager operational state</description>
