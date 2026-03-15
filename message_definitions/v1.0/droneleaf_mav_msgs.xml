@@ -236,14 +236,14 @@
         <description>Joystick is enabled only on pause</description>
       </entry>
     </enum>
-    <enum name="LEAF_GPS_MANAGER_STATUS">
-      <entry value="0" name="LEAF_GPS_MANAGER_STATUS_NO_GPS_DATA">
+    <enum name="LEAF_GPS_MANAGER_STATE">
+      <entry value="0" name="LEAF_GPS_MANAGER_STATE_NO_GPS_DATA">
         <description>No GPS data received from PX4 yet</description>
       </entry>
-      <entry value="1" name="LEAF_GPS_MANAGER_STATUS_COMPUTING_ORIGIN_FROM_NED">
+      <entry value="1" name="LEAF_GPS_MANAGER_STATE_COMPUTING_ORIGIN_FROM_NED">
         <description>GPS fix obtained — computing origin from NED + GPS position</description>
       </entry>
-      <entry value="2" name="LEAF_GPS_MANAGER_STATUS_ORIGIN_SET">
+      <entry value="2" name="LEAF_GPS_MANAGER_STATE_ORIGIN_SET">
         <description>GPS origin is set and valid</description>
       </entry>
     </enum>
@@ -440,19 +440,20 @@
     </message>
     <message id="77047" name="LEAF_MISSION_MANAGER_HEARTBEAT">
       <description>Mission heartbeat (state/pause/queue/health)</description>
-      <field type="uint8_t" name="mission_runner_state" enum="LEAF_MISSION_RUNNER_STATE">Primary mission runner state</field>
-      <field type="uint8_t" name="mission_pause_stage" enum="LEAF_MISSION_PAUSE_STAGE">Current pause stage</field>
-      <field type="uint8_t" name="queue_count">Number of missions currently in the queue</field>
-      <field type="uint8_t" name="queue_size">Maximum queue size</field>
       <field type="uint8_t" name="is_healthy" enum="BOOL">1 if the publisher is healthy, 0 otherwise</field>
+      <field type="uint8_t" name="is_mission_in_progress" enum="BOOL">1 if a mission is in_progress, 0 otherwise</field>
+      <field type="uint8_t" name="mission_pause_stage" enum="LEAF_MISSION_PAUSE_STAGE">Current pause stage</field>
       <field type="uint8_t" name="is_joystick_enabled" enum="BOOL">1 if the joystick is enabled, 0 otherwise</field>
+      <field type="uint8_t" name="last_mission_completion_state" enum="LEAF_MISSION_COMPLETION_STATE">The completion state of the last mission</field>
+      <field type="uint8_t" name="queue_count">Number of missions currently in the queue</field>
+      <field type="uint8_t" name="max_queue_size">Maximum queue size</field>
     </message>
     <message id="77048" name="LEAF_GPS_ORIGIN_STATUS">
       <description>GPS origin coordinates (lat/lon/alt) and GPS manager operational state</description>
       <field type="int32_t" name="latitude" units="degE7">GPS origin latitude in degE7</field>
       <field type="int32_t" name="longitude" units="degE7">GPS origin longitude in degE7</field>
       <field type="int32_t" name="altitude" units="mm">GPS origin altitude in mm (positive up)</field>
-      <field type="uint8_t" name="manager_status" enum="LEAF_GPS_MANAGER_STATUS">GPS manager operational state</field>
+      <field type="uint8_t" name="state" enum="LEAF_GPS_MANAGER_STATE">GPS manager operational state</field>
     </message>
     <message id="77049" name="LEAF_MISSION_INFO">
       <description>Mission identity snapshot</description>
@@ -460,7 +461,7 @@
       <field type="char[64]" name="mission_name">The name of the active mission</field>
       <field type="uint8_t" name="mission_type" enum="LEAF_MISSION_TYPE">The type of mission currently loaded</field>
     </message>
-    <message id="77050" name="LEAF_MISSION_EXECUTION_STEP">
+    <message id="77050" name="LEAF_MISSION_EXECUTION_STEP_INFO">
       <description>Currently executing step snapshot</description>
       <field type="char[64]" name="step_name">The name of the currently executing step</field>
       <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The type of the currently executing step</field>

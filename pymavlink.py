@@ -8489,17 +8489,17 @@ enums["JOYSTICK_MODE"][2] = EnumEntry("JOYSTICK_MODE_ENABLED_ON_PAUSE", """Joyst
 JOYSTICK_MODE_ENUM_END = 3
 enums["JOYSTICK_MODE"][3] = EnumEntry("JOYSTICK_MODE_ENUM_END", """""")
 
-# LEAF_GPS_MANAGER_STATUS
-enums["LEAF_GPS_MANAGER_STATUS"] = Enum()
-enums["LEAF_GPS_MANAGER_STATUS"].bitmask = False
-LEAF_GPS_MANAGER_STATUS_NO_GPS_DATA = 0
-enums["LEAF_GPS_MANAGER_STATUS"][0] = EnumEntry("LEAF_GPS_MANAGER_STATUS_NO_GPS_DATA", """No GPS data received from PX4 yet""")
-LEAF_GPS_MANAGER_STATUS_COMPUTING_ORIGIN_FROM_NED = 1
-enums["LEAF_GPS_MANAGER_STATUS"][1] = EnumEntry("LEAF_GPS_MANAGER_STATUS_COMPUTING_ORIGIN_FROM_NED", """GPS fix obtained — computing origin from NED + GPS position""")
-LEAF_GPS_MANAGER_STATUS_ORIGIN_SET = 2
-enums["LEAF_GPS_MANAGER_STATUS"][2] = EnumEntry("LEAF_GPS_MANAGER_STATUS_ORIGIN_SET", """GPS origin is set and valid""")
-LEAF_GPS_MANAGER_STATUS_ENUM_END = 3
-enums["LEAF_GPS_MANAGER_STATUS"][3] = EnumEntry("LEAF_GPS_MANAGER_STATUS_ENUM_END", """""")
+# LEAF_GPS_MANAGER_STATE
+enums["LEAF_GPS_MANAGER_STATE"] = Enum()
+enums["LEAF_GPS_MANAGER_STATE"].bitmask = False
+LEAF_GPS_MANAGER_STATE_NO_GPS_DATA = 0
+enums["LEAF_GPS_MANAGER_STATE"][0] = EnumEntry("LEAF_GPS_MANAGER_STATE_NO_GPS_DATA", """No GPS data received from PX4 yet""")
+LEAF_GPS_MANAGER_STATE_COMPUTING_ORIGIN_FROM_NED = 1
+enums["LEAF_GPS_MANAGER_STATE"][1] = EnumEntry("LEAF_GPS_MANAGER_STATE_COMPUTING_ORIGIN_FROM_NED", """GPS fix obtained — computing origin from NED + GPS position""")
+LEAF_GPS_MANAGER_STATE_ORIGIN_SET = 2
+enums["LEAF_GPS_MANAGER_STATE"][2] = EnumEntry("LEAF_GPS_MANAGER_STATE_ORIGIN_SET", """GPS origin is set and valid""")
+LEAF_GPS_MANAGER_STATE_ENUM_END = 3
+enums["LEAF_GPS_MANAGER_STATE"][3] = EnumEntry("LEAF_GPS_MANAGER_STATE_ENUM_END", """""")
 
 # message IDs
 MAVLINK_MSG_ID_BAD_DATA = -1
@@ -8929,7 +8929,7 @@ MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW = 77046
 MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT = 77047
 MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS = 77048
 MAVLINK_MSG_ID_LEAF_MISSION_INFO = 77049
-MAVLINK_MSG_ID_LEAF_MISSION_EXECUTION_STEP = 77050
+MAVLINK_MSG_ID_LEAF_MISSION_EXECUTION_STEP_INFO = 77050
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -28497,35 +28497,36 @@ class MAVLink_leaf_mission_manager_heartbeat_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT
     msgname = "LEAF_MISSION_MANAGER_HEARTBEAT"
-    fieldnames = ["mission_runner_state", "mission_pause_stage", "queue_count", "queue_size", "is_healthy", "is_joystick_enabled"]
-    ordered_fieldnames = ["mission_runner_state", "mission_pause_stage", "queue_count", "queue_size", "is_healthy", "is_joystick_enabled"]
-    fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
-    fielddisplays_by_name: Dict[str, str] = {"is_healthy": "bitmask", "is_joystick_enabled": "bitmask"}
-    fieldenums_by_name: Dict[str, str] = {"mission_runner_state": "LEAF_MISSION_RUNNER_STATE", "mission_pause_stage": "LEAF_MISSION_PAUSE_STAGE", "is_healthy": "BOOL", "is_joystick_enabled": "BOOL"}
+    fieldnames = ["is_healthy", "is_mission_in_progress", "mission_pause_stage", "is_joystick_enabled", "last_mission_completion_state", "queue_count", "max_queue_size"]
+    ordered_fieldnames = ["is_healthy", "is_mission_in_progress", "mission_pause_stage", "is_joystick_enabled", "last_mission_completion_state", "queue_count", "max_queue_size"]
+    fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {"is_healthy": "bitmask", "is_mission_in_progress": "bitmask", "is_joystick_enabled": "bitmask"}
+    fieldenums_by_name: Dict[str, str] = {"is_healthy": "BOOL", "is_mission_in_progress": "BOOL", "mission_pause_stage": "LEAF_MISSION_PAUSE_STAGE", "is_joystick_enabled": "BOOL", "last_mission_completion_state": "LEAF_MISSION_COMPLETION_STATE"}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<BBBBBB")
-    orders = [0, 1, 2, 3, 4, 5]
-    lengths = [1, 1, 1, 1, 1, 1]
-    array_lengths = [0, 0, 0, 0, 0, 0]
-    crc_extra = 91
-    unpacker = struct.Struct("<BBBBBB")
+    native_format = bytearray(b"<BBBBBBB")
+    orders = [0, 1, 2, 3, 4, 5, 6]
+    lengths = [1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 235
+    unpacker = struct.Struct("<BBBBBBB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, mission_runner_state: int, mission_pause_stage: int, queue_count: int, queue_size: int, is_healthy: int, is_joystick_enabled: int):
+    def __init__(self, is_healthy: int, is_mission_in_progress: int, mission_pause_stage: int, is_joystick_enabled: int, last_mission_completion_state: int, queue_count: int, max_queue_size: int):
         MAVLink_message.__init__(self, MAVLink_leaf_mission_manager_heartbeat_message.id, MAVLink_leaf_mission_manager_heartbeat_message.msgname)
         self._fieldnames = MAVLink_leaf_mission_manager_heartbeat_message.fieldnames
         self._instance_field = MAVLink_leaf_mission_manager_heartbeat_message.instance_field
         self._instance_offset = MAVLink_leaf_mission_manager_heartbeat_message.instance_offset
-        self.mission_runner_state = mission_runner_state
-        self.mission_pause_stage = mission_pause_stage
-        self.queue_count = queue_count
-        self.queue_size = queue_size
         self.is_healthy = is_healthy
+        self.is_mission_in_progress = is_mission_in_progress
+        self.mission_pause_stage = mission_pause_stage
         self.is_joystick_enabled = is_joystick_enabled
+        self.last_mission_completion_state = last_mission_completion_state
+        self.queue_count = queue_count
+        self.max_queue_size = max_queue_size
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.mission_runner_state, self.mission_pause_stage, self.queue_count, self.queue_size, self.is_healthy, self.is_joystick_enabled), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.is_healthy, self.is_mission_in_progress, self.mission_pause_stage, self.is_joystick_enabled, self.last_mission_completion_state, self.queue_count, self.max_queue_size), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -28541,22 +28542,22 @@ class MAVLink_leaf_gps_origin_status_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS
     msgname = "LEAF_GPS_ORIGIN_STATUS"
-    fieldnames = ["latitude", "longitude", "altitude", "manager_status"]
-    ordered_fieldnames = ["latitude", "longitude", "altitude", "manager_status"]
+    fieldnames = ["latitude", "longitude", "altitude", "state"]
+    ordered_fieldnames = ["latitude", "longitude", "altitude", "state"]
     fieldtypes = ["int32_t", "int32_t", "int32_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"manager_status": "LEAF_GPS_MANAGER_STATUS"}
+    fieldenums_by_name: Dict[str, str] = {"state": "LEAF_GPS_MANAGER_STATE"}
     fieldunits_by_name: Dict[str, str] = {"latitude": "degE7", "longitude": "degE7", "altitude": "mm"}
     native_format = bytearray(b"<iiiB")
     orders = [0, 1, 2, 3]
     lengths = [1, 1, 1, 1]
     array_lengths = [0, 0, 0, 0]
-    crc_extra = 225
+    crc_extra = 26
     unpacker = struct.Struct("<iiiB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, latitude: int, longitude: int, altitude: int, manager_status: int):
+    def __init__(self, latitude: int, longitude: int, altitude: int, state: int):
         MAVLink_message.__init__(self, MAVLink_leaf_gps_origin_status_message.id, MAVLink_leaf_gps_origin_status_message.msgname)
         self._fieldnames = MAVLink_leaf_gps_origin_status_message.fieldnames
         self._instance_field = MAVLink_leaf_gps_origin_status_message.instance_field
@@ -28564,10 +28565,10 @@ class MAVLink_leaf_gps_origin_status_message(MAVLink_message):
         self.latitude = latitude
         self.longitude = longitude
         self.altitude = altitude
-        self.manager_status = manager_status
+        self.state = state
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.latitude, self.longitude, self.altitude, self.manager_status), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.latitude, self.longitude, self.altitude, self.state), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -28617,13 +28618,13 @@ class MAVLink_leaf_mission_info_message(MAVLink_message):
 setattr(MAVLink_leaf_mission_info_message, "name", mavlink_msg_deprecated_name_property())
 
 
-class MAVLink_leaf_mission_execution_step_message(MAVLink_message):
+class MAVLink_leaf_mission_execution_step_info_message(MAVLink_message):
     """
     Currently executing step snapshot
     """
 
-    id = MAVLINK_MSG_ID_LEAF_MISSION_EXECUTION_STEP
-    msgname = "LEAF_MISSION_EXECUTION_STEP"
+    id = MAVLINK_MSG_ID_LEAF_MISSION_EXECUTION_STEP_INFO
+    msgname = "LEAF_MISSION_EXECUTION_STEP_INFO"
     fieldnames = ["step_name", "step_type", "pos_trajectory_id", "ori_trajectory_id"]
     ordered_fieldnames = ["step_name", "step_type", "pos_trajectory_id", "ori_trajectory_id"]
     fieldtypes = ["char", "uint8_t", "char", "char"]
@@ -28634,16 +28635,16 @@ class MAVLink_leaf_mission_execution_step_message(MAVLink_message):
     orders = [0, 1, 2, 3]
     lengths = [1, 1, 1, 1]
     array_lengths = [64, 0, 64, 64]
-    crc_extra = 79
+    crc_extra = 101
     unpacker = struct.Struct("<64sB64s64s")
     instance_field = None
     instance_offset = -1
 
     def __init__(self, step_name: bytes, step_type: int, pos_trajectory_id: bytes, ori_trajectory_id: bytes):
-        MAVLink_message.__init__(self, MAVLink_leaf_mission_execution_step_message.id, MAVLink_leaf_mission_execution_step_message.msgname)
-        self._fieldnames = MAVLink_leaf_mission_execution_step_message.fieldnames
-        self._instance_field = MAVLink_leaf_mission_execution_step_message.instance_field
-        self._instance_offset = MAVLink_leaf_mission_execution_step_message.instance_offset
+        MAVLink_message.__init__(self, MAVLink_leaf_mission_execution_step_info_message.id, MAVLink_leaf_mission_execution_step_info_message.msgname)
+        self._fieldnames = MAVLink_leaf_mission_execution_step_info_message.fieldnames
+        self._instance_field = MAVLink_leaf_mission_execution_step_info_message.instance_field
+        self._instance_offset = MAVLink_leaf_mission_execution_step_info_message.instance_offset
         self._step_name_raw = step_name
         self.step_name = step_name.split(b"\x00", 1)[0].decode("ascii", errors="replace")
         self.step_type = step_type
@@ -28658,7 +28659,7 @@ class MAVLink_leaf_mission_execution_step_message(MAVLink_message):
 
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_leaf_mission_execution_step_message, "name", mavlink_msg_deprecated_name_property())
+setattr(MAVLink_leaf_mission_execution_step_info_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
@@ -29149,7 +29150,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_MISSION_MANAGER_HEARTBEAT: MAVLink_leaf_mission_manager_heartbeat_message,
     MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS: MAVLink_leaf_gps_origin_status_message,
     MAVLINK_MSG_ID_LEAF_MISSION_INFO: MAVLink_leaf_mission_info_message,
-    MAVLINK_MSG_ID_LEAF_MISSION_EXECUTION_STEP: MAVLink_leaf_mission_execution_step_message,
+    MAVLINK_MSG_ID_LEAF_MISSION_EXECUTION_STEP_INFO: MAVLink_leaf_mission_execution_step_info_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -44120,57 +44121,59 @@ class MAVLink(object):
         """
         self.send(self.leaf_do_switch_mrft_yaw_encode(target_system, enable), force_mavlink1=force_mavlink1)
 
-    def leaf_mission_manager_heartbeat_encode(self, mission_runner_state: int, mission_pause_stage: int, queue_count: int, queue_size: int, is_healthy: int, is_joystick_enabled: int) -> MAVLink_leaf_mission_manager_heartbeat_message:
+    def leaf_mission_manager_heartbeat_encode(self, is_healthy: int, is_mission_in_progress: int, mission_pause_stage: int, is_joystick_enabled: int, last_mission_completion_state: int, queue_count: int, max_queue_size: int) -> MAVLink_leaf_mission_manager_heartbeat_message:
         """
         Mission heartbeat (state/pause/queue/health)
 
-        mission_runner_state        : Primary mission runner state (type:uint8_t, values:LEAF_MISSION_RUNNER_STATE)
-        mission_pause_stage        : Current pause stage (type:uint8_t, values:LEAF_MISSION_PAUSE_STAGE)
-        queue_count               : Number of missions currently in the queue (type:uint8_t)
-        queue_size                : Maximum queue size (type:uint8_t)
         is_healthy                : 1 if the publisher is healthy, 0 otherwise (type:uint8_t, values:BOOL)
+        is_mission_in_progress        : 1 if a mission is in_progress, 0 otherwise (type:uint8_t, values:BOOL)
+        mission_pause_stage        : Current pause stage (type:uint8_t, values:LEAF_MISSION_PAUSE_STAGE)
         is_joystick_enabled        : 1 if the joystick is enabled, 0 otherwise (type:uint8_t, values:BOOL)
+        last_mission_completion_state        : The completion state of the last mission (type:uint8_t, values:LEAF_MISSION_COMPLETION_STATE)
+        queue_count               : Number of missions currently in the queue (type:uint8_t)
+        max_queue_size            : Maximum queue size (type:uint8_t)
 
         """
-        return MAVLink_leaf_mission_manager_heartbeat_message(mission_runner_state, mission_pause_stage, queue_count, queue_size, is_healthy, is_joystick_enabled)
+        return MAVLink_leaf_mission_manager_heartbeat_message(is_healthy, is_mission_in_progress, mission_pause_stage, is_joystick_enabled, last_mission_completion_state, queue_count, max_queue_size)
 
-    def leaf_mission_manager_heartbeat_send(self, mission_runner_state: int, mission_pause_stage: int, queue_count: int, queue_size: int, is_healthy: int, is_joystick_enabled: int, force_mavlink1: bool = False) -> None:
+    def leaf_mission_manager_heartbeat_send(self, is_healthy: int, is_mission_in_progress: int, mission_pause_stage: int, is_joystick_enabled: int, last_mission_completion_state: int, queue_count: int, max_queue_size: int, force_mavlink1: bool = False) -> None:
         """
         Mission heartbeat (state/pause/queue/health)
 
-        mission_runner_state        : Primary mission runner state (type:uint8_t, values:LEAF_MISSION_RUNNER_STATE)
-        mission_pause_stage        : Current pause stage (type:uint8_t, values:LEAF_MISSION_PAUSE_STAGE)
-        queue_count               : Number of missions currently in the queue (type:uint8_t)
-        queue_size                : Maximum queue size (type:uint8_t)
         is_healthy                : 1 if the publisher is healthy, 0 otherwise (type:uint8_t, values:BOOL)
+        is_mission_in_progress        : 1 if a mission is in_progress, 0 otherwise (type:uint8_t, values:BOOL)
+        mission_pause_stage        : Current pause stage (type:uint8_t, values:LEAF_MISSION_PAUSE_STAGE)
         is_joystick_enabled        : 1 if the joystick is enabled, 0 otherwise (type:uint8_t, values:BOOL)
+        last_mission_completion_state        : The completion state of the last mission (type:uint8_t, values:LEAF_MISSION_COMPLETION_STATE)
+        queue_count               : Number of missions currently in the queue (type:uint8_t)
+        max_queue_size            : Maximum queue size (type:uint8_t)
 
         """
-        self.send(self.leaf_mission_manager_heartbeat_encode(mission_runner_state, mission_pause_stage, queue_count, queue_size, is_healthy, is_joystick_enabled), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_mission_manager_heartbeat_encode(is_healthy, is_mission_in_progress, mission_pause_stage, is_joystick_enabled, last_mission_completion_state, queue_count, max_queue_size), force_mavlink1=force_mavlink1)
 
-    def leaf_gps_origin_status_encode(self, latitude: int, longitude: int, altitude: int, manager_status: int) -> MAVLink_leaf_gps_origin_status_message:
+    def leaf_gps_origin_status_encode(self, latitude: int, longitude: int, altitude: int, state: int) -> MAVLink_leaf_gps_origin_status_message:
         """
         GPS origin coordinates (lat/lon/alt) and GPS manager operational state
 
         latitude                  : GPS origin latitude in degE7 [degE7] (type:int32_t)
         longitude                 : GPS origin longitude in degE7 [degE7] (type:int32_t)
         altitude                  : GPS origin altitude in mm (positive up) [mm] (type:int32_t)
-        manager_status            : GPS manager operational state (type:uint8_t, values:LEAF_GPS_MANAGER_STATUS)
+        state                     : GPS manager operational state (type:uint8_t, values:LEAF_GPS_MANAGER_STATE)
 
         """
-        return MAVLink_leaf_gps_origin_status_message(latitude, longitude, altitude, manager_status)
+        return MAVLink_leaf_gps_origin_status_message(latitude, longitude, altitude, state)
 
-    def leaf_gps_origin_status_send(self, latitude: int, longitude: int, altitude: int, manager_status: int, force_mavlink1: bool = False) -> None:
+    def leaf_gps_origin_status_send(self, latitude: int, longitude: int, altitude: int, state: int, force_mavlink1: bool = False) -> None:
         """
         GPS origin coordinates (lat/lon/alt) and GPS manager operational state
 
         latitude                  : GPS origin latitude in degE7 [degE7] (type:int32_t)
         longitude                 : GPS origin longitude in degE7 [degE7] (type:int32_t)
         altitude                  : GPS origin altitude in mm (positive up) [mm] (type:int32_t)
-        manager_status            : GPS manager operational state (type:uint8_t, values:LEAF_GPS_MANAGER_STATUS)
+        state                     : GPS manager operational state (type:uint8_t, values:LEAF_GPS_MANAGER_STATE)
 
         """
-        self.send(self.leaf_gps_origin_status_encode(latitude, longitude, altitude, manager_status), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_gps_origin_status_encode(latitude, longitude, altitude, state), force_mavlink1=force_mavlink1)
 
     def leaf_mission_info_encode(self, mission_id: bytes, mission_name: bytes, mission_type: int) -> MAVLink_leaf_mission_info_message:
         """
@@ -44194,7 +44197,7 @@ class MAVLink(object):
         """
         self.send(self.leaf_mission_info_encode(mission_id, mission_name, mission_type), force_mavlink1=force_mavlink1)
 
-    def leaf_mission_execution_step_encode(self, step_name: bytes, step_type: int, pos_trajectory_id: bytes, ori_trajectory_id: bytes) -> MAVLink_leaf_mission_execution_step_message:
+    def leaf_mission_execution_step_info_encode(self, step_name: bytes, step_type: int, pos_trajectory_id: bytes, ori_trajectory_id: bytes) -> MAVLink_leaf_mission_execution_step_info_message:
         """
         Currently executing step snapshot
 
@@ -44204,9 +44207,9 @@ class MAVLink(object):
         ori_trajectory_id         : The id of the currently executing orientation trajectory, if applicable (type:char)
 
         """
-        return MAVLink_leaf_mission_execution_step_message(step_name, step_type, pos_trajectory_id, ori_trajectory_id)
+        return MAVLink_leaf_mission_execution_step_info_message(step_name, step_type, pos_trajectory_id, ori_trajectory_id)
 
-    def leaf_mission_execution_step_send(self, step_name: bytes, step_type: int, pos_trajectory_id: bytes, ori_trajectory_id: bytes, force_mavlink1: bool = False) -> None:
+    def leaf_mission_execution_step_info_send(self, step_name: bytes, step_type: int, pos_trajectory_id: bytes, ori_trajectory_id: bytes, force_mavlink1: bool = False) -> None:
         """
         Currently executing step snapshot
 
@@ -44216,7 +44219,7 @@ class MAVLink(object):
         ori_trajectory_id         : The id of the currently executing orientation trajectory, if applicable (type:char)
 
         """
-        self.send(self.leaf_mission_execution_step_encode(step_name, step_type, pos_trajectory_id, ori_trajectory_id), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_mission_execution_step_info_encode(step_name, step_type, pos_trajectory_id, ori_trajectory_id), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """

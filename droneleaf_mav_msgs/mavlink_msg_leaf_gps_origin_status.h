@@ -8,7 +8,7 @@ typedef struct __mavlink_leaf_gps_origin_status_t {
  int32_t latitude; /*< [degE7] GPS origin latitude in degE7*/
  int32_t longitude; /*< [degE7] GPS origin longitude in degE7*/
  int32_t altitude; /*< [mm] GPS origin altitude in mm (positive up)*/
- uint8_t manager_status; /*<  GPS manager operational state*/
+ uint8_t state; /*<  GPS manager operational state*/
 } mavlink_leaf_gps_origin_status_t;
 
 #define MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN 13
@@ -16,8 +16,8 @@ typedef struct __mavlink_leaf_gps_origin_status_t {
 #define MAVLINK_MSG_ID_77048_LEN 13
 #define MAVLINK_MSG_ID_77048_MIN_LEN 13
 
-#define MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_CRC 225
-#define MAVLINK_MSG_ID_77048_CRC 225
+#define MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_CRC 26
+#define MAVLINK_MSG_ID_77048_CRC 26
 
 
 
@@ -29,7 +29,7 @@ typedef struct __mavlink_leaf_gps_origin_status_t {
     {  { "latitude", NULL, MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_leaf_gps_origin_status_t, latitude) }, \
          { "longitude", NULL, MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_leaf_gps_origin_status_t, longitude) }, \
          { "altitude", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_leaf_gps_origin_status_t, altitude) }, \
-         { "manager_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_leaf_gps_origin_status_t, manager_status) }, \
+         { "state", NULL, MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_leaf_gps_origin_status_t, state) }, \
          } \
 }
 #else
@@ -39,7 +39,7 @@ typedef struct __mavlink_leaf_gps_origin_status_t {
     {  { "latitude", NULL, MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_leaf_gps_origin_status_t, latitude) }, \
          { "longitude", NULL, MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_leaf_gps_origin_status_t, longitude) }, \
          { "altitude", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_leaf_gps_origin_status_t, altitude) }, \
-         { "manager_status", NULL, MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_leaf_gps_origin_status_t, manager_status) }, \
+         { "state", NULL, MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_leaf_gps_origin_status_t, state) }, \
          } \
 }
 #endif
@@ -53,18 +53,18 @@ typedef struct __mavlink_leaf_gps_origin_status_t {
  * @param latitude [degE7] GPS origin latitude in degE7
  * @param longitude [degE7] GPS origin longitude in degE7
  * @param altitude [mm] GPS origin altitude in mm (positive up)
- * @param manager_status  GPS manager operational state
+ * @param state  GPS manager operational state
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               int32_t latitude, int32_t longitude, int32_t altitude, uint8_t manager_status)
+                               int32_t latitude, int32_t longitude, int32_t altitude, uint8_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN];
     _mav_put_int32_t(buf, 0, latitude);
     _mav_put_int32_t(buf, 4, longitude);
     _mav_put_int32_t(buf, 8, altitude);
-    _mav_put_uint8_t(buf, 12, manager_status);
+    _mav_put_uint8_t(buf, 12, state);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN);
 #else
@@ -72,7 +72,7 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack(uint8_t system_id
     packet.latitude = latitude;
     packet.longitude = longitude;
     packet.altitude = altitude;
-    packet.manager_status = manager_status;
+    packet.state = state;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN);
 #endif
@@ -91,18 +91,18 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack(uint8_t system_id
  * @param latitude [degE7] GPS origin latitude in degE7
  * @param longitude [degE7] GPS origin longitude in degE7
  * @param altitude [mm] GPS origin altitude in mm (positive up)
- * @param manager_status  GPS manager operational state
+ * @param state  GPS manager operational state
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               int32_t latitude, int32_t longitude, int32_t altitude, uint8_t manager_status)
+                               int32_t latitude, int32_t longitude, int32_t altitude, uint8_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN];
     _mav_put_int32_t(buf, 0, latitude);
     _mav_put_int32_t(buf, 4, longitude);
     _mav_put_int32_t(buf, 8, altitude);
-    _mav_put_uint8_t(buf, 12, manager_status);
+    _mav_put_uint8_t(buf, 12, state);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN);
 #else
@@ -110,7 +110,7 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack_status(uint8_t sy
     packet.latitude = latitude;
     packet.longitude = longitude;
     packet.altitude = altitude;
-    packet.manager_status = manager_status;
+    packet.state = state;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN);
 #endif
@@ -132,19 +132,19 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack_status(uint8_t sy
  * @param latitude [degE7] GPS origin latitude in degE7
  * @param longitude [degE7] GPS origin longitude in degE7
  * @param altitude [mm] GPS origin altitude in mm (positive up)
- * @param manager_status  GPS manager operational state
+ * @param state  GPS manager operational state
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   int32_t latitude,int32_t longitude,int32_t altitude,uint8_t manager_status)
+                                   int32_t latitude,int32_t longitude,int32_t altitude,uint8_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN];
     _mav_put_int32_t(buf, 0, latitude);
     _mav_put_int32_t(buf, 4, longitude);
     _mav_put_int32_t(buf, 8, altitude);
-    _mav_put_uint8_t(buf, 12, manager_status);
+    _mav_put_uint8_t(buf, 12, state);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN);
 #else
@@ -152,7 +152,7 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack_chan(uint8_t syst
     packet.latitude = latitude;
     packet.longitude = longitude;
     packet.altitude = altitude;
-    packet.manager_status = manager_status;
+    packet.state = state;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN);
 #endif
@@ -171,7 +171,7 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_pack_chan(uint8_t syst
  */
 static inline uint16_t mavlink_msg_leaf_gps_origin_status_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_gps_origin_status_t* leaf_gps_origin_status)
 {
-    return mavlink_msg_leaf_gps_origin_status_pack(system_id, component_id, msg, leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->manager_status);
+    return mavlink_msg_leaf_gps_origin_status_pack(system_id, component_id, msg, leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->state);
 }
 
 /**
@@ -185,7 +185,7 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_encode(uint8_t system_
  */
 static inline uint16_t mavlink_msg_leaf_gps_origin_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_gps_origin_status_t* leaf_gps_origin_status)
 {
-    return mavlink_msg_leaf_gps_origin_status_pack_chan(system_id, component_id, chan, msg, leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->manager_status);
+    return mavlink_msg_leaf_gps_origin_status_pack_chan(system_id, component_id, chan, msg, leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->state);
 }
 
 /**
@@ -199,7 +199,7 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_encode_chan(uint8_t sy
  */
 static inline uint16_t mavlink_msg_leaf_gps_origin_status_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_gps_origin_status_t* leaf_gps_origin_status)
 {
-    return mavlink_msg_leaf_gps_origin_status_pack_status(system_id, component_id, _status, msg,  leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->manager_status);
+    return mavlink_msg_leaf_gps_origin_status_pack_status(system_id, component_id, _status, msg,  leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->state);
 }
 
 /**
@@ -209,18 +209,18 @@ static inline uint16_t mavlink_msg_leaf_gps_origin_status_encode_status(uint8_t 
  * @param latitude [degE7] GPS origin latitude in degE7
  * @param longitude [degE7] GPS origin longitude in degE7
  * @param altitude [mm] GPS origin altitude in mm (positive up)
- * @param manager_status  GPS manager operational state
+ * @param state  GPS manager operational state
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_gps_origin_status_send(mavlink_channel_t chan, int32_t latitude, int32_t longitude, int32_t altitude, uint8_t manager_status)
+static inline void mavlink_msg_leaf_gps_origin_status_send(mavlink_channel_t chan, int32_t latitude, int32_t longitude, int32_t altitude, uint8_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN];
     _mav_put_int32_t(buf, 0, latitude);
     _mav_put_int32_t(buf, 4, longitude);
     _mav_put_int32_t(buf, 8, altitude);
-    _mav_put_uint8_t(buf, 12, manager_status);
+    _mav_put_uint8_t(buf, 12, state);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS, buf, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_MIN_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_CRC);
 #else
@@ -228,7 +228,7 @@ static inline void mavlink_msg_leaf_gps_origin_status_send(mavlink_channel_t cha
     packet.latitude = latitude;
     packet.longitude = longitude;
     packet.altitude = altitude;
-    packet.manager_status = manager_status;
+    packet.state = state;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS, (const char *)&packet, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_MIN_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_CRC);
 #endif
@@ -242,7 +242,7 @@ static inline void mavlink_msg_leaf_gps_origin_status_send(mavlink_channel_t cha
 static inline void mavlink_msg_leaf_gps_origin_status_send_struct(mavlink_channel_t chan, const mavlink_leaf_gps_origin_status_t* leaf_gps_origin_status)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_gps_origin_status_send(chan, leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->manager_status);
+    mavlink_msg_leaf_gps_origin_status_send(chan, leaf_gps_origin_status->latitude, leaf_gps_origin_status->longitude, leaf_gps_origin_status->altitude, leaf_gps_origin_status->state);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS, (const char *)leaf_gps_origin_status, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_MIN_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_CRC);
 #endif
@@ -256,14 +256,14 @@ static inline void mavlink_msg_leaf_gps_origin_status_send_struct(mavlink_channe
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_gps_origin_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  int32_t latitude, int32_t longitude, int32_t altitude, uint8_t manager_status)
+static inline void mavlink_msg_leaf_gps_origin_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  int32_t latitude, int32_t longitude, int32_t altitude, uint8_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
     _mav_put_int32_t(buf, 0, latitude);
     _mav_put_int32_t(buf, 4, longitude);
     _mav_put_int32_t(buf, 8, altitude);
-    _mav_put_uint8_t(buf, 12, manager_status);
+    _mav_put_uint8_t(buf, 12, state);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS, buf, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_MIN_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_CRC);
 #else
@@ -271,7 +271,7 @@ static inline void mavlink_msg_leaf_gps_origin_status_send_buf(mavlink_message_t
     packet->latitude = latitude;
     packet->longitude = longitude;
     packet->altitude = altitude;
-    packet->manager_status = manager_status;
+    packet->state = state;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS, (const char *)packet, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_MIN_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_CRC);
 #endif
@@ -314,11 +314,11 @@ static inline int32_t mavlink_msg_leaf_gps_origin_status_get_altitude(const mavl
 }
 
 /**
- * @brief Get field manager_status from leaf_gps_origin_status message
+ * @brief Get field state from leaf_gps_origin_status message
  *
  * @return  GPS manager operational state
  */
-static inline uint8_t mavlink_msg_leaf_gps_origin_status_get_manager_status(const mavlink_message_t* msg)
+static inline uint8_t mavlink_msg_leaf_gps_origin_status_get_state(const mavlink_message_t* msg)
 {
     return _MAV_RETURN_uint8_t(msg,  12);
 }
@@ -335,7 +335,7 @@ static inline void mavlink_msg_leaf_gps_origin_status_decode(const mavlink_messa
     leaf_gps_origin_status->latitude = mavlink_msg_leaf_gps_origin_status_get_latitude(msg);
     leaf_gps_origin_status->longitude = mavlink_msg_leaf_gps_origin_status_get_longitude(msg);
     leaf_gps_origin_status->altitude = mavlink_msg_leaf_gps_origin_status_get_altitude(msg);
-    leaf_gps_origin_status->manager_status = mavlink_msg_leaf_gps_origin_status_get_manager_status(msg);
+    leaf_gps_origin_status->state = mavlink_msg_leaf_gps_origin_status_get_state(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN? msg->len : MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN;
         memset(leaf_gps_origin_status, 0, MAVLINK_MSG_ID_LEAF_GPS_ORIGIN_STATUS_LEN);
