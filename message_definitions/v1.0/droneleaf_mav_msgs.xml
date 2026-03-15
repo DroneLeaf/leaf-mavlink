@@ -460,6 +460,7 @@
       <field type="char[64]" name="mission_id">The id of the active mission</field>
       <field type="char[64]" name="mission_name">The name of the active mission</field>
       <field type="uint8_t" name="mission_type" enum="LEAF_MISSION_TYPE">The type of mission currently loaded</field>
+      <field type="uint8_t" name="joystick_mode" enum="JOYSTICK_MODE">The joystick mode</field>
     </message>
     <message id="77050" name="LEAF_MISSION_EXECUTION_STEP_INFO">
       <description>Currently executing step snapshot</description>

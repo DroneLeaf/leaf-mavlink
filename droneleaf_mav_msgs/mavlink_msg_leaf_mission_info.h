@@ -8,15 +8,16 @@ typedef struct __mavlink_leaf_mission_info_t {
  char mission_id[64]; /*<  The id of the active mission*/
  char mission_name[64]; /*<  The name of the active mission*/
  uint8_t mission_type; /*<  The type of mission currently loaded*/
+ uint8_t joystick_mode; /*<  The joystick mode*/
 } mavlink_leaf_mission_info_t;
 
-#define MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN 129
-#define MAVLINK_MSG_ID_LEAF_MISSION_INFO_MIN_LEN 129
-#define MAVLINK_MSG_ID_77049_LEN 129
-#define MAVLINK_MSG_ID_77049_MIN_LEN 129
+#define MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN 130
+#define MAVLINK_MSG_ID_LEAF_MISSION_INFO_MIN_LEN 130
+#define MAVLINK_MSG_ID_77049_LEN 130
+#define MAVLINK_MSG_ID_77049_MIN_LEN 130
 
-#define MAVLINK_MSG_ID_LEAF_MISSION_INFO_CRC 21
-#define MAVLINK_MSG_ID_77049_CRC 21
+#define MAVLINK_MSG_ID_LEAF_MISSION_INFO_CRC 100
+#define MAVLINK_MSG_ID_77049_CRC 100
 
 #define MAVLINK_MSG_LEAF_MISSION_INFO_FIELD_MISSION_ID_LEN 64
 #define MAVLINK_MSG_LEAF_MISSION_INFO_FIELD_MISSION_NAME_LEN 64
@@ -25,19 +26,21 @@ typedef struct __mavlink_leaf_mission_info_t {
 #define MAVLINK_MESSAGE_INFO_LEAF_MISSION_INFO { \
     77049, \
     "LEAF_MISSION_INFO", \
-    3, \
+    4, \
     {  { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 0, offsetof(mavlink_leaf_mission_info_t, mission_id) }, \
          { "mission_name", NULL, MAVLINK_TYPE_CHAR, 64, 64, offsetof(mavlink_leaf_mission_info_t, mission_name) }, \
          { "mission_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 128, offsetof(mavlink_leaf_mission_info_t, mission_type) }, \
+         { "joystick_mode", NULL, MAVLINK_TYPE_UINT8_T, 0, 129, offsetof(mavlink_leaf_mission_info_t, joystick_mode) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_LEAF_MISSION_INFO { \
     "LEAF_MISSION_INFO", \
-    3, \
+    4, \
     {  { "mission_id", NULL, MAVLINK_TYPE_CHAR, 64, 0, offsetof(mavlink_leaf_mission_info_t, mission_id) }, \
          { "mission_name", NULL, MAVLINK_TYPE_CHAR, 64, 64, offsetof(mavlink_leaf_mission_info_t, mission_name) }, \
          { "mission_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 128, offsetof(mavlink_leaf_mission_info_t, mission_type) }, \
+         { "joystick_mode", NULL, MAVLINK_TYPE_UINT8_T, 0, 129, offsetof(mavlink_leaf_mission_info_t, joystick_mode) }, \
          } \
 }
 #endif
@@ -51,20 +54,23 @@ typedef struct __mavlink_leaf_mission_info_t {
  * @param mission_id  The id of the active mission
  * @param mission_name  The name of the active mission
  * @param mission_type  The type of mission currently loaded
+ * @param joystick_mode  The joystick mode
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_mission_info_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               const char *mission_id, const char *mission_name, uint8_t mission_type)
+                               const char *mission_id, const char *mission_name, uint8_t mission_type, uint8_t joystick_mode)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN];
     _mav_put_uint8_t(buf, 128, mission_type);
+    _mav_put_uint8_t(buf, 129, joystick_mode);
     _mav_put_char_array(buf, 0, mission_id, 64);
     _mav_put_char_array(buf, 64, mission_name, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN);
 #else
     mavlink_leaf_mission_info_t packet;
     packet.mission_type = mission_type;
+    packet.joystick_mode = joystick_mode;
     mav_array_assign_char(packet.mission_id, mission_id, 64);
     mav_array_assign_char(packet.mission_name, mission_name, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN);
@@ -84,20 +90,23 @@ static inline uint16_t mavlink_msg_leaf_mission_info_pack(uint8_t system_id, uin
  * @param mission_id  The id of the active mission
  * @param mission_name  The name of the active mission
  * @param mission_type  The type of mission currently loaded
+ * @param joystick_mode  The joystick mode
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_mission_info_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               const char *mission_id, const char *mission_name, uint8_t mission_type)
+                               const char *mission_id, const char *mission_name, uint8_t mission_type, uint8_t joystick_mode)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN];
     _mav_put_uint8_t(buf, 128, mission_type);
+    _mav_put_uint8_t(buf, 129, joystick_mode);
     _mav_put_char_array(buf, 0, mission_id, 64);
     _mav_put_char_array(buf, 64, mission_name, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN);
 #else
     mavlink_leaf_mission_info_t packet;
     packet.mission_type = mission_type;
+    packet.joystick_mode = joystick_mode;
     mav_array_memcpy(packet.mission_id, mission_id, sizeof(char)*64);
     mav_array_memcpy(packet.mission_name, mission_name, sizeof(char)*64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN);
@@ -120,21 +129,24 @@ static inline uint16_t mavlink_msg_leaf_mission_info_pack_status(uint8_t system_
  * @param mission_id  The id of the active mission
  * @param mission_name  The name of the active mission
  * @param mission_type  The type of mission currently loaded
+ * @param joystick_mode  The joystick mode
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_mission_info_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   const char *mission_id,const char *mission_name,uint8_t mission_type)
+                                   const char *mission_id,const char *mission_name,uint8_t mission_type,uint8_t joystick_mode)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN];
     _mav_put_uint8_t(buf, 128, mission_type);
+    _mav_put_uint8_t(buf, 129, joystick_mode);
     _mav_put_char_array(buf, 0, mission_id, 64);
     _mav_put_char_array(buf, 64, mission_name, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN);
 #else
     mavlink_leaf_mission_info_t packet;
     packet.mission_type = mission_type;
+    packet.joystick_mode = joystick_mode;
     mav_array_assign_char(packet.mission_id, mission_id, 64);
     mav_array_assign_char(packet.mission_name, mission_name, 64);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN);
@@ -154,7 +166,7 @@ static inline uint16_t mavlink_msg_leaf_mission_info_pack_chan(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_leaf_mission_info_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_mission_info_t* leaf_mission_info)
 {
-    return mavlink_msg_leaf_mission_info_pack(system_id, component_id, msg, leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type);
+    return mavlink_msg_leaf_mission_info_pack(system_id, component_id, msg, leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type, leaf_mission_info->joystick_mode);
 }
 
 /**
@@ -168,7 +180,7 @@ static inline uint16_t mavlink_msg_leaf_mission_info_encode(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_leaf_mission_info_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_mission_info_t* leaf_mission_info)
 {
-    return mavlink_msg_leaf_mission_info_pack_chan(system_id, component_id, chan, msg, leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type);
+    return mavlink_msg_leaf_mission_info_pack_chan(system_id, component_id, chan, msg, leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type, leaf_mission_info->joystick_mode);
 }
 
 /**
@@ -182,7 +194,7 @@ static inline uint16_t mavlink_msg_leaf_mission_info_encode_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_leaf_mission_info_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_mission_info_t* leaf_mission_info)
 {
-    return mavlink_msg_leaf_mission_info_pack_status(system_id, component_id, _status, msg,  leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type);
+    return mavlink_msg_leaf_mission_info_pack_status(system_id, component_id, _status, msg,  leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type, leaf_mission_info->joystick_mode);
 }
 
 /**
@@ -192,20 +204,23 @@ static inline uint16_t mavlink_msg_leaf_mission_info_encode_status(uint8_t syste
  * @param mission_id  The id of the active mission
  * @param mission_name  The name of the active mission
  * @param mission_type  The type of mission currently loaded
+ * @param joystick_mode  The joystick mode
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_mission_info_send(mavlink_channel_t chan, const char *mission_id, const char *mission_name, uint8_t mission_type)
+static inline void mavlink_msg_leaf_mission_info_send(mavlink_channel_t chan, const char *mission_id, const char *mission_name, uint8_t mission_type, uint8_t joystick_mode)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN];
     _mav_put_uint8_t(buf, 128, mission_type);
+    _mav_put_uint8_t(buf, 129, joystick_mode);
     _mav_put_char_array(buf, 0, mission_id, 64);
     _mav_put_char_array(buf, 64, mission_name, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_INFO, buf, MAVLINK_MSG_ID_LEAF_MISSION_INFO_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_CRC);
 #else
     mavlink_leaf_mission_info_t packet;
     packet.mission_type = mission_type;
+    packet.joystick_mode = joystick_mode;
     mav_array_assign_char(packet.mission_id, mission_id, 64);
     mav_array_assign_char(packet.mission_name, mission_name, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_INFO, (const char *)&packet, MAVLINK_MSG_ID_LEAF_MISSION_INFO_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_CRC);
@@ -220,7 +235,7 @@ static inline void mavlink_msg_leaf_mission_info_send(mavlink_channel_t chan, co
 static inline void mavlink_msg_leaf_mission_info_send_struct(mavlink_channel_t chan, const mavlink_leaf_mission_info_t* leaf_mission_info)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_mission_info_send(chan, leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type);
+    mavlink_msg_leaf_mission_info_send(chan, leaf_mission_info->mission_id, leaf_mission_info->mission_name, leaf_mission_info->mission_type, leaf_mission_info->joystick_mode);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_INFO, (const char *)leaf_mission_info, MAVLINK_MSG_ID_LEAF_MISSION_INFO_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_CRC);
 #endif
@@ -234,17 +249,19 @@ static inline void mavlink_msg_leaf_mission_info_send_struct(mavlink_channel_t c
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_mission_info_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  const char *mission_id, const char *mission_name, uint8_t mission_type)
+static inline void mavlink_msg_leaf_mission_info_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  const char *mission_id, const char *mission_name, uint8_t mission_type, uint8_t joystick_mode)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
     _mav_put_uint8_t(buf, 128, mission_type);
+    _mav_put_uint8_t(buf, 129, joystick_mode);
     _mav_put_char_array(buf, 0, mission_id, 64);
     _mav_put_char_array(buf, 64, mission_name, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_INFO, buf, MAVLINK_MSG_ID_LEAF_MISSION_INFO_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_CRC);
 #else
     mavlink_leaf_mission_info_t *packet = (mavlink_leaf_mission_info_t *)msgbuf;
     packet->mission_type = mission_type;
+    packet->joystick_mode = joystick_mode;
     mav_array_assign_char(packet->mission_id, mission_id, 64);
     mav_array_assign_char(packet->mission_name, mission_name, 64);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_MISSION_INFO, (const char *)packet, MAVLINK_MSG_ID_LEAF_MISSION_INFO_MIN_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN, MAVLINK_MSG_ID_LEAF_MISSION_INFO_CRC);
@@ -288,6 +305,16 @@ static inline uint8_t mavlink_msg_leaf_mission_info_get_mission_type(const mavli
 }
 
 /**
+ * @brief Get field joystick_mode from leaf_mission_info message
+ *
+ * @return  The joystick mode
+ */
+static inline uint8_t mavlink_msg_leaf_mission_info_get_joystick_mode(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  129);
+}
+
+/**
  * @brief Decode a leaf_mission_info message into a struct
  *
  * @param msg The message to decode
@@ -299,6 +326,7 @@ static inline void mavlink_msg_leaf_mission_info_decode(const mavlink_message_t*
     mavlink_msg_leaf_mission_info_get_mission_id(msg, leaf_mission_info->mission_id);
     mavlink_msg_leaf_mission_info_get_mission_name(msg, leaf_mission_info->mission_name);
     leaf_mission_info->mission_type = mavlink_msg_leaf_mission_info_get_mission_type(msg);
+    leaf_mission_info->joystick_mode = mavlink_msg_leaf_mission_info_get_joystick_mode(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN? msg->len : MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN;
         memset(leaf_mission_info, 0, MAVLINK_MSG_ID_LEAF_MISSION_INFO_LEN);

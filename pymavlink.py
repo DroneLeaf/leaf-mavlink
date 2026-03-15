@@ -28583,22 +28583,22 @@ class MAVLink_leaf_mission_info_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_MISSION_INFO
     msgname = "LEAF_MISSION_INFO"
-    fieldnames = ["mission_id", "mission_name", "mission_type"]
-    ordered_fieldnames = ["mission_id", "mission_name", "mission_type"]
-    fieldtypes = ["char", "char", "uint8_t"]
+    fieldnames = ["mission_id", "mission_name", "mission_type", "joystick_mode"]
+    ordered_fieldnames = ["mission_id", "mission_name", "mission_type", "joystick_mode"]
+    fieldtypes = ["char", "char", "uint8_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
-    fieldenums_by_name: Dict[str, str] = {"mission_type": "LEAF_MISSION_TYPE"}
+    fieldenums_by_name: Dict[str, str] = {"mission_type": "LEAF_MISSION_TYPE", "joystick_mode": "JOYSTICK_MODE"}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<ccB")
-    orders = [0, 1, 2]
-    lengths = [1, 1, 1]
-    array_lengths = [64, 64, 0]
-    crc_extra = 21
-    unpacker = struct.Struct("<64s64sB")
+    native_format = bytearray(b"<ccBB")
+    orders = [0, 1, 2, 3]
+    lengths = [1, 1, 1, 1]
+    array_lengths = [64, 64, 0, 0]
+    crc_extra = 100
+    unpacker = struct.Struct("<64s64sBB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, mission_id: bytes, mission_name: bytes, mission_type: int):
+    def __init__(self, mission_id: bytes, mission_name: bytes, mission_type: int, joystick_mode: int):
         MAVLink_message.__init__(self, MAVLink_leaf_mission_info_message.id, MAVLink_leaf_mission_info_message.msgname)
         self._fieldnames = MAVLink_leaf_mission_info_message.fieldnames
         self._instance_field = MAVLink_leaf_mission_info_message.instance_field
@@ -28608,9 +28608,10 @@ class MAVLink_leaf_mission_info_message(MAVLink_message):
         self._mission_name_raw = mission_name
         self.mission_name = mission_name.split(b"\x00", 1)[0].decode("ascii", errors="replace")
         self.mission_type = mission_type
+        self.joystick_mode = joystick_mode
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self._mission_id_raw, self._mission_name_raw, self.mission_type), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self._mission_id_raw, self._mission_name_raw, self.mission_type, self.joystick_mode), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -44175,27 +44176,29 @@ class MAVLink(object):
         """
         self.send(self.leaf_gps_origin_status_encode(latitude, longitude, altitude, state), force_mavlink1=force_mavlink1)
 
-    def leaf_mission_info_encode(self, mission_id: bytes, mission_name: bytes, mission_type: int) -> MAVLink_leaf_mission_info_message:
+    def leaf_mission_info_encode(self, mission_id: bytes, mission_name: bytes, mission_type: int, joystick_mode: int) -> MAVLink_leaf_mission_info_message:
         """
         Mission identity snapshot
 
         mission_id                : The id of the active mission (type:char)
         mission_name              : The name of the active mission (type:char)
         mission_type              : The type of mission currently loaded (type:uint8_t, values:LEAF_MISSION_TYPE)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JOYSTICK_MODE)
 
         """
-        return MAVLink_leaf_mission_info_message(mission_id, mission_name, mission_type)
+        return MAVLink_leaf_mission_info_message(mission_id, mission_name, mission_type, joystick_mode)
 
-    def leaf_mission_info_send(self, mission_id: bytes, mission_name: bytes, mission_type: int, force_mavlink1: bool = False) -> None:
+    def leaf_mission_info_send(self, mission_id: bytes, mission_name: bytes, mission_type: int, joystick_mode: int, force_mavlink1: bool = False) -> None:
         """
         Mission identity snapshot
 
         mission_id                : The id of the active mission (type:char)
         mission_name              : The name of the active mission (type:char)
         mission_type              : The type of mission currently loaded (type:uint8_t, values:LEAF_MISSION_TYPE)
+        joystick_mode             : The joystick mode (type:uint8_t, values:JOYSTICK_MODE)
 
         """
-        self.send(self.leaf_mission_info_encode(mission_id, mission_name, mission_type), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_mission_info_encode(mission_id, mission_name, mission_type, joystick_mode), force_mavlink1=force_mavlink1)
 
     def leaf_mission_execution_step_info_encode(self, step_name: bytes, step_type: int, pos_trajectory_id: bytes, ori_trajectory_id: bytes) -> MAVLink_leaf_mission_execution_step_info_message:
         """

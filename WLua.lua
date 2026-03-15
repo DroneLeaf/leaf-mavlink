@@ -44213,6 +44213,10 @@ f.LEAF_MISSION_INFO_mission_id = ProtoField.new("mission_id (char)",
                             "mavlink_proto.LEAF_MISSION_INFO_mission_type",
                             ftypes.UINT8,
                             enumEntryName.LEAF_MISSION_TYPE)
+    f.LEAF_MISSION_INFO_joystick_mode = ProtoField.new("joystick_mode (JOYSTICK_MODE)",
+                            "mavlink_proto.LEAF_MISSION_INFO_joystick_mode",
+                            ftypes.UINT8,
+                            enumEntryName.JOYSTICK_MODE)
     
 f.LEAF_MISSION_EXECUTION_STEP_INFO_step_name = ProtoField.new("step_name (char)",
                             "mavlink_proto.LEAF_MISSION_EXECUTION_STEP_INFO_step_name",
@@ -101271,9 +101275,9 @@ end
 -- dissect payload of message type LEAF_MISSION_INFO
 function payload_fns.payload_77049(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 129 > limit) then
+    if (offset + 130 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 129)
+        padded:set_size(offset + 130)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
@@ -101284,6 +101288,8 @@ function payload_fns.payload_77049(buffer, tree, msgid, offset, limit, pinfo)
     subtree = tree:add_le(f.LEAF_MISSION_INFO_mission_name, tvbrange)
     tvbrange = padded(offset + 128, 1)
     subtree = tree:add_le(f.LEAF_MISSION_INFO_mission_type, tvbrange)
+    tvbrange = padded(offset + 129, 1)
+    subtree = tree:add_le(f.LEAF_MISSION_INFO_joystick_mode, tvbrange)
 end
 -- dissect payload of message type LEAF_MISSION_EXECUTION_STEP_INFO
 function payload_fns.payload_77050(buffer, tree, msgid, offset, limit, pinfo)
