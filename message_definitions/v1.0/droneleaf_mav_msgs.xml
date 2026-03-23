@@ -163,15 +163,20 @@
         <description>Learning all loops mode - no real-time tuning</description>
       </entry>
     </enum>
-    <enum name="LEAF_MISSION_TYPE">
-      <entry value="0" name="LEAF_MISSION_TYPE_LEAF_SCRIPT">
+    <enum name="LEAF_MISSION_MODE">
+      <entry value="0" name="LEAF_MISSION_MODE_PREDEFINED">
+        <description>Executing a predefined mission</description>
+      </entry>
+      <entry value="1" name="LEAF_MISSION_MODE_INTERACTIVE">
+        <description>Executing an interactive mission created at runtime</description>
+      </entry>
+    </enum>
+    <enum name="LEAF_PREDEFINED_MISSION_TYPE">
+      <entry value="0" name="LEAF_PREDEFINED_MISSION_TYPE_LEAF_SCRIPT">
         <description>Mission loaded from a LeafScript file</description>
       </entry>
-      <entry value="1" name="LEAF_MISSION_TYPE_QGC">
+      <entry value="1" name="LEAF_PREDEFINED_MISSION_TYPE_QGC">
         <description>Mission loaded from a QGroundControl plan</description>
-      </entry>
-      <entry value="2" name="LEAF_MISSION_TYPE_INTERACTIVE_MISSION">
-        <description>Mission created interactively at runtime</description>
       </entry>
     </enum>
     <enum name="LEAF_MISSION_STEP_TYPE">
@@ -438,8 +443,8 @@
       <field type="uint8_t" name="target_system">The system needs to switch to MRFT yaw controller</field>
       <field type="uint8_t" name="enable">1 to switch on, 0 to switch back off</field>
     </message>
-    <message id="77047" name="LEAF_MISSION_MANAGER_HEARTBEAT">
-      <description>Mission heartbeat (state/pause/queue/health)</description>
+    <message id="77047" name="LEAF_PETAL_MISSION_MANAGER_HEARTBEAT">
+      <description>Mission heartbeat</description>
       <field type="uint8_t" name="is_healthy" enum="BOOL">1 if the publisher is healthy, 0 otherwise</field>
       <field type="uint8_t" name="is_mission_in_progress" enum="BOOL">1 if a mission is in_progress, 0 otherwise</field>
       <field type="uint8_t" name="mission_pause_stage" enum="LEAF_MISSION_PAUSE_STAGE">Current pause stage</field>
@@ -447,6 +452,7 @@
       <field type="uint8_t" name="last_mission_completion_state" enum="LEAF_MISSION_COMPLETION_STATE">The completion state of the last mission</field>
       <field type="uint8_t" name="queue_count">Number of missions currently in the queue</field>
       <field type="uint8_t" name="max_queue_size">Maximum queue size</field>
+      <field type="uint8_t" name="mission_mode" enum="LEAF_MISSION_MODE">The current mission mode</field>
     </message>
     <message id="77048" name="LEAF_GPS_ORIGIN_STATUS">
       <description>GPS origin coordinates (lat/lon/alt) and GPS manager operational state</description>
@@ -459,7 +465,7 @@
       <description>Mission identity snapshot</description>
       <field type="char[64]" name="mission_id">The id of the active mission</field>
       <field type="char[64]" name="mission_name">The name of the active mission</field>
-      <field type="uint8_t" name="mission_type" enum="LEAF_MISSION_TYPE">The type of mission currently loaded</field>
+      <field type="uint8_t" name="mission_type" enum="LEAF_PREDEFINED_MISSION_TYPE">The type of mission currently loaded</field>
       <field type="uint8_t" name="joystick_mode" enum="JOYSTICK_MODE">The joystick mode</field>
     </message>
     <message id="77050" name="LEAF_MISSION_EXECUTION_STEP_INFO">
@@ -468,6 +474,20 @@
       <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The type of the currently executing step</field>
       <field type="char[64]" name="pos_trajectory_id">The id of the currently executing position trajectory, if applicable</field>
       <field type="char[64]" name="ori_trajectory_id">The id of the currently executing orientation trajectory, if applicable</field>
+    </message>
+    <message id="77051" name="LEAF_FC_MISSION_MANAGER_HEARTBEAT">
+      <description>FC Mission heartbeat</description>
+      <field type="uint8_t" name="is_enabled" enum="BOOL">1 if the publisher is healthy, 0 otherwise</field>
+      <field type="uint8_t" name="is_petal_healthy" enum="BOOL">1 if the publisher is healthy, 0 otherwise</field>
+      <field type="uint8_t" name="is_mission_in_progress" enum="BOOL">1 if a mission is in_progress, 0 otherwise</field>
+      <field type="uint8_t" name="mission_pause_stage" enum="LEAF_MISSION_PAUSE_STAGE">Current pause stage</field>
+      <field type="uint8_t" name="is_joystick_enabled" enum="BOOL">1 if the joystick is enabled, 0 otherwise</field>
+      <field type="uint8_t" name="mission_mode" enum="LEAF_MISSION_MODE">The current mission mode</field>
+      <field type="char[64]" name="current_mission_id">The id of the current mission</field>
+      <field type="char[64]" name="current_pos_trajectory_id">The id of the current position trajectory</field>
+      <field type="char[64]" name="current_ori_trajectory_id">The id of the current orientation trajectory</field>
+      <field type="uint8_t" name="is_current_pos_trajectory_completed" enum="BOOL">1 if the current position trajectory is completed, 0 otherwise</field>
+      <field type="uint8_t" name="is_current_ori_trajectory_completed" enum="BOOL">1 if the current orientation trajectory is completed, 0 otherwise</field>
     </message>
   </messages>
 </mavlink>
