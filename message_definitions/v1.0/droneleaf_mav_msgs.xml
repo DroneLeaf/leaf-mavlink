@@ -394,5 +394,16 @@
       <field type="uint8_t" name="queue_count">The number of missions in the queue</field>
       <field type="uint8_t" name="predefined_actions_status" enum="LEAF_PREDEFINED_ACTIONS_STATUS">The predefined actions status</field>
     </message>
+    <message id="77045" name="LEAF_QGC_VIDEO_TARGET">
+      <description>Video target from QGC. Click (w=0,h=0) or ROI rectangle. All coordinates normalized 0-1.</description>
+      <field type="float" name="x">Top-left X or click X, normalized [0..1]</field>
+      <field type="float" name="y">Top-left Y or click Y, normalized [0..1]</field>
+      <field type="float" name="w">Width of ROI, normalized [0..1]. 0 means click.</field>
+      <field type="float" name="h">Height of ROI, normalized [0..1]. 0 means click.</field>
+    </message>
+    <message id="77046" name="LEAF_QGC_VIDEO_CLEAR">
+      <description>Clear video tracking from QGC (keyboard trigger).</description>
+      <field type="uint8_t" name="clear">1 to clear tracker, 0 reserved</field>
+    </message>
   </messages>
 </mavlink>
