@@ -465,10 +465,11 @@ messageName = {
     [77043] = 'LEAF_SETPOINT_OFFSET',
     [77045] = 'LEAF_SYS_STATUS',
     [77046] = 'LEAF_DO_SWITCH_MRFT_YAW',
-    [77047] = 'LEAF_MISSION_MANAGER_HEARTBEAT',
+    [77047] = 'LEAF_PETAL_MISSION_MANAGER_HEARTBEAT',
     [77048] = 'LEAF_GPS_ORIGIN_STATUS',
     [77049] = 'LEAF_MISSION_INFO',
     [77050] = 'LEAF_MISSION_EXECUTION_STEP_INFO',
+    [77051] = 'LEAF_FC_MISSION_MANAGER_HEARTBEAT',
     [10151] = 'LOWEHEISER_GOV_EFI',
 }
 
@@ -3237,10 +3238,13 @@ local enumEntryName = {
         [10] = "LEAF_MODE_MISSION",
         [11] = "LEAF_MODE_LEARNING_FULL_DATA_COLLECTION",
     },
-    ["LEAF_MISSION_TYPE"] = {
-        [0] = "LEAF_MISSION_TYPE_LEAF_SCRIPT",
-        [1] = "LEAF_MISSION_TYPE_QGC",
-        [2] = "LEAF_MISSION_TYPE_INTERACTIVE_MISSION",
+    ["LEAF_MISSION_MODE"] = {
+        [0] = "LEAF_MISSION_MODE_PREDEFINED",
+        [1] = "LEAF_MISSION_MODE_INTERACTIVE",
+    },
+    ["LEAF_PREDEFINED_MISSION_TYPE"] = {
+        [0] = "LEAF_PREDEFINED_MISSION_TYPE_LEAF_SCRIPT",
+        [1] = "LEAF_PREDEFINED_MISSION_TYPE_QGC",
     },
     ["LEAF_MISSION_STEP_TYPE"] = {
         [0] = "IDLE",
@@ -44146,43 +44150,47 @@ f.LEAF_DO_SWITCH_MRFT_YAW_target_system = ProtoField.new("target_system (uint8_t
                             ftypes.UINT8,
                             nil)
     
-f.LEAF_MISSION_MANAGER_HEARTBEAT_is_healthy = ProtoField.new("is_healthy (BOOL)",
-                            "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_is_healthy",
+f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_healthy = ProtoField.new("is_healthy (BOOL)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_healthy",
                             ftypes.UINT8,
                             nil, base.HEX_DEC)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_is_healthy_flagBOOL_TRUE = ProtoField.bool(
-        "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_is_healthy.BOOL_TRUE",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_healthy_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_healthy.BOOL_TRUE",
         "BOOL_TRUE", 4, nil, 1)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress = ProtoField.new("is_mission_in_progress (BOOL)",
-                            "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress = ProtoField.new("is_mission_in_progress (BOOL)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress",
                             ftypes.UINT8,
                             nil, base.HEX_DEC)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress_flagBOOL_TRUE = ProtoField.bool(
-        "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress.BOOL_TRUE",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress.BOOL_TRUE",
         "BOOL_TRUE", 4, nil, 1)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_mission_pause_stage = ProtoField.new("mission_pause_stage (LEAF_MISSION_PAUSE_STAGE)",
-                            "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_mission_pause_stage",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_mission_pause_stage = ProtoField.new("mission_pause_stage (LEAF_MISSION_PAUSE_STAGE)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_mission_pause_stage",
                             ftypes.UINT8,
                             enumEntryName.LEAF_MISSION_PAUSE_STAGE)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled = ProtoField.new("is_joystick_enabled (BOOL)",
-                            "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled = ProtoField.new("is_joystick_enabled (BOOL)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled",
                             ftypes.UINT8,
                             nil, base.HEX_DEC)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled_flagBOOL_TRUE = ProtoField.bool(
-        "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled.BOOL_TRUE",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled.BOOL_TRUE",
         "BOOL_TRUE", 4, nil, 1)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_last_mission_completion_state = ProtoField.new("last_mission_completion_state (LEAF_MISSION_COMPLETION_STATE)",
-                            "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_last_mission_completion_state",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_last_mission_completion_state = ProtoField.new("last_mission_completion_state (LEAF_MISSION_COMPLETION_STATE)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_last_mission_completion_state",
                             ftypes.UINT8,
                             enumEntryName.LEAF_MISSION_COMPLETION_STATE)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_queue_count = ProtoField.new("queue_count (uint8_t)",
-                            "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_queue_count",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_queue_count = ProtoField.new("queue_count (uint8_t)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_queue_count",
                             ftypes.UINT8,
                             nil)
-    f.LEAF_MISSION_MANAGER_HEARTBEAT_max_queue_size = ProtoField.new("max_queue_size (uint8_t)",
-                            "mavlink_proto.LEAF_MISSION_MANAGER_HEARTBEAT_max_queue_size",
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_max_queue_size = ProtoField.new("max_queue_size (uint8_t)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_max_queue_size",
                             ftypes.UINT8,
                             nil)
+    f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_mission_mode = ProtoField.new("mission_mode (LEAF_MISSION_MODE)",
+                            "mavlink_proto.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_mission_mode",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_MISSION_MODE)
     
 f.LEAF_GPS_ORIGIN_STATUS_latitude = ProtoField.new("latitude (int32_t) [degE7]",
                             "mavlink_proto.LEAF_GPS_ORIGIN_STATUS_latitude",
@@ -44209,10 +44217,10 @@ f.LEAF_MISSION_INFO_mission_id = ProtoField.new("mission_id (char)",
                             "mavlink_proto.LEAF_MISSION_INFO_mission_name",
                             ftypes.STRING,
                             nil)
-    f.LEAF_MISSION_INFO_mission_type = ProtoField.new("mission_type (LEAF_MISSION_TYPE)",
+    f.LEAF_MISSION_INFO_mission_type = ProtoField.new("mission_type (LEAF_PREDEFINED_MISSION_TYPE)",
                             "mavlink_proto.LEAF_MISSION_INFO_mission_type",
                             ftypes.UINT8,
-                            enumEntryName.LEAF_MISSION_TYPE)
+                            enumEntryName.LEAF_PREDEFINED_MISSION_TYPE)
     f.LEAF_MISSION_INFO_joystick_mode = ProtoField.new("joystick_mode (JOYSTICK_MODE)",
                             "mavlink_proto.LEAF_MISSION_INFO_joystick_mode",
                             ftypes.UINT8,
@@ -44234,6 +44242,69 @@ f.LEAF_MISSION_EXECUTION_STEP_INFO_step_name = ProtoField.new("step_name (char)"
                             "mavlink_proto.LEAF_MISSION_EXECUTION_STEP_INFO_ori_trajectory_id",
                             ftypes.STRING,
                             nil)
+    
+f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_enabled = ProtoField.new("is_enabled (BOOL)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_enabled",
+                            ftypes.UINT8,
+                            nil, base.HEX_DEC)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_enabled_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_enabled.BOOL_TRUE",
+        "BOOL_TRUE", 4, nil, 1)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_petal_healthy = ProtoField.new("is_petal_healthy (BOOL)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_petal_healthy",
+                            ftypes.UINT8,
+                            nil, base.HEX_DEC)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_petal_healthy_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_petal_healthy.BOOL_TRUE",
+        "BOOL_TRUE", 4, nil, 1)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress = ProtoField.new("is_mission_in_progress (BOOL)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress",
+                            ftypes.UINT8,
+                            nil, base.HEX_DEC)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress.BOOL_TRUE",
+        "BOOL_TRUE", 4, nil, 1)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_mission_pause_stage = ProtoField.new("mission_pause_stage (LEAF_MISSION_PAUSE_STAGE)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_mission_pause_stage",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_MISSION_PAUSE_STAGE)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled = ProtoField.new("is_joystick_enabled (BOOL)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled",
+                            ftypes.UINT8,
+                            nil, base.HEX_DEC)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled.BOOL_TRUE",
+        "BOOL_TRUE", 4, nil, 1)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_mission_mode = ProtoField.new("mission_mode (LEAF_MISSION_MODE)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_mission_mode",
+                            ftypes.UINT8,
+                            enumEntryName.LEAF_MISSION_MODE)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_mission_id = ProtoField.new("current_mission_id (char)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_mission_id",
+                            ftypes.STRING,
+                            nil)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_pos_trajectory_id = ProtoField.new("current_pos_trajectory_id (char)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_pos_trajectory_id",
+                            ftypes.STRING,
+                            nil)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_ori_trajectory_id = ProtoField.new("current_ori_trajectory_id (char)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_ori_trajectory_id",
+                            ftypes.STRING,
+                            nil)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_pos_trajectory_completed = ProtoField.new("is_current_pos_trajectory_completed (BOOL)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_pos_trajectory_completed",
+                            ftypes.UINT8,
+                            nil, base.HEX_DEC)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_pos_trajectory_completed_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_pos_trajectory_completed.BOOL_TRUE",
+        "BOOL_TRUE", 4, nil, 1)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_ori_trajectory_completed = ProtoField.new("is_current_ori_trajectory_completed (BOOL)",
+                            "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_ori_trajectory_completed",
+                            ftypes.UINT8,
+                            nil, base.HEX_DEC)
+    f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_ori_trajectory_completed_flagBOOL_TRUE = ProtoField.bool(
+        "mavlink_proto.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_ori_trajectory_completed.BOOL_TRUE",
+        "BOOL_TRUE", 4, nil, 1)
     
 f.LOWEHEISER_GOV_EFI_volt_batt = ProtoField.new("volt_batt (float) [V]",
                             "mavlink_proto.LOWEHEISER_GOV_EFI_volt_batt",
@@ -101218,36 +101289,38 @@ function payload_fns.payload_77046(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 1, 1)
     subtree = tree:add_le(f.LEAF_DO_SWITCH_MRFT_YAW_enable, tvbrange)
 end
--- dissect payload of message type LEAF_MISSION_MANAGER_HEARTBEAT
+-- dissect payload of message type LEAF_PETAL_MISSION_MANAGER_HEARTBEAT
 function payload_fns.payload_77047(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 7 > limit) then
+    if (offset + 8 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 7)
+        padded:set_size(offset + 8)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
     end
     tvbrange = padded(offset + 0, 1)
-    subtree = tree:add_le(f.LEAF_MISSION_MANAGER_HEARTBEAT_is_healthy, tvbrange)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_healthy, tvbrange)
     value = tvbrange:le_uint()
-    dissect_flags_BOOL(subtree, "LEAF_MISSION_MANAGER_HEARTBEAT_is_healthy", tvbrange, value)
+    dissect_flags_BOOL(subtree, "LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_healthy", tvbrange, value)
     tvbrange = padded(offset + 1, 1)
-    subtree = tree:add_le(f.LEAF_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress, tvbrange)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress, tvbrange)
     value = tvbrange:le_uint()
-    dissect_flags_BOOL(subtree, "LEAF_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress", tvbrange, value)
+    dissect_flags_BOOL(subtree, "LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress", tvbrange, value)
     tvbrange = padded(offset + 2, 1)
-    subtree = tree:add_le(f.LEAF_MISSION_MANAGER_HEARTBEAT_mission_pause_stage, tvbrange)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_mission_pause_stage, tvbrange)
     tvbrange = padded(offset + 3, 1)
-    subtree = tree:add_le(f.LEAF_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled, tvbrange)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled, tvbrange)
     value = tvbrange:le_uint()
-    dissect_flags_BOOL(subtree, "LEAF_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled", tvbrange, value)
+    dissect_flags_BOOL(subtree, "LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled", tvbrange, value)
     tvbrange = padded(offset + 4, 1)
-    subtree = tree:add_le(f.LEAF_MISSION_MANAGER_HEARTBEAT_last_mission_completion_state, tvbrange)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_last_mission_completion_state, tvbrange)
     tvbrange = padded(offset + 5, 1)
-    subtree = tree:add_le(f.LEAF_MISSION_MANAGER_HEARTBEAT_queue_count, tvbrange)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_queue_count, tvbrange)
     tvbrange = padded(offset + 6, 1)
-    subtree = tree:add_le(f.LEAF_MISSION_MANAGER_HEARTBEAT_max_queue_size, tvbrange)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_max_queue_size, tvbrange)
+    tvbrange = padded(offset + 7, 1)
+    subtree = tree:add_le(f.LEAF_PETAL_MISSION_MANAGER_HEARTBEAT_mission_mode, tvbrange)
 end
 -- dissect payload of message type LEAF_GPS_ORIGIN_STATUS
 function payload_fns.payload_77048(buffer, tree, msgid, offset, limit, pinfo)
@@ -101309,6 +101382,51 @@ function payload_fns.payload_77050(buffer, tree, msgid, offset, limit, pinfo)
     subtree = tree:add_le(f.LEAF_MISSION_EXECUTION_STEP_INFO_pos_trajectory_id, tvbrange)
     tvbrange = padded(offset + 129, 64)
     subtree = tree:add_le(f.LEAF_MISSION_EXECUTION_STEP_INFO_ori_trajectory_id, tvbrange)
+end
+-- dissect payload of message type LEAF_FC_MISSION_MANAGER_HEARTBEAT
+function payload_fns.payload_77051(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 200 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 200)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_enabled, tvbrange)
+    value = tvbrange:le_uint()
+    dissect_flags_BOOL(subtree, "LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_enabled", tvbrange, value)
+    tvbrange = padded(offset + 1, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_petal_healthy, tvbrange)
+    value = tvbrange:le_uint()
+    dissect_flags_BOOL(subtree, "LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_petal_healthy", tvbrange, value)
+    tvbrange = padded(offset + 2, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress, tvbrange)
+    value = tvbrange:le_uint()
+    dissect_flags_BOOL(subtree, "LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_mission_in_progress", tvbrange, value)
+    tvbrange = padded(offset + 3, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_mission_pause_stage, tvbrange)
+    tvbrange = padded(offset + 4, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled, tvbrange)
+    value = tvbrange:le_uint()
+    dissect_flags_BOOL(subtree, "LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_joystick_enabled", tvbrange, value)
+    tvbrange = padded(offset + 5, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_mission_mode, tvbrange)
+    tvbrange = padded(offset + 6, 64)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_mission_id, tvbrange)
+    tvbrange = padded(offset + 70, 64)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_pos_trajectory_id, tvbrange)
+    tvbrange = padded(offset + 134, 64)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_current_ori_trajectory_id, tvbrange)
+    tvbrange = padded(offset + 198, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_pos_trajectory_completed, tvbrange)
+    value = tvbrange:le_uint()
+    dissect_flags_BOOL(subtree, "LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_pos_trajectory_completed", tvbrange, value)
+    tvbrange = padded(offset + 199, 1)
+    subtree = tree:add_le(f.LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_ori_trajectory_completed, tvbrange)
+    value = tvbrange:le_uint()
+    dissect_flags_BOOL(subtree, "LEAF_FC_MISSION_MANAGER_HEARTBEAT_is_current_ori_trajectory_completed", tvbrange, value)
 end
 -- dissect payload of message type LOWEHEISER_GOV_EFI
 function payload_fns.payload_10151(buffer, tree, msgid, offset, limit, pinfo)
