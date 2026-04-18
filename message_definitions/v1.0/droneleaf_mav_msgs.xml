@@ -271,6 +271,17 @@
         <description>Joystick is enabled only on pause</description>
       </entry>
     </enum>
+    <enum name="LEAF_CV_TRACKER_CMD_TYPE">
+      <entry value="0" name="LEAF_CV_TRACKER_CMD_RESET">
+        <description>Reset tracker to LOST state, clears bbox tracker state</description>
+      </entry>
+      <entry value="1" name="LEAF_CV_TRACKER_CMD_CLEAR_TRACKING">
+        <description>Clear tracking, equivalent to reset</description>
+      </entry>
+      <entry value="2" name="LEAF_CV_TRACKER_CMD_TRACK_XY">
+        <description>Init tracking at given normalised coordinates</description>
+      </entry>
+    </enum>
   </enums>
   <messages>
     <message id="77000" name="LEAF_MODE">
@@ -534,6 +545,30 @@
       <field type="char[64]" name="mission_name">The name of the mission</field>
       <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The number of missions in the queue</field>
       <field type="char[64]" name="step_name">The name of the current step</field>
+    </message>
+    <message id="77048" name="LEAF_CV_TRACKER_STATE">
+      <description>CV tracker bounding-box output: bearing and normalised bbox. Sent from LeafFC to ground at 30 Hz.</description>
+      <field type="char[64]" name="tracker">Active tracker algorithm name (e.g. csrt_fast, vit, nano)</field>
+      <field type="float" name="cv_tracker_angle_pan_deg" units="deg">Horizontal bearing to target centre. Positive = right of centre.</field>
+      <field type="float" name="cv_tracker_angle_tilt_deg" units="deg">Vertical bearing to target centre. Positive = below centre.</field>
+      <field type="float" name="cv_tracker_box_center_x_norm">Bounding box centre X, normalised. 0 = left, 1 = right.</field>
+      <field type="float" name="cv_tracker_box_center_y_norm">Bounding box centre Y, normalised. 0 = top, 1 = bottom.</field>
+      <field type="float" name="cv_tracker_box_width_norm">Bounding box width, normalised.</field>
+      <field type="float" name="cv_tracker_box_height_norm">Bounding box height, normalised.</field>
+    </message>
+    <message id="77049" name="LEAF_CV_TRACKER_STATUS">
+      <description>CV tracker health heartbeat. Sent from LeafFC to ground at 10 Hz.</description>
+      <field type="uint8_t" name="cv_tracker_is_tracking">1 when a valid track exists and source is healthy, 0 otherwise.</field>
+      <field type="uint8_t" name="cv_tracker_is_healthy">1 when camera source is producing frames and not dark, 0 otherwise.</field>
+      <field type="float" name="cv_tracker_fps" units="Hz">Processing frame rate. 0.0 when source is unhealthy.</field>
+    </message>
+    <message id="77050" name="LEAF_DO_CV_TRACKER_CMD">
+      <description>Command sent from ground to LeafFC to control the CV tracker.</description>
+      <field type="uint8_t" name="target_system">The target system</field>
+      <field type="uint8_t" name="cmd" enum="LEAF_CV_TRACKER_CMD_TYPE">The tracker command to execute</field>
+      <field type="float" name="x">Target X, normalised to frame width (0.0-1.0). Used with track_xy command.</field>
+      <field type="float" name="y">Target Y, normalised to frame height (0.0-1.0). Used with track_xy command.</field>
+      <field type="float" name="b">Init box size, normalised to frame width (0.0-1.0). 0 for default. Used with track_xy command.</field>
     </message>
   </messages>
 </mavlink>
