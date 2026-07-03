@@ -535,5 +535,18 @@
       <field type="uint8_t" name="step_type" enum="LEAF_MISSION_STEP_TYPE">The number of missions in the queue</field>
       <field type="char[64]" name="step_name">The name of the current step</field>
     </message>
+    <message id="77048" name="LEAF_DO_TERMINAL">
+      <description>Engage or disengage terminal (intercept) mode on the racer</description>
+      <field type="uint8_t" name="target_system">The target system</field>
+      <field type="uint8_t" name="terminal">1 to engage terminal/intercept, 0 to disengage</field>
+    </message>
+    <message id="77049" name="LEAF_DO_TRACK">
+      <description>Command the racer vision tracker to lock onto an aim point, or clear tracking. Carries the aim point so it works without a physical RC (ground-station control).</description>
+      <field type="uint8_t" name="target_system">The target system</field>
+      <field type="uint8_t" name="track">1 to start tracking at the aim point, 0 to clear tracking</field>
+      <field type="float" name="aim_x">Aim point X</field>
+      <field type="float" name="aim_y">Aim point Y</field>
+      <field type="float" name="box_size">Tracking box size</field>
+    </message>
   </messages>
 </mavlink>
