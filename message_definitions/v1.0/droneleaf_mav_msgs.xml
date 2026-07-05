@@ -548,5 +548,49 @@
       <field type="float" name="aim_y">Aim point Y</field>
       <field type="float" name="box_size">Tracking box size</field>
     </message>
+    <message id="77050" name="LEAF_BBOX_TELEMETRY">
+      <description>Racer vision-tracker bounding-box + status telemetry (drone to GS).</description>
+      <field type="float" name="box_center_x_norm">Bounding-box center X, normalized [0,1]</field>
+      <field type="float" name="box_center_y_norm">Bounding-box center Y, normalized [0,1]</field>
+      <field type="float" name="box_width_norm">Bounding-box width, normalized [0,1]</field>
+      <field type="float" name="box_height_norm">Bounding-box height, normalized [0,1]</field>
+      <field type="float" name="tracker_fps">CV tracker frame rate, fps</field>
+      <field type="uint8_t" name="is_healthy">Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)</field>
+      <field type="uint8_t" name="is_tracking">Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)</field>
+      <field type="uint8_t" name="estimator_valid">CV tracker range/bearing estimator validity (0/1)</field>
+    </message>
+    <message id="77051" name="LEAF_RACER_STATUS">
+      <description>Racer system status telemetry (drone to GS).</description>
+      <field type="uint8_t" name="msp_status">Betaflight MSP link status (0/1)</field>
+      <field type="uint8_t" name="current_racer_mode">Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept)</field>
+      <field type="uint8_t" name="tracker_health_state">Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)</field>
+      <field type="uint8_t" name="estimator_health">Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)</field>
+      <field type="uint8_t" name="rc_connection">RC link connected (0/1)</field>
+      <field type="uint8_t" name="terminal_switch_state">Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)</field>
+      <field type="uint8_t" name="auto_terminal">Auto-terminal (auto-intercept) enabled (0/1)</field>
+      <field type="int32_t" name="gps_lat_1e7">Latitude, degrees * 1e7</field>
+      <field type="int32_t" name="gps_lon_1e7">Longitude, degrees * 1e7</field>
+      <field type="int16_t" name="gps_alt_m">Altitude, meters</field>
+      <field type="uint8_t" name="gps_num_sat">Number of satellites</field>
+      <field type="uint8_t" name="gps_fix">GPS fix (0=no fix, 1=fix)</field>
+    </message>
+    <message id="77052" name="LEAF_BF_STATUS_EX">
+      <description>Betaflight extended status (MSP_STATUS_EX) forwarded to GS.</description>
+      <field type="uint16_t" name="cycle_time_us">Flight-loop cycle time, microseconds</field>
+      <field type="uint16_t" name="i2c_errors">I2C error count</field>
+      <field type="uint16_t" name="sensor_mask">Active sensor bitmask</field>
+      <field type="uint32_t" name="flight_mode_flags">Active flight-mode flags bitmask</field>
+      <field type="uint8_t" name="profile">Current PID profile index</field>
+      <field type="uint16_t" name="system_load">System load percent</field>
+      <field type="uint16_t" name="gyro_cycle_time">Gyro cycle time, microseconds</field>
+      <field type="uint8_t" name="flight_mode_count">Number of flight-mode flag bits</field>
+      <field type="uint8_t" name="arming_disable_count">Number of arming-disable flag bits</field>
+      <field type="uint32_t" name="arming_disable_flags">Arming-disable flags bitmask</field>
+      <field type="uint8_t" name="config_state_flags">Configuration state flags</field>
+    </message>
+    <message id="77053" name="LEAF_BF_BOX_NAMES">
+      <description>Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated, forwarded to GS.</description>
+      <field type="char[230]" name="box_names">Semicolon-separated Betaflight box-name string (truncated to fit)</field>
+    </message>
   </messages>
 </mavlink>
