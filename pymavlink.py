@@ -8940,6 +8940,12 @@ MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT = 77044
 MAVLINK_MSG_ID_LEAF_SYS_STATUS = 77045
 MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW = 77046
 MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2 = 77047
+MAVLINK_MSG_ID_LEAF_DO_TERMINAL = 77048
+MAVLINK_MSG_ID_LEAF_DO_TRACK = 77049
+MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY = 77050
+MAVLINK_MSG_ID_LEAF_RACER_STATUS = 77051
+MAVLINK_MSG_ID_LEAF_BF_STATUS_EX = 77052
+MAVLINK_MSG_ID_LEAF_BF_BOX_NAMES = 77053
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -28992,6 +28998,272 @@ class MAVLink_leaf_mission_heartbeat_v2_message(MAVLink_message):
 setattr(MAVLink_leaf_mission_heartbeat_v2_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_do_terminal_message(MAVLink_message):
+    """
+    Engage or disengage terminal (intercept) mode on the racer
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_DO_TERMINAL
+    msgname = "LEAF_DO_TERMINAL"
+    fieldnames = ["target_system", "terminal"]
+    ordered_fieldnames = ["target_system", "terminal"]
+    fieldtypes = ["uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<BB")
+    orders = [0, 1]
+    lengths = [1, 1]
+    array_lengths = [0, 0]
+    crc_extra = 162
+    unpacker = struct.Struct("<BB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, target_system: int, terminal: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_do_terminal_message.id, MAVLink_leaf_do_terminal_message.msgname)
+        self._fieldnames = MAVLink_leaf_do_terminal_message.fieldnames
+        self._instance_field = MAVLink_leaf_do_terminal_message.instance_field
+        self._instance_offset = MAVLink_leaf_do_terminal_message.instance_offset
+        self.target_system = target_system
+        self.terminal = terminal
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.terminal), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_do_terminal_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_do_track_message(MAVLink_message):
+    """
+    Command the racer vision tracker to lock onto an aim point, or
+    clear tracking. Carries the aim point so it works without a
+    physical RC (ground-station control).
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_DO_TRACK
+    msgname = "LEAF_DO_TRACK"
+    fieldnames = ["target_system", "track", "aim_x", "aim_y", "box_size"]
+    ordered_fieldnames = ["aim_x", "aim_y", "box_size", "target_system", "track"]
+    fieldtypes = ["uint8_t", "uint8_t", "float", "float", "float"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<fffBB")
+    orders = [3, 4, 0, 1, 2]
+    lengths = [1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0]
+    crc_extra = 81
+    unpacker = struct.Struct("<fffBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, target_system: int, track: int, aim_x: float, aim_y: float, box_size: float):
+        MAVLink_message.__init__(self, MAVLink_leaf_do_track_message.id, MAVLink_leaf_do_track_message.msgname)
+        self._fieldnames = MAVLink_leaf_do_track_message.fieldnames
+        self._instance_field = MAVLink_leaf_do_track_message.instance_field
+        self._instance_offset = MAVLink_leaf_do_track_message.instance_offset
+        self.target_system = target_system
+        self.track = track
+        self.aim_x = aim_x
+        self.aim_y = aim_y
+        self.box_size = box_size
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.aim_x, self.aim_y, self.box_size, self.target_system, self.track), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_do_track_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_bbox_telemetry_message(MAVLink_message):
+    """
+    Racer vision-tracker bounding-box + status telemetry (drone to
+    GS).
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY
+    msgname = "LEAF_BBOX_TELEMETRY"
+    fieldnames = ["box_center_x_norm", "box_center_y_norm", "box_width_norm", "box_height_norm", "tracker_fps", "is_healthy", "is_tracking", "estimator_valid"]
+    ordered_fieldnames = ["box_center_x_norm", "box_center_y_norm", "box_width_norm", "box_height_norm", "tracker_fps", "is_healthy", "is_tracking", "estimator_valid"]
+    fieldtypes = ["float", "float", "float", "float", "float", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<fffffBBB")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 148
+    unpacker = struct.Struct("<fffffBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, box_center_x_norm: float, box_center_y_norm: float, box_width_norm: float, box_height_norm: float, tracker_fps: float, is_healthy: int, is_tracking: int, estimator_valid: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_bbox_telemetry_message.id, MAVLink_leaf_bbox_telemetry_message.msgname)
+        self._fieldnames = MAVLink_leaf_bbox_telemetry_message.fieldnames
+        self._instance_field = MAVLink_leaf_bbox_telemetry_message.instance_field
+        self._instance_offset = MAVLink_leaf_bbox_telemetry_message.instance_offset
+        self.box_center_x_norm = box_center_x_norm
+        self.box_center_y_norm = box_center_y_norm
+        self.box_width_norm = box_width_norm
+        self.box_height_norm = box_height_norm
+        self.tracker_fps = tracker_fps
+        self.is_healthy = is_healthy
+        self.is_tracking = is_tracking
+        self.estimator_valid = estimator_valid
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.box_center_x_norm, self.box_center_y_norm, self.box_width_norm, self.box_height_norm, self.tracker_fps, self.is_healthy, self.is_tracking, self.estimator_valid), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_bbox_telemetry_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_racer_status_message(MAVLink_message):
+    """
+    Racer system status telemetry (drone to GS).
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_RACER_STATUS
+    msgname = "LEAF_RACER_STATUS"
+    fieldnames = ["msp_status", "current_racer_mode", "tracker_health_state", "estimator_health", "rc_connection", "terminal_switch_state", "auto_terminal", "gps_lat_1e7", "gps_lon_1e7", "gps_alt_m", "gps_num_sat", "gps_fix"]
+    ordered_fieldnames = ["gps_lat_1e7", "gps_lon_1e7", "gps_alt_m", "msp_status", "current_racer_mode", "tracker_health_state", "estimator_health", "rc_connection", "terminal_switch_state", "auto_terminal", "gps_num_sat", "gps_fix"]
+    fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "int32_t", "int32_t", "int16_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<iihBBBBBBBBB")
+    orders = [3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 10, 11]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 50
+    unpacker = struct.Struct("<iihBBBBBBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, terminal_switch_state: int, auto_terminal: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_racer_status_message.id, MAVLink_leaf_racer_status_message.msgname)
+        self._fieldnames = MAVLink_leaf_racer_status_message.fieldnames
+        self._instance_field = MAVLink_leaf_racer_status_message.instance_field
+        self._instance_offset = MAVLink_leaf_racer_status_message.instance_offset
+        self.msp_status = msp_status
+        self.current_racer_mode = current_racer_mode
+        self.tracker_health_state = tracker_health_state
+        self.estimator_health = estimator_health
+        self.rc_connection = rc_connection
+        self.terminal_switch_state = terminal_switch_state
+        self.auto_terminal = auto_terminal
+        self.gps_lat_1e7 = gps_lat_1e7
+        self.gps_lon_1e7 = gps_lon_1e7
+        self.gps_alt_m = gps_alt_m
+        self.gps_num_sat = gps_num_sat
+        self.gps_fix = gps_fix
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.gps_lat_1e7, self.gps_lon_1e7, self.gps_alt_m, self.msp_status, self.current_racer_mode, self.tracker_health_state, self.estimator_health, self.rc_connection, self.terminal_switch_state, self.auto_terminal, self.gps_num_sat, self.gps_fix), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_racer_status_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_bf_status_ex_message(MAVLink_message):
+    """
+    Betaflight extended status (MSP_STATUS_EX) forwarded to GS.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_BF_STATUS_EX
+    msgname = "LEAF_BF_STATUS_EX"
+    fieldnames = ["cycle_time_us", "i2c_errors", "sensor_mask", "flight_mode_flags", "profile", "system_load", "gyro_cycle_time", "flight_mode_count", "arming_disable_count", "arming_disable_flags", "config_state_flags"]
+    ordered_fieldnames = ["flight_mode_flags", "arming_disable_flags", "cycle_time_us", "i2c_errors", "sensor_mask", "system_load", "gyro_cycle_time", "profile", "flight_mode_count", "arming_disable_count", "config_state_flags"]
+    fieldtypes = ["uint16_t", "uint16_t", "uint16_t", "uint32_t", "uint8_t", "uint16_t", "uint16_t", "uint8_t", "uint8_t", "uint32_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<IIHHHHHBBBB")
+    orders = [2, 3, 4, 0, 7, 5, 6, 8, 9, 1, 10]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 107
+    unpacker = struct.Struct("<IIHHHHHBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_bf_status_ex_message.id, MAVLink_leaf_bf_status_ex_message.msgname)
+        self._fieldnames = MAVLink_leaf_bf_status_ex_message.fieldnames
+        self._instance_field = MAVLink_leaf_bf_status_ex_message.instance_field
+        self._instance_offset = MAVLink_leaf_bf_status_ex_message.instance_offset
+        self.cycle_time_us = cycle_time_us
+        self.i2c_errors = i2c_errors
+        self.sensor_mask = sensor_mask
+        self.flight_mode_flags = flight_mode_flags
+        self.profile = profile
+        self.system_load = system_load
+        self.gyro_cycle_time = gyro_cycle_time
+        self.flight_mode_count = flight_mode_count
+        self.arming_disable_count = arming_disable_count
+        self.arming_disable_flags = arming_disable_flags
+        self.config_state_flags = config_state_flags
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.flight_mode_flags, self.arming_disable_flags, self.cycle_time_us, self.i2c_errors, self.sensor_mask, self.system_load, self.gyro_cycle_time, self.profile, self.flight_mode_count, self.arming_disable_count, self.config_state_flags), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_bf_status_ex_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_bf_box_names_message(MAVLink_message):
+    """
+    Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-
+    separated, forwarded to GS.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_BF_BOX_NAMES
+    msgname = "LEAF_BF_BOX_NAMES"
+    fieldnames = ["box_names"]
+    ordered_fieldnames = ["box_names"]
+    fieldtypes = ["char"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<c")
+    orders = [0]
+    lengths = [1]
+    array_lengths = [230]
+    crc_extra = 102
+    unpacker = struct.Struct("<230s")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, box_names: bytes):
+        MAVLink_message.__init__(self, MAVLink_leaf_bf_box_names_message.id, MAVLink_leaf_bf_box_names_message.msgname)
+        self._fieldnames = MAVLink_leaf_bf_box_names_message.fieldnames
+        self._instance_field = MAVLink_leaf_bf_box_names_message.instance_field
+        self._instance_offset = MAVLink_leaf_bf_box_names_message.instance_offset
+        self._box_names_raw = box_names
+        self.box_names = box_names.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self._box_names_raw), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_bf_box_names_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -29489,6 +29761,12 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_SYS_STATUS: MAVLink_leaf_sys_status_message,
     MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW: MAVLink_leaf_do_switch_mrft_yaw_message,
     MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2: MAVLink_leaf_mission_heartbeat_v2_message,
+    MAVLINK_MSG_ID_LEAF_DO_TERMINAL: MAVLink_leaf_do_terminal_message,
+    MAVLINK_MSG_ID_LEAF_DO_TRACK: MAVLink_leaf_do_track_message,
+    MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY: MAVLink_leaf_bbox_telemetry_message,
+    MAVLINK_MSG_ID_LEAF_RACER_STATUS: MAVLink_leaf_racer_status_message,
+    MAVLINK_MSG_ID_LEAF_BF_STATUS_EX: MAVLink_leaf_bf_status_ex_message,
+    MAVLINK_MSG_ID_LEAF_BF_BOX_NAMES: MAVLink_leaf_bf_box_names_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -44724,6 +45002,186 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_mission_heartbeat_v2_encode(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name), force_mavlink1=force_mavlink1)
+
+    def leaf_do_terminal_encode(self, target_system: int, terminal: int) -> MAVLink_leaf_do_terminal_message:
+        """
+        Engage or disengage terminal (intercept) mode on the racer
+
+        target_system             : The target system (type:uint8_t)
+        terminal                  : 1 to engage terminal/intercept, 0 to disengage (type:uint8_t)
+
+        """
+        return MAVLink_leaf_do_terminal_message(target_system, terminal)
+
+    def leaf_do_terminal_send(self, target_system: int, terminal: int, force_mavlink1: bool = False) -> None:
+        """
+        Engage or disengage terminal (intercept) mode on the racer
+
+        target_system             : The target system (type:uint8_t)
+        terminal                  : 1 to engage terminal/intercept, 0 to disengage (type:uint8_t)
+
+        """
+        self.send(self.leaf_do_terminal_encode(target_system, terminal), force_mavlink1=force_mavlink1)
+
+    def leaf_do_track_encode(self, target_system: int, track: int, aim_x: float, aim_y: float, box_size: float) -> MAVLink_leaf_do_track_message:
+        """
+        Command the racer vision tracker to lock onto an aim point, or clear
+        tracking. Carries the aim point so it works without a physical
+        RC (ground-station control).
+
+        target_system             : The target system (type:uint8_t)
+        track                     : 1 to start tracking at the aim point, 0 to clear tracking (type:uint8_t)
+        aim_x                     : Aim point X (type:float)
+        aim_y                     : Aim point Y (type:float)
+        box_size                  : Tracking box size (type:float)
+
+        """
+        return MAVLink_leaf_do_track_message(target_system, track, aim_x, aim_y, box_size)
+
+    def leaf_do_track_send(self, target_system: int, track: int, aim_x: float, aim_y: float, box_size: float, force_mavlink1: bool = False) -> None:
+        """
+        Command the racer vision tracker to lock onto an aim point, or clear
+        tracking. Carries the aim point so it works without a physical
+        RC (ground-station control).
+
+        target_system             : The target system (type:uint8_t)
+        track                     : 1 to start tracking at the aim point, 0 to clear tracking (type:uint8_t)
+        aim_x                     : Aim point X (type:float)
+        aim_y                     : Aim point Y (type:float)
+        box_size                  : Tracking box size (type:float)
+
+        """
+        self.send(self.leaf_do_track_encode(target_system, track, aim_x, aim_y, box_size), force_mavlink1=force_mavlink1)
+
+    def leaf_bbox_telemetry_encode(self, box_center_x_norm: float, box_center_y_norm: float, box_width_norm: float, box_height_norm: float, tracker_fps: float, is_healthy: int, is_tracking: int, estimator_valid: int) -> MAVLink_leaf_bbox_telemetry_message:
+        """
+        Racer vision-tracker bounding-box + status telemetry (drone to GS).
+
+        box_center_x_norm         : Bounding-box center X, normalized [0,1] (type:float)
+        box_center_y_norm         : Bounding-box center Y, normalized [0,1] (type:float)
+        box_width_norm            : Bounding-box width, normalized [0,1] (type:float)
+        box_height_norm           : Bounding-box height, normalized [0,1] (type:float)
+        tracker_fps               : CV tracker frame rate, fps (type:float)
+        is_healthy                : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
+        is_tracking               : Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST) (type:uint8_t)
+        estimator_valid           : CV tracker range/bearing estimator validity (0/1) (type:uint8_t)
+
+        """
+        return MAVLink_leaf_bbox_telemetry_message(box_center_x_norm, box_center_y_norm, box_width_norm, box_height_norm, tracker_fps, is_healthy, is_tracking, estimator_valid)
+
+    def leaf_bbox_telemetry_send(self, box_center_x_norm: float, box_center_y_norm: float, box_width_norm: float, box_height_norm: float, tracker_fps: float, is_healthy: int, is_tracking: int, estimator_valid: int, force_mavlink1: bool = False) -> None:
+        """
+        Racer vision-tracker bounding-box + status telemetry (drone to GS).
+
+        box_center_x_norm         : Bounding-box center X, normalized [0,1] (type:float)
+        box_center_y_norm         : Bounding-box center Y, normalized [0,1] (type:float)
+        box_width_norm            : Bounding-box width, normalized [0,1] (type:float)
+        box_height_norm           : Bounding-box height, normalized [0,1] (type:float)
+        tracker_fps               : CV tracker frame rate, fps (type:float)
+        is_healthy                : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
+        is_tracking               : Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST) (type:uint8_t)
+        estimator_valid           : CV tracker range/bearing estimator validity (0/1) (type:uint8_t)
+
+        """
+        self.send(self.leaf_bbox_telemetry_encode(box_center_x_norm, box_center_y_norm, box_width_norm, box_height_norm, tracker_fps, is_healthy, is_tracking, estimator_valid), force_mavlink1=force_mavlink1)
+
+    def leaf_racer_status_encode(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, terminal_switch_state: int, auto_terminal: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int) -> MAVLink_leaf_racer_status_message:
+        """
+        Racer system status telemetry (drone to GS).
+
+        msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
+        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept) (type:uint8_t)
+        tracker_health_state        : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
+        estimator_health          : Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS) (type:uint8_t)
+        rc_connection             : RC link connected (0/1) (type:uint8_t)
+        terminal_switch_state        : Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
+        auto_terminal             : Auto-terminal (auto-intercept) enabled (0/1) (type:uint8_t)
+        gps_lat_1e7               : Latitude, degrees * 1e7 (type:int32_t)
+        gps_lon_1e7               : Longitude, degrees * 1e7 (type:int32_t)
+        gps_alt_m                 : Altitude, meters (type:int16_t)
+        gps_num_sat               : Number of satellites (type:uint8_t)
+        gps_fix                   : GPS fix (0=no fix, 1=fix) (type:uint8_t)
+
+        """
+        return MAVLink_leaf_racer_status_message(msp_status, current_racer_mode, tracker_health_state, estimator_health, rc_connection, terminal_switch_state, auto_terminal, gps_lat_1e7, gps_lon_1e7, gps_alt_m, gps_num_sat, gps_fix)
+
+    def leaf_racer_status_send(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, terminal_switch_state: int, auto_terminal: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, force_mavlink1: bool = False) -> None:
+        """
+        Racer system status telemetry (drone to GS).
+
+        msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
+        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept) (type:uint8_t)
+        tracker_health_state        : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
+        estimator_health          : Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS) (type:uint8_t)
+        rc_connection             : RC link connected (0/1) (type:uint8_t)
+        terminal_switch_state        : Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
+        auto_terminal             : Auto-terminal (auto-intercept) enabled (0/1) (type:uint8_t)
+        gps_lat_1e7               : Latitude, degrees * 1e7 (type:int32_t)
+        gps_lon_1e7               : Longitude, degrees * 1e7 (type:int32_t)
+        gps_alt_m                 : Altitude, meters (type:int16_t)
+        gps_num_sat               : Number of satellites (type:uint8_t)
+        gps_fix                   : GPS fix (0=no fix, 1=fix) (type:uint8_t)
+
+        """
+        self.send(self.leaf_racer_status_encode(msp_status, current_racer_mode, tracker_health_state, estimator_health, rc_connection, terminal_switch_state, auto_terminal, gps_lat_1e7, gps_lon_1e7, gps_alt_m, gps_num_sat, gps_fix), force_mavlink1=force_mavlink1)
+
+    def leaf_bf_status_ex_encode(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int) -> MAVLink_leaf_bf_status_ex_message:
+        """
+        Betaflight extended status (MSP_STATUS_EX) forwarded to GS.
+
+        cycle_time_us             : Flight-loop cycle time, microseconds (type:uint16_t)
+        i2c_errors                : I2C error count (type:uint16_t)
+        sensor_mask               : Active sensor bitmask (type:uint16_t)
+        flight_mode_flags         : Active flight-mode flags bitmask (type:uint32_t)
+        profile                   : Current PID profile index (type:uint8_t)
+        system_load               : System load percent (type:uint16_t)
+        gyro_cycle_time           : Gyro cycle time, microseconds (type:uint16_t)
+        flight_mode_count         : Number of flight-mode flag bits (type:uint8_t)
+        arming_disable_count        : Number of arming-disable flag bits (type:uint8_t)
+        arming_disable_flags        : Arming-disable flags bitmask (type:uint32_t)
+        config_state_flags        : Configuration state flags (type:uint8_t)
+
+        """
+        return MAVLink_leaf_bf_status_ex_message(cycle_time_us, i2c_errors, sensor_mask, flight_mode_flags, profile, system_load, gyro_cycle_time, flight_mode_count, arming_disable_count, arming_disable_flags, config_state_flags)
+
+    def leaf_bf_status_ex_send(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int, force_mavlink1: bool = False) -> None:
+        """
+        Betaflight extended status (MSP_STATUS_EX) forwarded to GS.
+
+        cycle_time_us             : Flight-loop cycle time, microseconds (type:uint16_t)
+        i2c_errors                : I2C error count (type:uint16_t)
+        sensor_mask               : Active sensor bitmask (type:uint16_t)
+        flight_mode_flags         : Active flight-mode flags bitmask (type:uint32_t)
+        profile                   : Current PID profile index (type:uint8_t)
+        system_load               : System load percent (type:uint16_t)
+        gyro_cycle_time           : Gyro cycle time, microseconds (type:uint16_t)
+        flight_mode_count         : Number of flight-mode flag bits (type:uint8_t)
+        arming_disable_count        : Number of arming-disable flag bits (type:uint8_t)
+        arming_disable_flags        : Arming-disable flags bitmask (type:uint32_t)
+        config_state_flags        : Configuration state flags (type:uint8_t)
+
+        """
+        self.send(self.leaf_bf_status_ex_encode(cycle_time_us, i2c_errors, sensor_mask, flight_mode_flags, profile, system_load, gyro_cycle_time, flight_mode_count, arming_disable_count, arming_disable_flags, config_state_flags), force_mavlink1=force_mavlink1)
+
+    def leaf_bf_box_names_encode(self, box_names: bytes) -> MAVLink_leaf_bf_box_names_message:
+        """
+        Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated,
+        forwarded to GS.
+
+        box_names                 : Semicolon-separated Betaflight box-name string (truncated to fit) (type:char)
+
+        """
+        return MAVLink_leaf_bf_box_names_message(box_names)
+
+    def leaf_bf_box_names_send(self, box_names: bytes, force_mavlink1: bool = False) -> None:
+        """
+        Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated,
+        forwarded to GS.
+
+        box_names                 : Semicolon-separated Betaflight box-name string (truncated to fit) (type:char)
+
+        """
+        self.send(self.leaf_bf_box_names_encode(box_names), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """
