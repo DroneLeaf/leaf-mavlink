@@ -567,6 +567,7 @@
       <field type="uint8_t" name="estimator_health">Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)</field>
       <field type="uint8_t" name="rc_connection">RC link connected (0/1)</field>
       <field type="uint8_t" name="terminal_switch_state">Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)</field>
+      <field type="uint8_t" name="pilot_safety_takeover_state">Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)</field>
       <field type="uint8_t" name="auto_terminal">Auto-terminal (auto-intercept) enabled (0/1)</field>
       <field type="int32_t" name="gps_lat_1e7">Latitude, degrees * 1e7</field>
       <field type="int32_t" name="gps_lon_1e7">Longitude, degrees * 1e7</field>
