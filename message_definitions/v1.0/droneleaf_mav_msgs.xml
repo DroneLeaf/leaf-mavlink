@@ -598,5 +598,17 @@
       <field type="uint8_t" name="target_system">The target system</field>
       <field type="uint8_t" name="generate_frame">1 = LeafFC generates a takeover RC frame (keep flying under guidance); 0 = LeafFC stays silent so Betaflight runs its own failsafe</field>
     </message>
+    <message id="77055" name="LEAF_PI_HEALTH">
+      <description>Companion-computer (Raspberry Pi) SoC health telemetry (drone to GS). Sampled only while DISARMED; while armed the last disarmed sample is repeated with stale=1.</description>
+      <field type="int16_t" name="soc_temp_c_deci">SoC temperature, 0.1 degC (543 = 54.3 C)</field>
+      <field type="uint16_t" name="core_volt_min_mv">Minimum core voltage over the sample burst, mV</field>
+      <field type="uint16_t" name="core_volt_mean_mv">Mean core voltage over the sample burst, mV</field>
+      <field type="uint16_t" name="arm_clock_mhz">ARM core clock, MHz (1500 = 1.50 GHz)</field>
+      <field type="uint8_t" name="available">vcgencmd present and at least one probe succeeded (0/1)</field>
+      <field type="uint8_t" name="stale">Sample is not live: armed, or the sampler is wedged (0/1)</field>
+      <field type="uint8_t" name="undervoltage">Any core-voltage sample was &lt;= 0.75 V (0/1)</field>
+      <field type="uint8_t" name="volt_sample_count">Number of core-voltage samples in the burst</field>
+      <field type="uint8_t" name="sample_age_s">Seconds since the last good sample, saturating at 255</field>
+    </message>
   </messages>
 </mavlink>

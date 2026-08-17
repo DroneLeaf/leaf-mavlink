@@ -8947,6 +8947,7 @@ MAVLINK_MSG_ID_LEAF_RACER_STATUS = 77051
 MAVLINK_MSG_ID_LEAF_BF_STATUS_EX = 77052
 MAVLINK_MSG_ID_LEAF_BF_BOX_NAMES = 77053
 MAVLINK_MSG_ID_LEAF_SET_RC_LOSS_BEHAVIOR = 77054
+MAVLINK_MSG_ID_LEAF_PI_HEALTH = 77055
 MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI = 10151
 
 
@@ -29307,6 +29308,54 @@ class MAVLink_leaf_set_rc_loss_behavior_message(MAVLink_message):
 setattr(MAVLink_leaf_set_rc_loss_behavior_message, "name", mavlink_msg_deprecated_name_property())
 
 
+class MAVLink_leaf_pi_health_message(MAVLink_message):
+    """
+    Companion-computer (Raspberry Pi) SoC health telemetry (drone to
+    GS). Sampled only while DISARMED; while armed the last disarmed
+    sample is repeated with stale=1.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_PI_HEALTH
+    msgname = "LEAF_PI_HEALTH"
+    fieldnames = ["soc_temp_c_deci", "core_volt_min_mv", "core_volt_mean_mv", "arm_clock_mhz", "available", "stale", "undervoltage", "volt_sample_count", "sample_age_s"]
+    ordered_fieldnames = ["soc_temp_c_deci", "core_volt_min_mv", "core_volt_mean_mv", "arm_clock_mhz", "available", "stale", "undervoltage", "volt_sample_count", "sample_age_s"]
+    fieldtypes = ["int16_t", "uint16_t", "uint16_t", "uint16_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<hHHHBBBBB")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 139
+    unpacker = struct.Struct("<hHHHBBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, soc_temp_c_deci: int, core_volt_min_mv: int, core_volt_mean_mv: int, arm_clock_mhz: int, available: int, stale: int, undervoltage: int, volt_sample_count: int, sample_age_s: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_pi_health_message.id, MAVLink_leaf_pi_health_message.msgname)
+        self._fieldnames = MAVLink_leaf_pi_health_message.fieldnames
+        self._instance_field = MAVLink_leaf_pi_health_message.instance_field
+        self._instance_offset = MAVLink_leaf_pi_health_message.instance_offset
+        self.soc_temp_c_deci = soc_temp_c_deci
+        self.core_volt_min_mv = core_volt_min_mv
+        self.core_volt_mean_mv = core_volt_mean_mv
+        self.arm_clock_mhz = arm_clock_mhz
+        self.available = available
+        self.stale = stale
+        self.undervoltage = undervoltage
+        self.volt_sample_count = volt_sample_count
+        self.sample_age_s = sample_age_s
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.soc_temp_c_deci, self.core_volt_min_mv, self.core_volt_mean_mv, self.arm_clock_mhz, self.available, self.stale, self.undervoltage, self.volt_sample_count, self.sample_age_s), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_pi_health_message, "name", mavlink_msg_deprecated_name_property())
+
+
 class MAVLink_loweheiser_gov_efi_message(MAVLink_message):
     """
     Composite EFI and Governor data from Loweheiser equipment.  This
@@ -29811,6 +29860,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_BF_STATUS_EX: MAVLink_leaf_bf_status_ex_message,
     MAVLINK_MSG_ID_LEAF_BF_BOX_NAMES: MAVLink_leaf_bf_box_names_message,
     MAVLINK_MSG_ID_LEAF_SET_RC_LOSS_BEHAVIOR: MAVLink_leaf_set_rc_loss_behavior_message,
+    MAVLINK_MSG_ID_LEAF_PI_HEALTH: MAVLink_leaf_pi_health_message,
     MAVLINK_MSG_ID_LOWEHEISER_GOV_EFI: MAVLink_loweheiser_gov_efi_message,
 }
 
@@ -45252,6 +45302,44 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_set_rc_loss_behavior_encode(target_system, generate_frame), force_mavlink1=force_mavlink1)
+
+    def leaf_pi_health_encode(self, soc_temp_c_deci: int, core_volt_min_mv: int, core_volt_mean_mv: int, arm_clock_mhz: int, available: int, stale: int, undervoltage: int, volt_sample_count: int, sample_age_s: int) -> MAVLink_leaf_pi_health_message:
+        """
+        Companion-computer (Raspberry Pi) SoC health telemetry (drone to GS).
+        Sampled only while DISARMED; while armed the last disarmed
+        sample is repeated with stale=1.
+
+        soc_temp_c_deci           : SoC temperature, 0.1 degC (543 = 54.3 C) (type:int16_t)
+        core_volt_min_mv          : Minimum core voltage over the sample burst, mV (type:uint16_t)
+        core_volt_mean_mv         : Mean core voltage over the sample burst, mV (type:uint16_t)
+        arm_clock_mhz             : ARM core clock, MHz (1500 = 1.50 GHz) (type:uint16_t)
+        available                 : vcgencmd present and at least one probe succeeded (0/1) (type:uint8_t)
+        stale                     : Sample is not live: armed, or the sampler is wedged (0/1) (type:uint8_t)
+        undervoltage              : Any core-voltage sample was <= 0.75 V (0/1) (type:uint8_t)
+        volt_sample_count         : Number of core-voltage samples in the burst (type:uint8_t)
+        sample_age_s              : Seconds since the last good sample, saturating at 255 (type:uint8_t)
+
+        """
+        return MAVLink_leaf_pi_health_message(soc_temp_c_deci, core_volt_min_mv, core_volt_mean_mv, arm_clock_mhz, available, stale, undervoltage, volt_sample_count, sample_age_s)
+
+    def leaf_pi_health_send(self, soc_temp_c_deci: int, core_volt_min_mv: int, core_volt_mean_mv: int, arm_clock_mhz: int, available: int, stale: int, undervoltage: int, volt_sample_count: int, sample_age_s: int, force_mavlink1: bool = False) -> None:
+        """
+        Companion-computer (Raspberry Pi) SoC health telemetry (drone to GS).
+        Sampled only while DISARMED; while armed the last disarmed
+        sample is repeated with stale=1.
+
+        soc_temp_c_deci           : SoC temperature, 0.1 degC (543 = 54.3 C) (type:int16_t)
+        core_volt_min_mv          : Minimum core voltage over the sample burst, mV (type:uint16_t)
+        core_volt_mean_mv         : Mean core voltage over the sample burst, mV (type:uint16_t)
+        arm_clock_mhz             : ARM core clock, MHz (1500 = 1.50 GHz) (type:uint16_t)
+        available                 : vcgencmd present and at least one probe succeeded (0/1) (type:uint8_t)
+        stale                     : Sample is not live: armed, or the sampler is wedged (0/1) (type:uint8_t)
+        undervoltage              : Any core-voltage sample was <= 0.75 V (0/1) (type:uint8_t)
+        volt_sample_count         : Number of core-voltage samples in the burst (type:uint8_t)
+        sample_age_s              : Seconds since the last good sample, saturating at 255 (type:uint8_t)
+
+        """
+        self.send(self.leaf_pi_health_encode(soc_temp_c_deci, core_volt_min_mv, core_volt_mean_mv, arm_clock_mhz, available, stale, undervoltage, volt_sample_count, sample_age_s), force_mavlink1=force_mavlink1)
 
     def loweheiser_gov_efi_encode(self, volt_batt: float, curr_batt: float, curr_gen: float, curr_rot: float, fuel_level: float, throttle: float, runtime: int, until_maintenance: int, rectifier_temp: float, generator_temp: float, efi_batt: float, efi_rpm: float, efi_pw: float, efi_fuel_flow: float, efi_fuel_consumed: float, efi_baro: float, efi_mat: float, efi_clt: float, efi_tps: float, efi_exhaust_gas_temperature: float, efi_index: int, generator_status: int, efi_status: int) -> MAVLink_loweheiser_gov_efi_message:
         """
