@@ -574,6 +574,8 @@
       <field type="int16_t" name="gps_alt_m">Altitude, meters</field>
       <field type="uint8_t" name="gps_num_sat">Number of satellites</field>
       <field type="uint8_t" name="gps_fix">GPS fix (0=no fix, 1=fix)</field>
+      <field type="uint16_t" name="gps_ground_speed_cms">Ground speed, cm/s</field>
+      <field type="uint16_t" name="gps_ground_course_decideg">Course over ground, degrees * 10</field>
     </message>
     <message id="77052" name="LEAF_BF_STATUS_EX">
       <description>Betaflight extended status (MSP_STATUS_EX) forwarded to GS.</description>

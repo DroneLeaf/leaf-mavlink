@@ -2908,13 +2908,15 @@ static void mavlink_test_leaf_racer_status(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_racer_status_t packet_in = {
-        963497464,963497672,17651,163,230,41,108,175,242,53,120,187,254
+        963497464,963497672,17651,17755,17859,175,242,53,120,187,254,65,132,199,10
     };
     mavlink_leaf_racer_status_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.gps_lat_1e7 = packet_in.gps_lat_1e7;
         packet1.gps_lon_1e7 = packet_in.gps_lon_1e7;
         packet1.gps_alt_m = packet_in.gps_alt_m;
+        packet1.gps_ground_speed_cms = packet_in.gps_ground_speed_cms;
+        packet1.gps_ground_course_decideg = packet_in.gps_ground_course_decideg;
         packet1.msp_status = packet_in.msp_status;
         packet1.current_racer_mode = packet_in.current_racer_mode;
         packet1.tracker_health_state = packet_in.tracker_health_state;
@@ -2939,12 +2941,12 @@ static void mavlink_test_leaf_racer_status(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_racer_status_pack(system_id, component_id, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix );
+    mavlink_msg_leaf_racer_status_pack(system_id, component_id, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
     mavlink_msg_leaf_racer_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_racer_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix );
+    mavlink_msg_leaf_racer_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
     mavlink_msg_leaf_racer_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -2957,7 +2959,7 @@ static void mavlink_test_leaf_racer_status(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_racer_status_send(MAVLINK_COMM_1 , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix );
+    mavlink_msg_leaf_racer_status_send(MAVLINK_COMM_1 , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
     mavlink_msg_leaf_racer_status_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
