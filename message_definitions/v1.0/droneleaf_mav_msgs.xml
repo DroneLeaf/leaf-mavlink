@@ -612,5 +612,10 @@
       <field type="uint8_t" name="volt_sample_count">Number of core-voltage samples in the burst</field>
       <field type="uint8_t" name="sample_age_s">Seconds since the last good sample, saturating at 255</field>
     </message>
+    <message id="77056" name="LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM">
+      <description>Operator confirmation that the target GPS track and the vision track refer to the same target. Forwarded to the vision tracker so it may fuse the target GPS with its vision estimate.</description>
+      <field type="uint8_t" name="target_system">The target system</field>
+      <field type="uint8_t" name="correlation_between_target_gps_and_vision_confirmed">1 = the operator confirms the target GPS and the vision track are the same target; 0 = not confirmed</field>
+    </message>
   </messages>
 </mavlink>

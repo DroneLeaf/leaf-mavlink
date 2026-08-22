@@ -3224,6 +3224,66 @@ static void mavlink_test_leaf_pi_health(uint8_t system_id, uint8_t component_id,
 #endif
 }
 
+static void mavlink_test_leaf_target_gps_vision_correlation_confirm(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+    mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM >= 256) {
+            return;
+        }
+#endif
+    mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+    mavlink_leaf_target_gps_vision_correlation_confirm_t packet_in = {
+        5,72
+    };
+    mavlink_leaf_target_gps_vision_correlation_confirm_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        packet1.target_system = packet_in.target_system;
+        packet1.correlation_between_target_gps_and_vision_confirmed = packet_in.correlation_between_target_gps_and_vision_confirmed;
+        
+        
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+        if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
+           // cope with extensions
+           memset(MAVLINK_MSG_ID_LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM_MIN_LEN);
+        }
+#endif
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_pack(system_id, component_id, &msg , packet1.target_system , packet1.correlation_between_target_gps_and_vision_confirmed );
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.correlation_between_target_gps_and_vision_confirmed );
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+            comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_send(MAVLINK_COMM_1 , packet1.target_system , packet1.correlation_between_target_gps_and_vision_confirmed );
+    mavlink_msg_leaf_target_gps_vision_correlation_confirm_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+#ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM) != NULL);
+#endif
+}
+
 static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
     mavlink_test_leaf_mode(system_id, component_id, last_msg);
@@ -3278,6 +3338,7 @@ static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component
     mavlink_test_leaf_bf_box_names(system_id, component_id, last_msg);
     mavlink_test_leaf_set_rc_loss_behavior(system_id, component_id, last_msg);
     mavlink_test_leaf_pi_health(system_id, component_id, last_msg);
+    mavlink_test_leaf_target_gps_vision_correlation_confirm(system_id, component_id, last_msg);
 }
 
 #ifdef __cplusplus
