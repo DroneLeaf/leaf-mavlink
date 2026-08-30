@@ -558,6 +558,7 @@
       <field type="uint8_t" name="is_healthy">Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)</field>
       <field type="uint8_t" name="is_tracking">Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)</field>
       <field type="uint8_t" name="estimator_valid">CV tracker range/bearing estimator validity (0/1)</field>
+      <field type="uint8_t" name="source_role_id">Camera source role (0=wide, 1=narrow, 2=thermal)</field>
     </message>
     <message id="77051" name="LEAF_RACER_STATUS">
       <description>Racer system status telemetry (drone to GS).</description>
