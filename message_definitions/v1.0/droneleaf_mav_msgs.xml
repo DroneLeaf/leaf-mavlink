@@ -558,7 +558,7 @@
       <field type="uint8_t" name="is_healthy">Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)</field>
       <field type="uint8_t" name="is_tracking">Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)</field>
       <field type="uint8_t" name="estimator_valid">CV tracker range/bearing estimator validity (0/1)</field>
-      <field type="uint8_t" name="source_role_id">Camera source role (0=wide, 1=narrow, 2=thermal)</field>
+      <field type="uint8_t" name="source_role_id">Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)</field>
     </message>
     <message id="77051" name="LEAF_RACER_STATUS">
       <description>Racer system status telemetry (drone to GS).</description>
@@ -617,6 +617,11 @@
       <description>Operator confirmation that the target GPS track and the vision track refer to the same target. Forwarded to the vision tracker so it may fuse the target GPS with its vision estimate.</description>
       <field type="uint8_t" name="target_system">The target system</field>
       <field type="uint8_t" name="correlation_between_target_gps_and_vision_confirmed">1 = the operator confirms the target GPS and the vision track are the same target; 0 = not confirmed</field>
+    </message>
+    <message id="77057" name="LEAF_CMD_LEAF_TRACKER_SOURCE_TYPE">
+      <description>Select the camera source the vision tracker should use. Forwarded to the tracker over its command channel.</description>
+      <field type="uint8_t" name="target_system">The target system</field>
+      <field type="uint8_t" name="source_type">Camera source type (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)</field>
     </message>
   </messages>
 </mavlink>

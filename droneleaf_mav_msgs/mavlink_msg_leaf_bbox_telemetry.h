@@ -13,7 +13,7 @@ typedef struct __mavlink_leaf_bbox_telemetry_t {
  uint8_t is_healthy; /*<  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)*/
  uint8_t is_tracking; /*<  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)*/
  uint8_t estimator_valid; /*<  CV tracker range/bearing estimator validity (0/1)*/
- uint8_t source_role_id; /*<  Camera source role (0=wide, 1=narrow, 2=thermal)*/
+ uint8_t source_role_id; /*<  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)*/
 } mavlink_leaf_bbox_telemetry_t;
 
 #define MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN 24
@@ -73,7 +73,7 @@ typedef struct __mavlink_leaf_bbox_telemetry_t {
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source role (0=wide, 1=narrow, 2=thermal)
+ * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
@@ -126,7 +126,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack(uint8_t system_id, u
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source role (0=wide, 1=narrow, 2=thermal)
+ * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
@@ -182,7 +182,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_status(uint8_t syste
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source role (0=wide, 1=narrow, 2=thermal)
+ * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
@@ -274,7 +274,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_encode_status(uint8_t sys
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source role (0=wide, 1=narrow, 2=thermal)
+ * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -451,7 +451,7 @@ static inline uint8_t mavlink_msg_leaf_bbox_telemetry_get_estimator_valid(const 
 /**
  * @brief Get field source_role_id from leaf_bbox_telemetry message
  *
- * @return  Camera source role (0=wide, 1=narrow, 2=thermal)
+ * @return  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
  */
 static inline uint8_t mavlink_msg_leaf_bbox_telemetry_get_source_role_id(const mavlink_message_t* msg)
 {
