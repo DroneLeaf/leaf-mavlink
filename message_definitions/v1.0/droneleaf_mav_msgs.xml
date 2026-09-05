@@ -618,10 +618,10 @@
       <field type="uint8_t" name="target_system">The target system</field>
       <field type="uint8_t" name="correlation_between_target_gps_and_vision_confirmed">1 = the operator confirms the target GPS and the vision track are the same target; 0 = not confirmed</field>
     </message>
-    <message id="77057" name="LEAF_CMD_LEAF_TRACKER_SOURCE_TYPE">
+    <message id="77057" name="LEAF_CMD_LEAF_TRACKER_SOURCE_ID">
       <description>Select the camera source the vision tracker should use. Forwarded to the tracker over its command channel.</description>
       <field type="uint8_t" name="target_system">The target system</field>
-      <field type="uint8_t" name="source_type">Camera source type (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)</field>
+      <field type="uint8_t" name="source_id">Camera source id (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)</field>
     </message>
   </messages>
 </mavlink>
