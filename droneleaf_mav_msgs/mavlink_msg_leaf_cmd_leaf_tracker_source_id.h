@@ -6,7 +6,7 @@
 
 typedef struct __mavlink_leaf_cmd_leaf_tracker_source_id_t {
  uint8_t target_system; /*<  The target system*/
- uint8_t source_id; /*<  Camera source id (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)*/
+ uint8_t source_id; /*<  Camera source id. The tracker looks up the role (wide/narrow/thermal/...) configured for this source.*/
 } mavlink_leaf_cmd_leaf_tracker_source_id_t;
 
 #define MAVLINK_MSG_ID_LEAF_CMD_LEAF_TRACKER_SOURCE_ID_LEN 2
@@ -45,7 +45,7 @@ typedef struct __mavlink_leaf_cmd_leaf_tracker_source_id_t {
  * @param msg The MAVLink message to compress the data into
  *
  * @param target_system  The target system
- * @param source_id  Camera source id (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Camera source id. The tracker looks up the role (wide/narrow/thermal/...) configured for this source.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
@@ -77,7 +77,7 @@ static inline uint16_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_pack(uint8_t 
  * @param msg The MAVLink message to compress the data into
  *
  * @param target_system  The target system
- * @param source_id  Camera source id (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Camera source id. The tracker looks up the role (wide/narrow/thermal/...) configured for this source.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
@@ -112,7 +112,7 @@ static inline uint16_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_pack_status(u
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
  * @param target_system  The target system
- * @param source_id  Camera source id (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Camera source id. The tracker looks up the role (wide/narrow/thermal/...) configured for this source.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
@@ -183,7 +183,7 @@ static inline uint16_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_encode_status
  * @param chan MAVLink channel to send the message
  *
  * @param target_system  The target system
- * @param source_id  Camera source id (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Camera source id. The tracker looks up the role (wide/narrow/thermal/...) configured for this source.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -262,7 +262,7 @@ static inline uint8_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_get_target_sys
 /**
  * @brief Get field source_id from leaf_cmd_leaf_tracker_source_id message
  *
- * @return  Camera source id (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @return  Camera source id. The tracker looks up the role (wide/narrow/thermal/...) configured for this source.
  */
 static inline uint8_t mavlink_msg_leaf_cmd_leaf_tracker_source_id_get_source_id(const mavlink_message_t* msg)
 {

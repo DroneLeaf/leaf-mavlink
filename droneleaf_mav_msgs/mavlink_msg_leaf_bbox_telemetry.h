@@ -13,7 +13,7 @@ typedef struct __mavlink_leaf_bbox_telemetry_t {
  uint8_t is_healthy; /*<  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)*/
  uint8_t is_tracking; /*<  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)*/
  uint8_t estimator_valid; /*<  CV tracker range/bearing estimator validity (0/1)*/
- uint8_t source_role_id; /*<  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)*/
+ uint8_t source_id; /*<  Id of the camera source that produced the bounding box. The consumer looks up the role configured for this source.*/
 } mavlink_leaf_bbox_telemetry_t;
 
 #define MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN 24
@@ -21,8 +21,8 @@ typedef struct __mavlink_leaf_bbox_telemetry_t {
 #define MAVLINK_MSG_ID_77050_LEN 24
 #define MAVLINK_MSG_ID_77050_MIN_LEN 24
 
-#define MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_CRC 79
-#define MAVLINK_MSG_ID_77050_CRC 79
+#define MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_CRC 55
+#define MAVLINK_MSG_ID_77050_CRC 55
 
 
 
@@ -39,7 +39,7 @@ typedef struct __mavlink_leaf_bbox_telemetry_t {
          { "is_healthy", NULL, MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_leaf_bbox_telemetry_t, is_healthy) }, \
          { "is_tracking", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_bbox_telemetry_t, is_tracking) }, \
          { "estimator_valid", NULL, MAVLINK_TYPE_UINT8_T, 0, 22, offsetof(mavlink_leaf_bbox_telemetry_t, estimator_valid) }, \
-         { "source_role_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 23, offsetof(mavlink_leaf_bbox_telemetry_t, source_role_id) }, \
+         { "source_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 23, offsetof(mavlink_leaf_bbox_telemetry_t, source_id) }, \
          } \
 }
 #else
@@ -54,7 +54,7 @@ typedef struct __mavlink_leaf_bbox_telemetry_t {
          { "is_healthy", NULL, MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_leaf_bbox_telemetry_t, is_healthy) }, \
          { "is_tracking", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_bbox_telemetry_t, is_tracking) }, \
          { "estimator_valid", NULL, MAVLINK_TYPE_UINT8_T, 0, 22, offsetof(mavlink_leaf_bbox_telemetry_t, estimator_valid) }, \
-         { "source_role_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 23, offsetof(mavlink_leaf_bbox_telemetry_t, source_role_id) }, \
+         { "source_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 23, offsetof(mavlink_leaf_bbox_telemetry_t, source_id) }, \
          } \
 }
 #endif
@@ -73,11 +73,11 @@ typedef struct __mavlink_leaf_bbox_telemetry_t {
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Id of the camera source that produced the bounding box. The consumer looks up the role configured for this source.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_role_id)
+                               float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN];
@@ -89,7 +89,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack(uint8_t system_id, u
     _mav_put_uint8_t(buf, 20, is_healthy);
     _mav_put_uint8_t(buf, 21, is_tracking);
     _mav_put_uint8_t(buf, 22, estimator_valid);
-    _mav_put_uint8_t(buf, 23, source_role_id);
+    _mav_put_uint8_t(buf, 23, source_id);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN);
 #else
@@ -102,7 +102,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack(uint8_t system_id, u
     packet.is_healthy = is_healthy;
     packet.is_tracking = is_tracking;
     packet.estimator_valid = estimator_valid;
-    packet.source_role_id = source_role_id;
+    packet.source_id = source_id;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN);
 #endif
@@ -126,11 +126,11 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack(uint8_t system_id, u
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Id of the camera source that produced the bounding box. The consumer looks up the role configured for this source.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_role_id)
+                               float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN];
@@ -142,7 +142,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_status(uint8_t syste
     _mav_put_uint8_t(buf, 20, is_healthy);
     _mav_put_uint8_t(buf, 21, is_tracking);
     _mav_put_uint8_t(buf, 22, estimator_valid);
-    _mav_put_uint8_t(buf, 23, source_role_id);
+    _mav_put_uint8_t(buf, 23, source_id);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN);
 #else
@@ -155,7 +155,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_status(uint8_t syste
     packet.is_healthy = is_healthy;
     packet.is_tracking = is_tracking;
     packet.estimator_valid = estimator_valid;
-    packet.source_role_id = source_role_id;
+    packet.source_id = source_id;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN);
 #endif
@@ -182,12 +182,12 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_status(uint8_t syste
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Id of the camera source that produced the bounding box. The consumer looks up the role configured for this source.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   float box_center_x_norm,float box_center_y_norm,float box_width_norm,float box_height_norm,float tracker_fps,uint8_t is_healthy,uint8_t is_tracking,uint8_t estimator_valid,uint8_t source_role_id)
+                                   float box_center_x_norm,float box_center_y_norm,float box_width_norm,float box_height_norm,float tracker_fps,uint8_t is_healthy,uint8_t is_tracking,uint8_t estimator_valid,uint8_t source_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN];
@@ -199,7 +199,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_chan(uint8_t system_
     _mav_put_uint8_t(buf, 20, is_healthy);
     _mav_put_uint8_t(buf, 21, is_tracking);
     _mav_put_uint8_t(buf, 22, estimator_valid);
-    _mav_put_uint8_t(buf, 23, source_role_id);
+    _mav_put_uint8_t(buf, 23, source_id);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN);
 #else
@@ -212,7 +212,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_chan(uint8_t system_
     packet.is_healthy = is_healthy;
     packet.is_tracking = is_tracking;
     packet.estimator_valid = estimator_valid;
-    packet.source_role_id = source_role_id;
+    packet.source_id = source_id;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN);
 #endif
@@ -231,7 +231,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_pack_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_bbox_telemetry_t* leaf_bbox_telemetry)
 {
-    return mavlink_msg_leaf_bbox_telemetry_pack(system_id, component_id, msg, leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_role_id);
+    return mavlink_msg_leaf_bbox_telemetry_pack(system_id, component_id, msg, leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_id);
 }
 
 /**
@@ -245,7 +245,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_encode(uint8_t system_id,
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_bbox_telemetry_t* leaf_bbox_telemetry)
 {
-    return mavlink_msg_leaf_bbox_telemetry_pack_chan(system_id, component_id, chan, msg, leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_role_id);
+    return mavlink_msg_leaf_bbox_telemetry_pack_chan(system_id, component_id, chan, msg, leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_id);
 }
 
 /**
@@ -259,7 +259,7 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_encode_chan(uint8_t syste
  */
 static inline uint16_t mavlink_msg_leaf_bbox_telemetry_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_bbox_telemetry_t* leaf_bbox_telemetry)
 {
-    return mavlink_msg_leaf_bbox_telemetry_pack_status(system_id, component_id, _status, msg,  leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_role_id);
+    return mavlink_msg_leaf_bbox_telemetry_pack_status(system_id, component_id, _status, msg,  leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_id);
 }
 
 /**
@@ -274,11 +274,11 @@ static inline uint16_t mavlink_msg_leaf_bbox_telemetry_encode_status(uint8_t sys
  * @param is_healthy  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param is_tracking  Tracking status (0=UNKNOWN,1=IDLE,2=ACQUIRE,3=LOCK,4=LOST)
  * @param estimator_valid  CV tracker range/bearing estimator validity (0/1)
- * @param source_role_id  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @param source_id  Id of the camera source that produced the bounding box. The consumer looks up the role configured for this source.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_bbox_telemetry_send(mavlink_channel_t chan, float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_role_id)
+static inline void mavlink_msg_leaf_bbox_telemetry_send(mavlink_channel_t chan, float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN];
@@ -290,7 +290,7 @@ static inline void mavlink_msg_leaf_bbox_telemetry_send(mavlink_channel_t chan, 
     _mav_put_uint8_t(buf, 20, is_healthy);
     _mav_put_uint8_t(buf, 21, is_tracking);
     _mav_put_uint8_t(buf, 22, estimator_valid);
-    _mav_put_uint8_t(buf, 23, source_role_id);
+    _mav_put_uint8_t(buf, 23, source_id);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY, buf, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_CRC);
 #else
@@ -303,7 +303,7 @@ static inline void mavlink_msg_leaf_bbox_telemetry_send(mavlink_channel_t chan, 
     packet.is_healthy = is_healthy;
     packet.is_tracking = is_tracking;
     packet.estimator_valid = estimator_valid;
-    packet.source_role_id = source_role_id;
+    packet.source_id = source_id;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY, (const char *)&packet, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_CRC);
 #endif
@@ -317,7 +317,7 @@ static inline void mavlink_msg_leaf_bbox_telemetry_send(mavlink_channel_t chan, 
 static inline void mavlink_msg_leaf_bbox_telemetry_send_struct(mavlink_channel_t chan, const mavlink_leaf_bbox_telemetry_t* leaf_bbox_telemetry)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_bbox_telemetry_send(chan, leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_role_id);
+    mavlink_msg_leaf_bbox_telemetry_send(chan, leaf_bbox_telemetry->box_center_x_norm, leaf_bbox_telemetry->box_center_y_norm, leaf_bbox_telemetry->box_width_norm, leaf_bbox_telemetry->box_height_norm, leaf_bbox_telemetry->tracker_fps, leaf_bbox_telemetry->is_healthy, leaf_bbox_telemetry->is_tracking, leaf_bbox_telemetry->estimator_valid, leaf_bbox_telemetry->source_id);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY, (const char *)leaf_bbox_telemetry, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_CRC);
 #endif
@@ -331,7 +331,7 @@ static inline void mavlink_msg_leaf_bbox_telemetry_send_struct(mavlink_channel_t
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_bbox_telemetry_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_role_id)
+static inline void mavlink_msg_leaf_bbox_telemetry_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  float box_center_x_norm, float box_center_y_norm, float box_width_norm, float box_height_norm, float tracker_fps, uint8_t is_healthy, uint8_t is_tracking, uint8_t estimator_valid, uint8_t source_id)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -343,7 +343,7 @@ static inline void mavlink_msg_leaf_bbox_telemetry_send_buf(mavlink_message_t *m
     _mav_put_uint8_t(buf, 20, is_healthy);
     _mav_put_uint8_t(buf, 21, is_tracking);
     _mav_put_uint8_t(buf, 22, estimator_valid);
-    _mav_put_uint8_t(buf, 23, source_role_id);
+    _mav_put_uint8_t(buf, 23, source_id);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY, buf, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_CRC);
 #else
@@ -356,7 +356,7 @@ static inline void mavlink_msg_leaf_bbox_telemetry_send_buf(mavlink_message_t *m
     packet->is_healthy = is_healthy;
     packet->is_tracking = is_tracking;
     packet->estimator_valid = estimator_valid;
-    packet->source_role_id = source_role_id;
+    packet->source_id = source_id;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY, (const char *)packet, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_CRC);
 #endif
@@ -449,11 +449,11 @@ static inline uint8_t mavlink_msg_leaf_bbox_telemetry_get_estimator_valid(const 
 }
 
 /**
- * @brief Get field source_role_id from leaf_bbox_telemetry message
+ * @brief Get field source_id from leaf_bbox_telemetry message
  *
- * @return  Camera source that produced the bounding box (0=WIDE, 1=NARROW, 2=THERMAL, 3=AUX)
+ * @return  Id of the camera source that produced the bounding box. The consumer looks up the role configured for this source.
  */
-static inline uint8_t mavlink_msg_leaf_bbox_telemetry_get_source_role_id(const mavlink_message_t* msg)
+static inline uint8_t mavlink_msg_leaf_bbox_telemetry_get_source_id(const mavlink_message_t* msg)
 {
     return _MAV_RETURN_uint8_t(msg,  23);
 }
@@ -475,7 +475,7 @@ static inline void mavlink_msg_leaf_bbox_telemetry_decode(const mavlink_message_
     leaf_bbox_telemetry->is_healthy = mavlink_msg_leaf_bbox_telemetry_get_is_healthy(msg);
     leaf_bbox_telemetry->is_tracking = mavlink_msg_leaf_bbox_telemetry_get_is_tracking(msg);
     leaf_bbox_telemetry->estimator_valid = mavlink_msg_leaf_bbox_telemetry_get_estimator_valid(msg);
-    leaf_bbox_telemetry->source_role_id = mavlink_msg_leaf_bbox_telemetry_get_source_role_id(msg);
+    leaf_bbox_telemetry->source_id = mavlink_msg_leaf_bbox_telemetry_get_source_id(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN? msg->len : MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN;
         memset(leaf_bbox_telemetry, 0, MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY_LEN);

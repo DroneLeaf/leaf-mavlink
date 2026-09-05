@@ -2854,7 +2854,7 @@ static void mavlink_test_leaf_bbox_telemetry(uint8_t system_id, uint8_t componen
         packet1.is_healthy = packet_in.is_healthy;
         packet1.is_tracking = packet_in.is_tracking;
         packet1.estimator_valid = packet_in.estimator_valid;
-        packet1.source_role_id = packet_in.source_role_id;
+        packet1.source_id = packet_in.source_id;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -2869,12 +2869,12 @@ static void mavlink_test_leaf_bbox_telemetry(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bbox_telemetry_pack(system_id, component_id, &msg , packet1.box_center_x_norm , packet1.box_center_y_norm , packet1.box_width_norm , packet1.box_height_norm , packet1.tracker_fps , packet1.is_healthy , packet1.is_tracking , packet1.estimator_valid , packet1.source_role_id );
+    mavlink_msg_leaf_bbox_telemetry_pack(system_id, component_id, &msg , packet1.box_center_x_norm , packet1.box_center_y_norm , packet1.box_width_norm , packet1.box_height_norm , packet1.tracker_fps , packet1.is_healthy , packet1.is_tracking , packet1.estimator_valid , packet1.source_id );
     mavlink_msg_leaf_bbox_telemetry_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bbox_telemetry_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.box_center_x_norm , packet1.box_center_y_norm , packet1.box_width_norm , packet1.box_height_norm , packet1.tracker_fps , packet1.is_healthy , packet1.is_tracking , packet1.estimator_valid , packet1.source_role_id );
+    mavlink_msg_leaf_bbox_telemetry_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.box_center_x_norm , packet1.box_center_y_norm , packet1.box_width_norm , packet1.box_height_norm , packet1.tracker_fps , packet1.is_healthy , packet1.is_tracking , packet1.estimator_valid , packet1.source_id );
     mavlink_msg_leaf_bbox_telemetry_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -2887,7 +2887,7 @@ static void mavlink_test_leaf_bbox_telemetry(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bbox_telemetry_send(MAVLINK_COMM_1 , packet1.box_center_x_norm , packet1.box_center_y_norm , packet1.box_width_norm , packet1.box_height_norm , packet1.tracker_fps , packet1.is_healthy , packet1.is_tracking , packet1.estimator_valid , packet1.source_role_id );
+    mavlink_msg_leaf_bbox_telemetry_send(MAVLINK_COMM_1 , packet1.box_center_x_norm , packet1.box_center_y_norm , packet1.box_width_norm , packet1.box_height_norm , packet1.tracker_fps , packet1.is_healthy , packet1.is_tracking , packet1.estimator_valid , packet1.source_id );
     mavlink_msg_leaf_bbox_telemetry_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
