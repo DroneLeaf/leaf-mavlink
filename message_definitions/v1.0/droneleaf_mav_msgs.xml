@@ -618,6 +618,13 @@
       <field type="uint8_t" name="target_system">The target system</field>
       <field type="uint8_t" name="correlation_between_target_gps_and_vision_confirmed">1 = the operator confirms the target GPS and the vision track are the same target; 0 = not confirmed</field>
     </message>
+    <message id="77058" name="LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM_RESPONSE">
+      <description>Tracker response to a LEAF_TARGET_GPS_VISION_CORRELATION_CONFIRM verdict, relayed by the FC (drone to GS). Sent exactly once per well-formed verdict received; a malformed verdict gets no response at all, so a missing response within a short window means delivery failure, distinct from a discard.</description>
+      <field type="uint8_t" name="correlation_confirmation_accepted">1 = a held candidate consumed the verdict, 0 = discarded (re-send when the next candidate is held). Always equals (reason == 0).</field>
+      <field type="uint8_t" name="reason">0 = accepted; 1 = no candidate held (searching, or the candidate was just dropped: the re-send trigger); 2 = not in external-confirm mode (IDLE/LOCK, or the active confirmation block is persist/instant). Carried as a full byte so future levels can be added.</field>
+      <field type="uint8_t" name="correlation_between_target_gps_and_vision_confirmed">Echo of the verdict this response answers (0 = false, 1 = true); pairs request and response since the channel has no message ids.</field>
+      <field type="uint8_t" name="cv_tracker_state">Tracker phase, cv_tracker_status wire codes: 0 = IDLE, 1 = ACQUIRE, 2 = LOCK, 3 = REACQUIRE (formerly LOST, code unchanged).</field>
+    </message>
     <message id="77057" name="LEAF_CMD_LEAF_TRACKER_SOURCE_ID">
       <description>Select the camera source the vision tracker should use. Forwarded to the tracker over its command channel.</description>
       <field type="uint8_t" name="target_system">The target system</field>
