@@ -630,5 +630,18 @@
       <field type="uint8_t" name="target_system">The target system</field>
       <field type="uint8_t" name="source_id">Camera source id. The tracker looks up the role (wide/narrow/thermal/...) configured for this source.</field>
     </message>
+    <message id="77059" name="LEAF_DO_VIDEO_STREAM">
+      <description>Start or stop the vision tracker's network video streams (all of them). The encoders keep running; frames are only withheld from the network. Forwarded to the tracker over its command channel as {"cmd": "stream_start"|"stream_stop"}.</description>
+      <field type="uint8_t" name="target_system">The target system</field>
+      <field type="uint8_t" name="stream_enabled">1 = stream_start (resume at the next keyframe), 0 = stream_stop</field>
+    </message>
+    <message id="77060" name="LEAF_VIDEO_STREAM_RESPONSE">
+      <description>Tracker response to a LEAF_DO_VIDEO_STREAM command, relayed by the FC (drone to GS). Sent exactly once per command; a missing response within a short window means delivery failure.</description>
+      <field type="uint8_t" name="stream_enabled">Echo of the command this response answers: 1 = stream_start, 0 = stream_stop</field>
+      <field type="uint8_t" name="accepted">1 = the pushes are now in the requested state; 0 = the unit has no network stream</field>
+      <field type="uint8_t" name="reason">0 = applied; 1 = already streaming; 2 = already stopped; 3 = no network streams configured. Carried as a full byte so future levels can be added.</field>
+      <field type="uint8_t" name="streaming">1 = the tracker's network pushes are emitting after this command, 0 = withheld</field>
+      <field type="uint8_t" name="source_count">Number of sources whose push the command governs (the Redis ACK's sources[] length)</field>
+    </message>
   </messages>
 </mavlink>
