@@ -120,3 +120,33 @@ jobs:
 #      - name: Run deploy script
 #        run: |
 #          ./scripts/update_generated_repos.sh
+
+
+  # Notify pymavlink of new dev-sitl commit, the whole journey is as follows:
+  # +++++++++++++++++++++++++ Stage(1): on leaf-mavlink's side +++++++++++++++++++++++++
+  # update leaf-mavlink's project (e.g: messages' definition)
+  # ----> push to leaf-mavlink's (dev-sitl) ----> using the token (PYMAVLINK_DISPATCH_TOKEN): repository_dispatch [leaf-mavlink-updated] on pymavlink repository 
+  # +++++++++++++++++++++++++ Stage(2): on pymavlink's side ++++++++++++++++++++++++++++
+  # ----> checkout leaf-mavlink at remote triggering commit sha
+  # ----> bump pymavlink's patch version (update __init__.py and calc new version) ----> commit __init__.py and .leaf-mavlink-pin which represents the dispatch's "client-payload"
+  # ----> create tag with the calculated new version includes the __init__.py and .leaf-mavlink-pin (leaf-mavlink commit sha)
+  # ----> push to pymavlink's dev-sitl branch and push the created tag
+  # ----> this tag push triggers the same workflow again build but this time the ${{ github.event_name }} is not "repository_dispatch", and ${GITHUB_REF} is "refs/tags/*" and also .leaf-mavlink-pin becomes available
+  # ----> checkout leaf-mavlink at the tag recorded in .leaf-mavlink-pin
+  # ----> adopt (copy) the new message_definitions
+  # ----> build (.whl) + build (.sdist)
+  # ----> create a release from that tag and attach the .whl and .sdist as release artefacts
+  # ----> publish (.whl and .sdist) to PyPI + Nexus (if available)
+  notify-pymavlink:
+    name: Notify pymavlink of new dev-sitl commit
+    needs: [format, python-tests, node-tests]
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/dev-sitl'
+    steps:
+      - name: Dispatch leaf-mavlink-updated event to pymavlink
+        uses: peter-evans/repository-dispatch@28959ce8df70de7be546dd1250a005dd32156697 # v4.0.1
+        with:
+          token: ${{ secrets.PYMAVLINK_DISPATCH_TOKEN }}
+          repository: DroneLeaf/pymavlink
+          event-type: leaf-mavlink-updated
+          client-payload: '{"sha": "${{ github.sha }}", "ref": "${{ github.ref }}"}'
