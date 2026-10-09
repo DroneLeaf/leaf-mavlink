@@ -45186,7 +45186,7 @@ class MAVLink(object):
         Racer system status telemetry (drone to GS).
 
         msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
-        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept) (type:uint8_t)
+        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS) (type:uint8_t)
         tracker_health_state        : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
         estimator_health          : Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS) (type:uint8_t)
         rc_connection             : RC link connected (0/1) (type:uint8_t)
@@ -45209,7 +45209,7 @@ class MAVLink(object):
         Racer system status telemetry (drone to GS).
 
         msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
-        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept) (type:uint8_t)
+        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS) (type:uint8_t)
         tracker_health_state        : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
         estimator_health          : Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS) (type:uint8_t)
         rc_connection             : RC link connected (0/1) (type:uint8_t)

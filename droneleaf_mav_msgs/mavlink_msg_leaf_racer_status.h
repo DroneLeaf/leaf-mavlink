@@ -11,7 +11,7 @@ typedef struct __mavlink_leaf_racer_status_t {
  uint16_t gps_ground_speed_cms; /*<  Ground speed, cm/s*/
  uint16_t gps_ground_course_decideg; /*<  Course over ground, degrees * 10*/
  uint8_t msp_status; /*<  Betaflight MSP link status (0/1)*/
- uint8_t current_racer_mode; /*<  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept)*/
+ uint8_t current_racer_mode; /*<  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)*/
  uint8_t tracker_health_state; /*<  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)*/
  uint8_t estimator_health; /*<  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)*/
  uint8_t rc_connection; /*<  RC link connected (0/1)*/
@@ -84,7 +84,7 @@ typedef struct __mavlink_leaf_racer_status_t {
  * @param msg The MAVLink message to compress the data into
  *
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
@@ -155,7 +155,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack(uint8_t system_id, uin
  * @param msg The MAVLink message to compress the data into
  *
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
@@ -229,7 +229,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_status(uint8_t system_
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
@@ -339,7 +339,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_encode_status(uint8_t syste
  * @param chan MAVLink channel to send the message
  *
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
@@ -483,7 +483,7 @@ static inline uint8_t mavlink_msg_leaf_racer_status_get_msp_status(const mavlink
 /**
  * @brief Get field current_racer_mode from leaf_racer_status message
  *
- * @return  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept)
+ * @return  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
  */
 static inline uint8_t mavlink_msg_leaf_racer_status_get_current_racer_mode(const mavlink_message_t* msg)
 {
