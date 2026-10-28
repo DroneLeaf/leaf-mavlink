@@ -3530,6 +3530,142 @@ static void mavlink_test_leaf_video_stream_response(uint8_t system_id, uint8_t c
 #endif
 }
 
+static void mavlink_test_leaf_racer_gps_home(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+    mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_RACER_GPS_HOME >= 256) {
+            return;
+        }
+#endif
+    mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+    mavlink_leaf_racer_gps_home_t packet_in = {
+        963497464,963497672,73.0
+    };
+    mavlink_leaf_racer_gps_home_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        packet1.home_lat_1e7 = packet_in.home_lat_1e7;
+        packet1.home_lon_1e7 = packet_in.home_lon_1e7;
+        packet1.home_alt_m = packet_in.home_alt_m;
+        
+        
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+        if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
+           // cope with extensions
+           memset(MAVLINK_MSG_ID_LEAF_RACER_GPS_HOME_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_RACER_GPS_HOME_MIN_LEN);
+        }
+#endif
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_home_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_racer_gps_home_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_home_pack(system_id, component_id, &msg , packet1.home_lat_1e7 , packet1.home_lon_1e7 , packet1.home_alt_m );
+    mavlink_msg_leaf_racer_gps_home_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_home_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.home_lat_1e7 , packet1.home_lon_1e7 , packet1.home_alt_m );
+    mavlink_msg_leaf_racer_gps_home_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+            comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+    mavlink_msg_leaf_racer_gps_home_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_home_send(MAVLINK_COMM_1 , packet1.home_lat_1e7 , packet1.home_lon_1e7 , packet1.home_alt_m );
+    mavlink_msg_leaf_racer_gps_home_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+#ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_RACER_GPS_HOME") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_RACER_GPS_HOME) != NULL);
+#endif
+}
+
+static void mavlink_test_leaf_racer_gps_guidance(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+    mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE >= 256) {
+            return;
+        }
+#endif
+    mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+    mavlink_leaf_racer_gps_guidance_t packet_in = {
+        963497464,963497672,963497880,963498088,129.0,963498504,963498712,213.0,963499128,963499336,297.0,325.0,353.0,381.0,409.0,185,252
+    };
+    mavlink_leaf_racer_gps_guidance_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        packet1.target_index = packet_in.target_index;
+        packet1.mission_size = packet_in.mission_size;
+        packet1.from_lat_1e7 = packet_in.from_lat_1e7;
+        packet1.from_lon_1e7 = packet_in.from_lon_1e7;
+        packet1.from_alt_m = packet_in.from_alt_m;
+        packet1.to_lat_1e7 = packet_in.to_lat_1e7;
+        packet1.to_lon_1e7 = packet_in.to_lon_1e7;
+        packet1.to_alt_m = packet_in.to_alt_m;
+        packet1.l1_aim_lat_1e7 = packet_in.l1_aim_lat_1e7;
+        packet1.l1_aim_lon_1e7 = packet_in.l1_aim_lon_1e7;
+        packet1.l1_distance_m = packet_in.l1_distance_m;
+        packet1.cross_track_error_m = packet_in.cross_track_error_m;
+        packet1.alt_error_m = packet_in.alt_error_m;
+        packet1.track_heading_rad = packet_in.track_heading_rad;
+        packet1.l1_eta_rad = packet_in.l1_eta_rad;
+        packet1.l1_aim_valid = packet_in.l1_aim_valid;
+        packet1.saturation_flags = packet_in.saturation_flags;
+        
+        
+#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
+        if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
+           // cope with extensions
+           memset(MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN);
+        }
+#endif
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_guidance_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_racer_gps_guidance_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_guidance_pack(system_id, component_id, &msg , packet1.target_index , packet1.mission_size , packet1.from_lat_1e7 , packet1.from_lon_1e7 , packet1.from_alt_m , packet1.to_lat_1e7 , packet1.to_lon_1e7 , packet1.to_alt_m , packet1.l1_aim_lat_1e7 , packet1.l1_aim_lon_1e7 , packet1.l1_aim_valid , packet1.l1_distance_m , packet1.cross_track_error_m , packet1.alt_error_m , packet1.track_heading_rad , packet1.l1_eta_rad , packet1.saturation_flags );
+    mavlink_msg_leaf_racer_gps_guidance_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_guidance_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_index , packet1.mission_size , packet1.from_lat_1e7 , packet1.from_lon_1e7 , packet1.from_alt_m , packet1.to_lat_1e7 , packet1.to_lon_1e7 , packet1.to_alt_m , packet1.l1_aim_lat_1e7 , packet1.l1_aim_lon_1e7 , packet1.l1_aim_valid , packet1.l1_distance_m , packet1.cross_track_error_m , packet1.alt_error_m , packet1.track_heading_rad , packet1.l1_eta_rad , packet1.saturation_flags );
+    mavlink_msg_leaf_racer_gps_guidance_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+            comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+    mavlink_msg_leaf_racer_gps_guidance_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+    mavlink_msg_leaf_racer_gps_guidance_send(MAVLINK_COMM_1 , packet1.target_index , packet1.mission_size , packet1.from_lat_1e7 , packet1.from_lon_1e7 , packet1.from_alt_m , packet1.to_lat_1e7 , packet1.to_lon_1e7 , packet1.to_alt_m , packet1.l1_aim_lat_1e7 , packet1.l1_aim_lon_1e7 , packet1.l1_aim_valid , packet1.l1_distance_m , packet1.cross_track_error_m , packet1.alt_error_m , packet1.track_heading_rad , packet1.l1_eta_rad , packet1.saturation_flags );
+    mavlink_msg_leaf_racer_gps_guidance_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+#ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_RACER_GPS_GUIDANCE") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE) != NULL);
+#endif
+}
+
 static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
     mavlink_test_leaf_mode(system_id, component_id, last_msg);
@@ -3589,6 +3725,8 @@ static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component
     mavlink_test_leaf_cmd_leaf_tracker_source_id(system_id, component_id, last_msg);
     mavlink_test_leaf_do_video_stream(system_id, component_id, last_msg);
     mavlink_test_leaf_video_stream_response(system_id, component_id, last_msg);
+    mavlink_test_leaf_racer_gps_home(system_id, component_id, last_msg);
+    mavlink_test_leaf_racer_gps_guidance(system_id, component_id, last_msg);
 }
 
 #ifdef __cplusplus
