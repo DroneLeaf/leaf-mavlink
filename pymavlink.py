@@ -8940,7 +8940,7 @@ MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT = 77044
 MAVLINK_MSG_ID_LEAF_SYS_STATUS = 77045
 MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW = 77046
 MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2 = 77047
-MAVLINK_MSG_ID_LEAF_DO_TERMINAL = 77048
+MAVLINK_MSG_ID_LEAF_DO_REFUEL = 77048
 MAVLINK_MSG_ID_LEAF_DO_TRACK = 77049
 MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY = 77050
 MAVLINK_MSG_ID_LEAF_RACER_STATUS = 77051
@@ -29000,15 +29000,15 @@ class MAVLink_leaf_mission_heartbeat_v2_message(MAVLink_message):
 setattr(MAVLink_leaf_mission_heartbeat_v2_message, "name", mavlink_msg_deprecated_name_property())
 
 
-class MAVLink_leaf_do_terminal_message(MAVLink_message):
+class MAVLink_leaf_do_refuel_message(MAVLink_message):
     """
-    Engage or disengage terminal (intercept) mode on the racer
+    Engage or disengage refuel mode on the racer
     """
 
-    id = MAVLINK_MSG_ID_LEAF_DO_TERMINAL
-    msgname = "LEAF_DO_TERMINAL"
-    fieldnames = ["target_system", "terminal"]
-    ordered_fieldnames = ["target_system", "terminal"]
+    id = MAVLINK_MSG_ID_LEAF_DO_REFUEL
+    msgname = "LEAF_DO_REFUEL"
+    fieldnames = ["target_system", "refuel"]
+    ordered_fieldnames = ["target_system", "refuel"]
     fieldtypes = ["uint8_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
     fieldenums_by_name: Dict[str, str] = {}
@@ -29017,26 +29017,26 @@ class MAVLink_leaf_do_terminal_message(MAVLink_message):
     orders = [0, 1]
     lengths = [1, 1]
     array_lengths = [0, 0]
-    crc_extra = 162
+    crc_extra = 74
     unpacker = struct.Struct("<BB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, target_system: int, terminal: int):
-        MAVLink_message.__init__(self, MAVLink_leaf_do_terminal_message.id, MAVLink_leaf_do_terminal_message.msgname)
-        self._fieldnames = MAVLink_leaf_do_terminal_message.fieldnames
-        self._instance_field = MAVLink_leaf_do_terminal_message.instance_field
-        self._instance_offset = MAVLink_leaf_do_terminal_message.instance_offset
+    def __init__(self, target_system: int, refuel: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_do_refuel_message.id, MAVLink_leaf_do_refuel_message.msgname)
+        self._fieldnames = MAVLink_leaf_do_refuel_message.fieldnames
+        self._instance_field = MAVLink_leaf_do_refuel_message.instance_field
+        self._instance_offset = MAVLink_leaf_do_refuel_message.instance_offset
         self.target_system = target_system
-        self.terminal = terminal
+        self.refuel = refuel
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.terminal), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_system, self.refuel), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_leaf_do_terminal_message, "name", mavlink_msg_deprecated_name_property())
+setattr(MAVLink_leaf_do_refuel_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_leaf_do_track_message(MAVLink_message):
@@ -29136,8 +29136,8 @@ class MAVLink_leaf_racer_status_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_RACER_STATUS
     msgname = "LEAF_RACER_STATUS"
-    fieldnames = ["msp_status", "current_racer_mode", "tracker_health_state", "estimator_health", "rc_connection", "terminal_switch_state", "pilot_safety_takeover_state", "auto_terminal", "gps_lat_1e7", "gps_lon_1e7", "gps_alt_m", "gps_num_sat", "gps_fix", "gps_ground_speed_cms", "gps_ground_course_decideg"]
-    ordered_fieldnames = ["gps_lat_1e7", "gps_lon_1e7", "gps_alt_m", "gps_ground_speed_cms", "gps_ground_course_decideg", "msp_status", "current_racer_mode", "tracker_health_state", "estimator_health", "rc_connection", "terminal_switch_state", "pilot_safety_takeover_state", "auto_terminal", "gps_num_sat", "gps_fix"]
+    fieldnames = ["msp_status", "current_racer_mode", "tracker_health_state", "estimator_health", "rc_connection", "refuel_switch_state", "pilot_safety_takeover_state", "auto_refuel", "gps_lat_1e7", "gps_lon_1e7", "gps_alt_m", "gps_num_sat", "gps_fix", "gps_ground_speed_cms", "gps_ground_course_decideg"]
+    ordered_fieldnames = ["gps_lat_1e7", "gps_lon_1e7", "gps_alt_m", "gps_ground_speed_cms", "gps_ground_course_decideg", "msp_status", "current_racer_mode", "tracker_health_state", "estimator_health", "rc_connection", "refuel_switch_state", "pilot_safety_takeover_state", "auto_refuel", "gps_num_sat", "gps_fix"]
     fieldtypes = ["uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "int32_t", "int32_t", "int16_t", "uint8_t", "uint8_t", "uint16_t", "uint16_t"]
     fielddisplays_by_name: Dict[str, str] = {}
     fieldenums_by_name: Dict[str, str] = {}
@@ -29146,12 +29146,12 @@ class MAVLink_leaf_racer_status_message(MAVLink_message):
     orders = [5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 13, 14, 3, 4]
     lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    crc_extra = 49
+    crc_extra = 229
     unpacker = struct.Struct("<iihHHBBBBBBBBBB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, terminal_switch_state: int, pilot_safety_takeover_state: int, auto_terminal: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int):
+    def __init__(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, refuel_switch_state: int, pilot_safety_takeover_state: int, auto_refuel: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int):
         MAVLink_message.__init__(self, MAVLink_leaf_racer_status_message.id, MAVLink_leaf_racer_status_message.msgname)
         self._fieldnames = MAVLink_leaf_racer_status_message.fieldnames
         self._instance_field = MAVLink_leaf_racer_status_message.instance_field
@@ -29161,9 +29161,9 @@ class MAVLink_leaf_racer_status_message(MAVLink_message):
         self.tracker_health_state = tracker_health_state
         self.estimator_health = estimator_health
         self.rc_connection = rc_connection
-        self.terminal_switch_state = terminal_switch_state
+        self.refuel_switch_state = refuel_switch_state
         self.pilot_safety_takeover_state = pilot_safety_takeover_state
-        self.auto_terminal = auto_terminal
+        self.auto_refuel = auto_refuel
         self.gps_lat_1e7 = gps_lat_1e7
         self.gps_lon_1e7 = gps_lon_1e7
         self.gps_alt_m = gps_alt_m
@@ -29173,7 +29173,7 @@ class MAVLink_leaf_racer_status_message(MAVLink_message):
         self.gps_ground_course_decideg = gps_ground_course_decideg
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.gps_lat_1e7, self.gps_lon_1e7, self.gps_alt_m, self.gps_ground_speed_cms, self.gps_ground_course_decideg, self.msp_status, self.current_racer_mode, self.tracker_health_state, self.estimator_health, self.rc_connection, self.terminal_switch_state, self.pilot_safety_takeover_state, self.auto_terminal, self.gps_num_sat, self.gps_fix), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.gps_lat_1e7, self.gps_lon_1e7, self.gps_alt_m, self.gps_ground_speed_cms, self.gps_ground_course_decideg, self.msp_status, self.current_racer_mode, self.tracker_health_state, self.estimator_health, self.rc_connection, self.refuel_switch_state, self.pilot_safety_takeover_state, self.auto_refuel, self.gps_num_sat, self.gps_fix), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -29855,7 +29855,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_SYS_STATUS: MAVLink_leaf_sys_status_message,
     MAVLINK_MSG_ID_LEAF_DO_SWITCH_MRFT_YAW: MAVLink_leaf_do_switch_mrft_yaw_message,
     MAVLINK_MSG_ID_LEAF_MISSION_HEARTBEAT_V2: MAVLink_leaf_mission_heartbeat_v2_message,
-    MAVLINK_MSG_ID_LEAF_DO_TERMINAL: MAVLink_leaf_do_terminal_message,
+    MAVLINK_MSG_ID_LEAF_DO_REFUEL: MAVLink_leaf_do_refuel_message,
     MAVLINK_MSG_ID_LEAF_DO_TRACK: MAVLink_leaf_do_track_message,
     MAVLINK_MSG_ID_LEAF_BBOX_TELEMETRY: MAVLink_leaf_bbox_telemetry_message,
     MAVLINK_MSG_ID_LEAF_RACER_STATUS: MAVLink_leaf_racer_status_message,
@@ -45099,25 +45099,25 @@ class MAVLink(object):
         """
         self.send(self.leaf_mission_heartbeat_v2_encode(LeafFC_mission_status, joystick_mode, mission_id, queue_count, predefined_actions_status, SDK_status, mission_name, step_type, step_name), force_mavlink1=force_mavlink1)
 
-    def leaf_do_terminal_encode(self, target_system: int, terminal: int) -> MAVLink_leaf_do_terminal_message:
+    def leaf_do_refuel_encode(self, target_system: int, refuel: int) -> MAVLink_leaf_do_refuel_message:
         """
-        Engage or disengage terminal (intercept) mode on the racer
+        Engage or disengage refuel mode on the racer
 
         target_system             : The target system (type:uint8_t)
-        terminal                  : 1 to engage terminal/intercept, 0 to disengage (type:uint8_t)
+        refuel                  : 1 to engage refuel, 0 to disengage (type:uint8_t)
 
         """
-        return MAVLink_leaf_do_terminal_message(target_system, terminal)
+        return MAVLink_leaf_do_refuel_message(target_system, refuel)
 
-    def leaf_do_terminal_send(self, target_system: int, terminal: int, force_mavlink1: bool = False) -> None:
+    def leaf_do_refuel_send(self, target_system: int, refuel: int, force_mavlink1: bool = False) -> None:
         """
-        Engage or disengage terminal (intercept) mode on the racer
+        Engage or disengage refuel mode on the racer
 
         target_system             : The target system (type:uint8_t)
-        terminal                  : 1 to engage terminal/intercept, 0 to disengage (type:uint8_t)
+        refuel                  : 1 to engage refuel, 0 to disengage (type:uint8_t)
 
         """
-        self.send(self.leaf_do_terminal_encode(target_system, terminal), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_do_refuel_encode(target_system, refuel), force_mavlink1=force_mavlink1)
 
     def leaf_do_track_encode(self, target_system: int, track: int, aim_x: float, aim_y: float, box_size: float) -> MAVLink_leaf_do_track_message:
         """
@@ -45181,18 +45181,18 @@ class MAVLink(object):
         """
         self.send(self.leaf_bbox_telemetry_encode(box_center_x_norm, box_center_y_norm, box_width_norm, box_height_norm, tracker_fps, is_healthy, is_tracking, estimator_valid), force_mavlink1=force_mavlink1)
 
-    def leaf_racer_status_encode(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, terminal_switch_state: int, pilot_safety_takeover_state: int, auto_terminal: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int) -> MAVLink_leaf_racer_status_message:
+    def leaf_racer_status_encode(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, refuel_switch_state: int, pilot_safety_takeover_state: int, auto_refuel: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int) -> MAVLink_leaf_racer_status_message:
         """
         Racer system status telemetry (drone to GS).
 
         msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
-        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS) (type:uint8_t)
+        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS) (type:uint8_t)
         tracker_health_state        : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
         estimator_health          : Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS) (type:uint8_t)
         rc_connection             : RC link connected (0/1) (type:uint8_t)
-        terminal_switch_state        : Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
+        refuel_switch_state        : ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
         pilot_safety_takeover_state        : Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
-        auto_terminal             : Auto-terminal (auto-intercept) enabled (0/1) (type:uint8_t)
+        auto_refuel             : Auto-refuel (auto-refuel) enabled (0/1) (type:uint8_t)
         gps_lat_1e7               : Latitude, degrees * 1e7 (type:int32_t)
         gps_lon_1e7               : Longitude, degrees * 1e7 (type:int32_t)
         gps_alt_m                 : Altitude, meters (type:int16_t)
@@ -45202,20 +45202,20 @@ class MAVLink(object):
         gps_ground_course_decideg        : Course over ground, degrees * 10 (type:uint16_t)
 
         """
-        return MAVLink_leaf_racer_status_message(msp_status, current_racer_mode, tracker_health_state, estimator_health, rc_connection, terminal_switch_state, pilot_safety_takeover_state, auto_terminal, gps_lat_1e7, gps_lon_1e7, gps_alt_m, gps_num_sat, gps_fix, gps_ground_speed_cms, gps_ground_course_decideg)
+        return MAVLink_leaf_racer_status_message(msp_status, current_racer_mode, tracker_health_state, estimator_health, rc_connection, refuel_switch_state, pilot_safety_takeover_state, auto_refuel, gps_lat_1e7, gps_lon_1e7, gps_alt_m, gps_num_sat, gps_fix, gps_ground_speed_cms, gps_ground_course_decideg)
 
-    def leaf_racer_status_send(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, terminal_switch_state: int, pilot_safety_takeover_state: int, auto_terminal: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int, force_mavlink1: bool = False) -> None:
+    def leaf_racer_status_send(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, refuel_switch_state: int, pilot_safety_takeover_state: int, auto_refuel: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int, force_mavlink1: bool = False) -> None:
         """
         Racer system status telemetry (drone to GS).
 
         msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
-        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS) (type:uint8_t)
+        current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS) (type:uint8_t)
         tracker_health_state        : Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY) (type:uint8_t)
         estimator_health          : Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS) (type:uint8_t)
         rc_connection             : RC link connected (0/1) (type:uint8_t)
-        terminal_switch_state        : Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
+        refuel_switch_state        : ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
         pilot_safety_takeover_state        : Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
-        auto_terminal             : Auto-terminal (auto-intercept) enabled (0/1) (type:uint8_t)
+        auto_refuel             : Auto-refuel (auto-refuel) enabled (0/1) (type:uint8_t)
         gps_lat_1e7               : Latitude, degrees * 1e7 (type:int32_t)
         gps_lon_1e7               : Longitude, degrees * 1e7 (type:int32_t)
         gps_alt_m                 : Altitude, meters (type:int16_t)
@@ -45225,7 +45225,7 @@ class MAVLink(object):
         gps_ground_course_decideg        : Course over ground, degrees * 10 (type:uint16_t)
 
         """
-        self.send(self.leaf_racer_status_encode(msp_status, current_racer_mode, tracker_health_state, estimator_health, rc_connection, terminal_switch_state, pilot_safety_takeover_state, auto_terminal, gps_lat_1e7, gps_lon_1e7, gps_alt_m, gps_num_sat, gps_fix, gps_ground_speed_cms, gps_ground_course_decideg), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_racer_status_encode(msp_status, current_racer_mode, tracker_health_state, estimator_health, rc_connection, refuel_switch_state, pilot_safety_takeover_state, auto_refuel, gps_lat_1e7, gps_lon_1e7, gps_alt_m, gps_num_sat, gps_fix, gps_ground_speed_cms, gps_ground_course_decideg), force_mavlink1=force_mavlink1)
 
     def leaf_bf_status_ex_encode(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int) -> MAVLink_leaf_bf_status_ex_message:
         """

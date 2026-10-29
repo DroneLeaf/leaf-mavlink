@@ -2707,45 +2707,45 @@ static void mavlink_test_leaf_mission_heartbeat_v2(uint8_t system_id, uint8_t co
 #endif
 }
 
-static void mavlink_test_leaf_do_terminal(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_leaf_do_refuel(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_DO_TERMINAL >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_LEAF_DO_REFUEL >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_leaf_do_terminal_t packet_in = {
+    mavlink_leaf_do_refuel_t packet_in = {
         5,72
     };
-    mavlink_leaf_do_terminal_t packet1, packet2;
+    mavlink_leaf_do_refuel_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.target_system = packet_in.target_system;
-        packet1.terminal = packet_in.terminal;
+        packet1.refuel = packet_in.refuel;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_LEAF_DO_TERMINAL_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_DO_TERMINAL_MIN_LEN);
+           memset(MAVLINK_MSG_ID_LEAF_DO_REFUEL_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_LEAF_DO_REFUEL_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_terminal_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_leaf_do_terminal_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_refuel_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_leaf_do_refuel_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_terminal_pack(system_id, component_id, &msg , packet1.target_system , packet1.terminal );
-    mavlink_msg_leaf_do_terminal_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_refuel_pack(system_id, component_id, &msg , packet1.target_system , packet1.refuel );
+    mavlink_msg_leaf_do_refuel_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_terminal_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.terminal );
-    mavlink_msg_leaf_do_terminal_decode(&msg, &packet2);
+    mavlink_msg_leaf_do_refuel_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.refuel );
+    mavlink_msg_leaf_do_refuel_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -2753,17 +2753,17 @@ static void mavlink_test_leaf_do_terminal(uint8_t system_id, uint8_t component_i
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_leaf_do_terminal_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_refuel_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_do_terminal_send(MAVLINK_COMM_1 , packet1.target_system , packet1.terminal );
-    mavlink_msg_leaf_do_terminal_decode(last_msg, &packet2);
+    mavlink_msg_leaf_do_refuel_send(MAVLINK_COMM_1 , packet1.target_system , packet1.refuel );
+    mavlink_msg_leaf_do_refuel_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
 #ifdef MAVLINK_HAVE_GET_MESSAGE_INFO
-    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_DO_TERMINAL") != NULL);
-    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_DO_TERMINAL) != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_name("LEAF_DO_REFUEL") != NULL);
+    MAVLINK_ASSERT(mavlink_get_message_info_by_id(MAVLINK_MSG_ID_LEAF_DO_REFUEL) != NULL);
 #endif
 }
 
@@ -2923,9 +2923,9 @@ static void mavlink_test_leaf_racer_status(uint8_t system_id, uint8_t component_
         packet1.tracker_health_state = packet_in.tracker_health_state;
         packet1.estimator_health = packet_in.estimator_health;
         packet1.rc_connection = packet_in.rc_connection;
-        packet1.terminal_switch_state = packet_in.terminal_switch_state;
+        packet1.refuel_switch_state = packet_in.refuel_switch_state;
         packet1.pilot_safety_takeover_state = packet_in.pilot_safety_takeover_state;
-        packet1.auto_terminal = packet_in.auto_terminal;
+        packet1.auto_refuel = packet_in.auto_refuel;
         packet1.gps_num_sat = packet_in.gps_num_sat;
         packet1.gps_fix = packet_in.gps_fix;
         
@@ -2942,12 +2942,12 @@ static void mavlink_test_leaf_racer_status(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_racer_status_pack(system_id, component_id, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
+    mavlink_msg_leaf_racer_status_pack(system_id, component_id, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.refuel_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_refuel , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
     mavlink_msg_leaf_racer_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_racer_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
+    mavlink_msg_leaf_racer_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.refuel_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_refuel , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
     mavlink_msg_leaf_racer_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -2960,7 +2960,7 @@ static void mavlink_test_leaf_racer_status(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_racer_status_send(MAVLINK_COMM_1 , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.terminal_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_terminal , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
+    mavlink_msg_leaf_racer_status_send(MAVLINK_COMM_1 , packet1.msp_status , packet1.current_racer_mode , packet1.tracker_health_state , packet1.estimator_health , packet1.rc_connection , packet1.refuel_switch_state , packet1.pilot_safety_takeover_state , packet1.auto_refuel , packet1.gps_lat_1e7 , packet1.gps_lon_1e7 , packet1.gps_alt_m , packet1.gps_num_sat , packet1.gps_fix , packet1.gps_ground_speed_cms , packet1.gps_ground_course_decideg );
     mavlink_msg_leaf_racer_status_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -3712,7 +3712,7 @@ static void mavlink_test_droneleaf_mav_msgs(uint8_t system_id, uint8_t component
     mavlink_test_leaf_sys_status(system_id, component_id, last_msg);
     mavlink_test_leaf_do_switch_mrft_yaw(system_id, component_id, last_msg);
     mavlink_test_leaf_mission_heartbeat_v2(system_id, component_id, last_msg);
-    mavlink_test_leaf_do_terminal(system_id, component_id, last_msg);
+    mavlink_test_leaf_do_refuel(system_id, component_id, last_msg);
     mavlink_test_leaf_do_track(system_id, component_id, last_msg);
     mavlink_test_leaf_bbox_telemetry(system_id, component_id, last_msg);
     mavlink_test_leaf_racer_status(system_id, component_id, last_msg);

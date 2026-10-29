@@ -11,13 +11,13 @@ typedef struct __mavlink_leaf_racer_status_t {
  uint16_t gps_ground_speed_cms; /*<  Ground speed, cm/s*/
  uint16_t gps_ground_course_decideg; /*<  Course over ground, degrees * 10*/
  uint8_t msp_status; /*<  Betaflight MSP link status (0/1)*/
- uint8_t current_racer_mode; /*<  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)*/
+ uint8_t current_racer_mode; /*<  Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS)*/
  uint8_t tracker_health_state; /*<  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)*/
  uint8_t estimator_health; /*<  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)*/
  uint8_t rc_connection; /*<  RC link connected (0/1)*/
- uint8_t terminal_switch_state; /*<  Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)*/
+ uint8_t refuel_switch_state; /*<  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)*/
  uint8_t pilot_safety_takeover_state; /*<  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)*/
- uint8_t auto_terminal; /*<  Auto-terminal (auto-intercept) enabled (0/1)*/
+ uint8_t auto_refuel; /*<  Auto-refuel (auto-refuel) enabled (0/1)*/
  uint8_t gps_num_sat; /*<  Number of satellites*/
  uint8_t gps_fix; /*<  GPS fix (0=no fix, 1=fix)*/
 } mavlink_leaf_racer_status_t;
@@ -27,8 +27,8 @@ typedef struct __mavlink_leaf_racer_status_t {
 #define MAVLINK_MSG_ID_77051_LEN 24
 #define MAVLINK_MSG_ID_77051_MIN_LEN 24
 
-#define MAVLINK_MSG_ID_LEAF_RACER_STATUS_CRC 49
-#define MAVLINK_MSG_ID_77051_CRC 49
+#define MAVLINK_MSG_ID_LEAF_RACER_STATUS_CRC 229
+#define MAVLINK_MSG_ID_77051_CRC 229
 
 
 
@@ -42,9 +42,9 @@ typedef struct __mavlink_leaf_racer_status_t {
          { "tracker_health_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_leaf_racer_status_t, tracker_health_state) }, \
          { "estimator_health", NULL, MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_leaf_racer_status_t, estimator_health) }, \
          { "rc_connection", NULL, MAVLINK_TYPE_UINT8_T, 0, 18, offsetof(mavlink_leaf_racer_status_t, rc_connection) }, \
-         { "terminal_switch_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 19, offsetof(mavlink_leaf_racer_status_t, terminal_switch_state) }, \
+         { "refuel_switch_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 19, offsetof(mavlink_leaf_racer_status_t, refuel_switch_state) }, \
          { "pilot_safety_takeover_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_leaf_racer_status_t, pilot_safety_takeover_state) }, \
-         { "auto_terminal", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_racer_status_t, auto_terminal) }, \
+         { "auto_refuel", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_racer_status_t, auto_refuel) }, \
          { "gps_lat_1e7", NULL, MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_leaf_racer_status_t, gps_lat_1e7) }, \
          { "gps_lon_1e7", NULL, MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_leaf_racer_status_t, gps_lon_1e7) }, \
          { "gps_alt_m", NULL, MAVLINK_TYPE_INT16_T, 0, 8, offsetof(mavlink_leaf_racer_status_t, gps_alt_m) }, \
@@ -63,9 +63,9 @@ typedef struct __mavlink_leaf_racer_status_t {
          { "tracker_health_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_leaf_racer_status_t, tracker_health_state) }, \
          { "estimator_health", NULL, MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_leaf_racer_status_t, estimator_health) }, \
          { "rc_connection", NULL, MAVLINK_TYPE_UINT8_T, 0, 18, offsetof(mavlink_leaf_racer_status_t, rc_connection) }, \
-         { "terminal_switch_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 19, offsetof(mavlink_leaf_racer_status_t, terminal_switch_state) }, \
+         { "refuel_switch_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 19, offsetof(mavlink_leaf_racer_status_t, refuel_switch_state) }, \
          { "pilot_safety_takeover_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_leaf_racer_status_t, pilot_safety_takeover_state) }, \
-         { "auto_terminal", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_racer_status_t, auto_terminal) }, \
+         { "auto_refuel", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_racer_status_t, auto_refuel) }, \
          { "gps_lat_1e7", NULL, MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_leaf_racer_status_t, gps_lat_1e7) }, \
          { "gps_lon_1e7", NULL, MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_leaf_racer_status_t, gps_lon_1e7) }, \
          { "gps_alt_m", NULL, MAVLINK_TYPE_INT16_T, 0, 8, offsetof(mavlink_leaf_racer_status_t, gps_alt_m) }, \
@@ -84,13 +84,13 @@ typedef struct __mavlink_leaf_racer_status_t {
  * @param msg The MAVLink message to compress the data into
  *
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
- * @param terminal_switch_state  Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
+ * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_terminal  Auto-terminal (auto-intercept) enabled (0/1)
+ * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -101,7 +101,7 @@ typedef struct __mavlink_leaf_racer_status_t {
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_racer_status_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t terminal_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_terminal, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
+                               uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t refuel_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_refuel, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_STATUS_LEN];
@@ -115,9 +115,9 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack(uint8_t system_id, uin
     _mav_put_uint8_t(buf, 16, tracker_health_state);
     _mav_put_uint8_t(buf, 17, estimator_health);
     _mav_put_uint8_t(buf, 18, rc_connection);
-    _mav_put_uint8_t(buf, 19, terminal_switch_state);
+    _mav_put_uint8_t(buf, 19, refuel_switch_state);
     _mav_put_uint8_t(buf, 20, pilot_safety_takeover_state);
-    _mav_put_uint8_t(buf, 21, auto_terminal);
+    _mav_put_uint8_t(buf, 21, auto_refuel);
     _mav_put_uint8_t(buf, 22, gps_num_sat);
     _mav_put_uint8_t(buf, 23, gps_fix);
 
@@ -134,9 +134,9 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack(uint8_t system_id, uin
     packet.tracker_health_state = tracker_health_state;
     packet.estimator_health = estimator_health;
     packet.rc_connection = rc_connection;
-    packet.terminal_switch_state = terminal_switch_state;
+    packet.refuel_switch_state = refuel_switch_state;
     packet.pilot_safety_takeover_state = pilot_safety_takeover_state;
-    packet.auto_terminal = auto_terminal;
+    packet.auto_refuel = auto_refuel;
     packet.gps_num_sat = gps_num_sat;
     packet.gps_fix = gps_fix;
 
@@ -155,13 +155,13 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack(uint8_t system_id, uin
  * @param msg The MAVLink message to compress the data into
  *
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
- * @param terminal_switch_state  Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
+ * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_terminal  Auto-terminal (auto-intercept) enabled (0/1)
+ * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -172,7 +172,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack(uint8_t system_id, uin
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_racer_status_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t terminal_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_terminal, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
+                               uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t refuel_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_refuel, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_STATUS_LEN];
@@ -186,9 +186,9 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_status(uint8_t system_
     _mav_put_uint8_t(buf, 16, tracker_health_state);
     _mav_put_uint8_t(buf, 17, estimator_health);
     _mav_put_uint8_t(buf, 18, rc_connection);
-    _mav_put_uint8_t(buf, 19, terminal_switch_state);
+    _mav_put_uint8_t(buf, 19, refuel_switch_state);
     _mav_put_uint8_t(buf, 20, pilot_safety_takeover_state);
-    _mav_put_uint8_t(buf, 21, auto_terminal);
+    _mav_put_uint8_t(buf, 21, auto_refuel);
     _mav_put_uint8_t(buf, 22, gps_num_sat);
     _mav_put_uint8_t(buf, 23, gps_fix);
 
@@ -205,9 +205,9 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_status(uint8_t system_
     packet.tracker_health_state = tracker_health_state;
     packet.estimator_health = estimator_health;
     packet.rc_connection = rc_connection;
-    packet.terminal_switch_state = terminal_switch_state;
+    packet.refuel_switch_state = refuel_switch_state;
     packet.pilot_safety_takeover_state = pilot_safety_takeover_state;
-    packet.auto_terminal = auto_terminal;
+    packet.auto_refuel = auto_refuel;
     packet.gps_num_sat = gps_num_sat;
     packet.gps_fix = gps_fix;
 
@@ -229,13 +229,13 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_status(uint8_t system_
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
- * @param terminal_switch_state  Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
+ * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_terminal  Auto-terminal (auto-intercept) enabled (0/1)
+ * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -247,7 +247,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_status(uint8_t system_
  */
 static inline uint16_t mavlink_msg_leaf_racer_status_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t msp_status,uint8_t current_racer_mode,uint8_t tracker_health_state,uint8_t estimator_health,uint8_t rc_connection,uint8_t terminal_switch_state,uint8_t pilot_safety_takeover_state,uint8_t auto_terminal,int32_t gps_lat_1e7,int32_t gps_lon_1e7,int16_t gps_alt_m,uint8_t gps_num_sat,uint8_t gps_fix,uint16_t gps_ground_speed_cms,uint16_t gps_ground_course_decideg)
+                                   uint8_t msp_status,uint8_t current_racer_mode,uint8_t tracker_health_state,uint8_t estimator_health,uint8_t rc_connection,uint8_t refuel_switch_state,uint8_t pilot_safety_takeover_state,uint8_t auto_refuel,int32_t gps_lat_1e7,int32_t gps_lon_1e7,int16_t gps_alt_m,uint8_t gps_num_sat,uint8_t gps_fix,uint16_t gps_ground_speed_cms,uint16_t gps_ground_course_decideg)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_STATUS_LEN];
@@ -261,9 +261,9 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_chan(uint8_t system_id
     _mav_put_uint8_t(buf, 16, tracker_health_state);
     _mav_put_uint8_t(buf, 17, estimator_health);
     _mav_put_uint8_t(buf, 18, rc_connection);
-    _mav_put_uint8_t(buf, 19, terminal_switch_state);
+    _mav_put_uint8_t(buf, 19, refuel_switch_state);
     _mav_put_uint8_t(buf, 20, pilot_safety_takeover_state);
-    _mav_put_uint8_t(buf, 21, auto_terminal);
+    _mav_put_uint8_t(buf, 21, auto_refuel);
     _mav_put_uint8_t(buf, 22, gps_num_sat);
     _mav_put_uint8_t(buf, 23, gps_fix);
 
@@ -280,9 +280,9 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_chan(uint8_t system_id
     packet.tracker_health_state = tracker_health_state;
     packet.estimator_health = estimator_health;
     packet.rc_connection = rc_connection;
-    packet.terminal_switch_state = terminal_switch_state;
+    packet.refuel_switch_state = refuel_switch_state;
     packet.pilot_safety_takeover_state = pilot_safety_takeover_state;
-    packet.auto_terminal = auto_terminal;
+    packet.auto_refuel = auto_refuel;
     packet.gps_num_sat = gps_num_sat;
     packet.gps_fix = gps_fix;
 
@@ -303,7 +303,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_chan(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_leaf_racer_status_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_racer_status_t* leaf_racer_status)
 {
-    return mavlink_msg_leaf_racer_status_pack(system_id, component_id, msg, leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->terminal_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_terminal, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
+    return mavlink_msg_leaf_racer_status_pack(system_id, component_id, msg, leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->refuel_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_refuel, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
 }
 
 /**
@@ -317,7 +317,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_encode(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_leaf_racer_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_racer_status_t* leaf_racer_status)
 {
-    return mavlink_msg_leaf_racer_status_pack_chan(system_id, component_id, chan, msg, leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->terminal_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_terminal, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
+    return mavlink_msg_leaf_racer_status_pack_chan(system_id, component_id, chan, msg, leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->refuel_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_refuel, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
 }
 
 /**
@@ -331,7 +331,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_encode_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_leaf_racer_status_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_racer_status_t* leaf_racer_status)
 {
-    return mavlink_msg_leaf_racer_status_pack_status(system_id, component_id, _status, msg,  leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->terminal_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_terminal, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
+    return mavlink_msg_leaf_racer_status_pack_status(system_id, component_id, _status, msg,  leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->refuel_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_refuel, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
 }
 
 /**
@@ -339,13 +339,13 @@ static inline uint16_t mavlink_msg_leaf_racer_status_encode_status(uint8_t syste
  * @param chan MAVLink channel to send the message
  *
  * @param msp_status  Betaflight MSP link status (0/1)
- * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
+ * @param current_racer_mode  Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS)
  * @param tracker_health_state  Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)
  * @param estimator_health  Estimator health (0=NOT_HEALTHY,1=IMU,2=IMU_AND_GPS)
  * @param rc_connection  RC link connected (0/1)
- * @param terminal_switch_state  Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
+ * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_terminal  Auto-terminal (auto-intercept) enabled (0/1)
+ * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -356,7 +356,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_encode_status(uint8_t syste
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_racer_status_send(mavlink_channel_t chan, uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t terminal_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_terminal, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
+static inline void mavlink_msg_leaf_racer_status_send(mavlink_channel_t chan, uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t refuel_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_refuel, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_STATUS_LEN];
@@ -370,9 +370,9 @@ static inline void mavlink_msg_leaf_racer_status_send(mavlink_channel_t chan, ui
     _mav_put_uint8_t(buf, 16, tracker_health_state);
     _mav_put_uint8_t(buf, 17, estimator_health);
     _mav_put_uint8_t(buf, 18, rc_connection);
-    _mav_put_uint8_t(buf, 19, terminal_switch_state);
+    _mav_put_uint8_t(buf, 19, refuel_switch_state);
     _mav_put_uint8_t(buf, 20, pilot_safety_takeover_state);
-    _mav_put_uint8_t(buf, 21, auto_terminal);
+    _mav_put_uint8_t(buf, 21, auto_refuel);
     _mav_put_uint8_t(buf, 22, gps_num_sat);
     _mav_put_uint8_t(buf, 23, gps_fix);
 
@@ -389,9 +389,9 @@ static inline void mavlink_msg_leaf_racer_status_send(mavlink_channel_t chan, ui
     packet.tracker_health_state = tracker_health_state;
     packet.estimator_health = estimator_health;
     packet.rc_connection = rc_connection;
-    packet.terminal_switch_state = terminal_switch_state;
+    packet.refuel_switch_state = refuel_switch_state;
     packet.pilot_safety_takeover_state = pilot_safety_takeover_state;
-    packet.auto_terminal = auto_terminal;
+    packet.auto_refuel = auto_refuel;
     packet.gps_num_sat = gps_num_sat;
     packet.gps_fix = gps_fix;
 
@@ -407,7 +407,7 @@ static inline void mavlink_msg_leaf_racer_status_send(mavlink_channel_t chan, ui
 static inline void mavlink_msg_leaf_racer_status_send_struct(mavlink_channel_t chan, const mavlink_leaf_racer_status_t* leaf_racer_status)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_racer_status_send(chan, leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->terminal_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_terminal, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
+    mavlink_msg_leaf_racer_status_send(chan, leaf_racer_status->msp_status, leaf_racer_status->current_racer_mode, leaf_racer_status->tracker_health_state, leaf_racer_status->estimator_health, leaf_racer_status->rc_connection, leaf_racer_status->refuel_switch_state, leaf_racer_status->pilot_safety_takeover_state, leaf_racer_status->auto_refuel, leaf_racer_status->gps_lat_1e7, leaf_racer_status->gps_lon_1e7, leaf_racer_status->gps_alt_m, leaf_racer_status->gps_num_sat, leaf_racer_status->gps_fix, leaf_racer_status->gps_ground_speed_cms, leaf_racer_status->gps_ground_course_decideg);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_RACER_STATUS, (const char *)leaf_racer_status, MAVLINK_MSG_ID_LEAF_RACER_STATUS_MIN_LEN, MAVLINK_MSG_ID_LEAF_RACER_STATUS_LEN, MAVLINK_MSG_ID_LEAF_RACER_STATUS_CRC);
 #endif
@@ -421,7 +421,7 @@ static inline void mavlink_msg_leaf_racer_status_send_struct(mavlink_channel_t c
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_racer_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t terminal_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_terminal, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
+static inline void mavlink_msg_leaf_racer_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t msp_status, uint8_t current_racer_mode, uint8_t tracker_health_state, uint8_t estimator_health, uint8_t rc_connection, uint8_t refuel_switch_state, uint8_t pilot_safety_takeover_state, uint8_t auto_refuel, int32_t gps_lat_1e7, int32_t gps_lon_1e7, int16_t gps_alt_m, uint8_t gps_num_sat, uint8_t gps_fix, uint16_t gps_ground_speed_cms, uint16_t gps_ground_course_decideg)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -435,9 +435,9 @@ static inline void mavlink_msg_leaf_racer_status_send_buf(mavlink_message_t *msg
     _mav_put_uint8_t(buf, 16, tracker_health_state);
     _mav_put_uint8_t(buf, 17, estimator_health);
     _mav_put_uint8_t(buf, 18, rc_connection);
-    _mav_put_uint8_t(buf, 19, terminal_switch_state);
+    _mav_put_uint8_t(buf, 19, refuel_switch_state);
     _mav_put_uint8_t(buf, 20, pilot_safety_takeover_state);
-    _mav_put_uint8_t(buf, 21, auto_terminal);
+    _mav_put_uint8_t(buf, 21, auto_refuel);
     _mav_put_uint8_t(buf, 22, gps_num_sat);
     _mav_put_uint8_t(buf, 23, gps_fix);
 
@@ -454,9 +454,9 @@ static inline void mavlink_msg_leaf_racer_status_send_buf(mavlink_message_t *msg
     packet->tracker_health_state = tracker_health_state;
     packet->estimator_health = estimator_health;
     packet->rc_connection = rc_connection;
-    packet->terminal_switch_state = terminal_switch_state;
+    packet->refuel_switch_state = refuel_switch_state;
     packet->pilot_safety_takeover_state = pilot_safety_takeover_state;
-    packet->auto_terminal = auto_terminal;
+    packet->auto_refuel = auto_refuel;
     packet->gps_num_sat = gps_num_sat;
     packet->gps_fix = gps_fix;
 
@@ -483,7 +483,7 @@ static inline uint8_t mavlink_msg_leaf_racer_status_get_msp_status(const mavlink
 /**
  * @brief Get field current_racer_mode from leaf_racer_status message
  *
- * @return  Racer mode (0=Angle,1=AutomatedRollPitch,2=Intercept,3=OscillationTest,4=GPS)
+ * @return  Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS)
  */
 static inline uint8_t mavlink_msg_leaf_racer_status_get_current_racer_mode(const mavlink_message_t* msg)
 {
@@ -521,11 +521,11 @@ static inline uint8_t mavlink_msg_leaf_racer_status_get_rc_connection(const mavl
 }
 
 /**
- * @brief Get field terminal_switch_state from leaf_racer_status message
+ * @brief Get field refuel_switch_state from leaf_racer_status message
  *
- * @return  Terminal switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
+ * @return  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  */
-static inline uint8_t mavlink_msg_leaf_racer_status_get_terminal_switch_state(const mavlink_message_t* msg)
+static inline uint8_t mavlink_msg_leaf_racer_status_get_refuel_switch_state(const mavlink_message_t* msg)
 {
     return _MAV_RETURN_uint8_t(msg,  19);
 }
@@ -541,11 +541,11 @@ static inline uint8_t mavlink_msg_leaf_racer_status_get_pilot_safety_takeover_st
 }
 
 /**
- * @brief Get field auto_terminal from leaf_racer_status message
+ * @brief Get field auto_refuel from leaf_racer_status message
  *
- * @return  Auto-terminal (auto-intercept) enabled (0/1)
+ * @return  Auto-refuel (auto-refuel) enabled (0/1)
  */
-static inline uint8_t mavlink_msg_leaf_racer_status_get_auto_terminal(const mavlink_message_t* msg)
+static inline uint8_t mavlink_msg_leaf_racer_status_get_auto_refuel(const mavlink_message_t* msg)
 {
     return _MAV_RETURN_uint8_t(msg,  21);
 }
@@ -639,9 +639,9 @@ static inline void mavlink_msg_leaf_racer_status_decode(const mavlink_message_t*
     leaf_racer_status->tracker_health_state = mavlink_msg_leaf_racer_status_get_tracker_health_state(msg);
     leaf_racer_status->estimator_health = mavlink_msg_leaf_racer_status_get_estimator_health(msg);
     leaf_racer_status->rc_connection = mavlink_msg_leaf_racer_status_get_rc_connection(msg);
-    leaf_racer_status->terminal_switch_state = mavlink_msg_leaf_racer_status_get_terminal_switch_state(msg);
+    leaf_racer_status->refuel_switch_state = mavlink_msg_leaf_racer_status_get_refuel_switch_state(msg);
     leaf_racer_status->pilot_safety_takeover_state = mavlink_msg_leaf_racer_status_get_pilot_safety_takeover_state(msg);
-    leaf_racer_status->auto_terminal = mavlink_msg_leaf_racer_status_get_auto_terminal(msg);
+    leaf_racer_status->auto_refuel = mavlink_msg_leaf_racer_status_get_auto_refuel(msg);
     leaf_racer_status->gps_num_sat = mavlink_msg_leaf_racer_status_get_gps_num_sat(msg);
     leaf_racer_status->gps_fix = mavlink_msg_leaf_racer_status_get_gps_fix(msg);
 #else
