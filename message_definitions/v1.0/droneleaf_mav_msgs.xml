@@ -683,6 +683,20 @@
       <field type="float" name="track_heading_rad" units="rad">Track direction, counter-clockwise from East</field>
       <field type="float" name="l1_eta_rad" units="rad">L1 angle velocity -> aim point, before its +/-90 deg clamp</field>
       <field type="uint8_t" name="saturation_flags" enum="LEAF_GPS_GUIDANCE_SATURATION" display="bitmask">Command saturations active this tick</field>
+      <extensions/>
+      <field type="uint8_t" name="route_mode">RacerMode selecting this route; zero for legacy senders.</field>
+      <field type="uint64_t" name="route_revision">Generation of the active segment.</field>
+    </message>
+    <message id="77063" name="PAN_TILT_RECOMMENDED_AZ_ELE_DEG">
+      <description>Recommended follower departure direction. Informational only; not a vehicle command.</description>
+      <field type="uint64_t" name="time_usec" units="us">Monotonic generation timestamp.</field>
+      <field type="float" name="azimuth_deg" units="deg">Clockwise from north; NaN when invalid.</field>
+      <field type="float" name="elevation_deg" units="deg">Configured departure angle above horizon; NaN when invalid.</field>
+      <field type="uint8_t" name="valid">One when the recommendation is valid.</field>
+    </message>
+    <message id="77064" name="LEAF_DO_RTH">
+      <description>Request return home from an eligible GPS flight mode. Each addressed packet is one request.</description>
+      <field type="uint8_t" name="target_system">Aircraft MAVLink system ID.</field>
     </message>
   </messages>
 </mavlink>
