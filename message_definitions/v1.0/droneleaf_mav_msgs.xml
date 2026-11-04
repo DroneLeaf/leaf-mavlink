@@ -551,7 +551,7 @@
       <field type="char[64]" name="step_name">The name of the current step</field>
     </message>
     <message id="77048" name="LEAF_DO_REFUEL">
-      <description>Engage or disengage refuel mode on the racer</description>
+      <description>Engage or disengage refuel mode on the racer. Renamed from LEAF_DO_TERMINAL (field terminal); CRC_EXTRA changed, see leaf-racer-ground-station docs/refuel-migration.md.</description>
       <field type="uint8_t" name="target_system">The target system</field>
       <field type="uint8_t" name="refuel">1 to engage refuel, 0 to disengage</field>
     </message>
@@ -576,7 +576,7 @@
       <field type="uint8_t" name="source_id">Id of the camera source that produced the bounding box. The consumer looks up the role configured for this source.</field>
     </message>
     <message id="77051" name="LEAF_RACER_STATUS">
-      <description>Racer system status telemetry (drone to GS).</description>
+      <description>Racer system status telemetry (drone to GS). Fields terminal_switch_state and auto_terminal were renamed to refuel_switch_state and auto_refuel; CRC_EXTRA changed, see leaf-racer-ground-station docs/refuel-migration.md.</description>
       <field type="uint8_t" name="msp_status">Betaflight MSP link status (0/1)</field>
       <field type="uint8_t" name="current_racer_mode">Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS)</field>
       <field type="uint8_t" name="tracker_health_state">Tracker health (0=UNKNOWN,1=NOT_HEALTHY,2=HEALTHY)</field>
@@ -667,7 +667,7 @@
     <message id="77062" name="LEAF_RACER_GPS_GUIDANCE">
       <description>Racer GPS guidance snapshot (drone to GS): the flown segment from -> to and the L1 internals. Sent periodically only while the guidance holds a target waypoint; silence means no target.</description>
       <field type="int32_t" name="target_index">Mission index of the target waypoint (to)</field>
-      <field type="int32_t" name="mission_size">Number of mission waypoints; target_index &gt;= mission_size is the end-of-mission loop</field>
+      <field type="int32_t" name="mission_size">Number of waypoints in the accepted route; route_mode identifies RTH and home loiter</field>
       <field type="int32_t" name="from_lat_1e7">Segment start latitude, degrees * 1e7</field>
       <field type="int32_t" name="from_lon_1e7">Segment start longitude, degrees * 1e7</field>
       <field type="float" name="from_alt_m" units="m">Segment start altitude</field>
@@ -686,8 +686,13 @@
       <extensions/>
       <field type="uint8_t" name="route_mode">RacerMode selecting this route; zero for legacy senders.</field>
       <field type="uint64_t" name="route_revision">Generation of the active segment.</field>
+      <field type="uint64_t" name="boot_id">Process incarnation; combine with MAVLink source system/component.</field>
+      <field type="uint64_t" name="route_session">Route session, independent of waypoint index.</field>
+      <field type="uint64_t" name="plan_revision">Accepted source plan revision.</field>
+      <field type="uint64_t" name="sample_time_us" units="us">Monotonic sample time.</field>
+      <field type="uint8_t" name="controller_active">1 when the GPSGuidance owner is active, independently of L1 aim validity.</field>
     </message>
-    <message id="77063" name="PAN_TILT_RECOMMENDED_AZ_ELE_DEG">
+    <message id="77063" name="LEAF_PAN_TILT_RECOMMENDED_AZ_ELE_DEG">
       <description>Recommended follower departure direction. Informational only; not a vehicle command.</description>
       <field type="uint64_t" name="time_usec" units="us">Monotonic generation timestamp.</field>
       <field type="float" name="azimuth_deg" units="deg">Clockwise from north; NaN when invalid.</field>
@@ -697,6 +702,173 @@
     <message id="77064" name="LEAF_DO_RTH">
       <description>Request return home from an eligible GPS flight mode. Each addressed packet is one request.</description>
       <field type="uint8_t" name="target_system">Aircraft MAVLink system ID.</field>
+    </message>
+    <message id="77065" name="LEAF_GIMBAL_SINE_CONTROL">
+      <description>C40D forced sine test request. Amplitude and frequency come from config-gimbal_allxf_40d. Each addressed packet is one request; repeat START while active is rejected.</description>
+      <field type="uint32_t" name="request_id">Ground station request correlation ID.</field>
+      <field type="uint8_t" name="target_system">Aircraft MAVLink system ID; broadcast is not accepted.</field>
+      <field type="uint8_t" name="target_component">LeafFC component ID.</field>
+      <field type="uint8_t" name="action">0 STOP, 1 START.</field>
+      <field type="uint8_t" name="axis_mask">Bit 0 pitch/inner pan; bit 1 roll/outer tilt. START requires 1, 2 or 3; ignored for STOP.</field>
+    </message>
+    <message id="77066" name="LEAF_GIMBAL_SINE_RESPONSE">
+      <description>Result of a C40D forced sine request, or unsolicited cancellation on a hardware fault (request_id zero). STOP returns to limited optical centering when available, otherwise holds the last commanded pose.</description>
+      <field type="uint32_t" name="request_id">Request ID, or zero for a hardware cancellation.</field>
+      <field type="uint8_t" name="result">0 accepted, 1 disabled/not ready, 2 invalid action/axes, 3 trajectory outside workspace, 4 already running, 5 hardware fault cancellation.</field>
+      <field type="uint8_t" name="active_axis_mask">Active excitation axes after this request; 0 stopped, 1 pitch/pan, 2 roll/tilt, 3 both.</field>
+      <field type="uint8_t" name="session_state">0 initializing, 1 ready, 2 fault.</field>
+    </message>
+    <message id="77067" name="LEAF_GPS_VIEW_REQUEST">
+      <description>Read-only viewing lease. Profile 0 releases only this viewer; 1 reduced, 2 live, 3 detail. Renew before expiry. Snapshot 1 requests a bounded live window; 2 a full exact route. A nonzero transfer_id requests retransmission starting at offset. Target system/component must match.</description>
+      <field type="uint8_t" name="target_system">Aircraft system.</field>
+      <field type="uint8_t" name="target_component">Aircraft component.</field>
+      <field type="uint32_t" name="viewer_id">Random viewer session, combined with MAVLink source.</field>
+      <field type="uint8_t" name="profile">0 off, 1 reduced, 2 live, 3 detail.</field>
+      <field type="uint16_t" name="lease_s">Requested lease duration, capped by aircraft.</field>
+      <field type="uint8_t" name="snapshot">0 renew, 1 refresh, 2 full route.</field>
+      <field type="uint32_t" name="transfer_id">Zero for newest; otherwise retry retained transfer.</field>
+      <field type="uint16_t" name="offset">First point to retransmit, relative to transmitted window.</field>
+    </message>
+    <message id="77068" name="LEAF_GPS_VIEW_STATUS">
+      <description>Effective multicast telemetry limits; one shared stream for all leases.</description>
+      <field type="uint64_t" name="boot_id">Process incarnation.</field>
+      <field type="uint64_t" name="sample_time_us">Monotonic sample time, microseconds.</field>
+      <field type="uint32_t" name="viewer_id">Request viewer, zero for periodic status.</field>
+      <field type="uint8_t" name="profile">Effective stream profile.</field>
+      <field type="uint16_t" name="lease_remaining_s">Effective remaining lease.</field>
+      <field type="uint32_t" name="budget_bytes_s">Maximum framed bytes per second, signing allowance included.</field>
+      <field type="float" name="guidance_rate_hz">Maximum guidance rate.</field>
+      <field type="float" name="status_rate_hz">Maximum mission status rate.</field>
+      <field type="float" name="diagnostics_rate_hz">Maximum planner diagnostic rate.</field>
+      <field type="uint8_t" name="result">0 accepted, 1 unsupported profile, 2 viewer capacity, 3 transfer unavailable.</field>
+    </message>
+    <message id="77069" name="LEAF_GPS_MISSION_STATUS">
+      <description>Authoritative mission-manager snapshot. IDs are independent; a planner revision is not an executed segment.</description>
+      <field type="uint64_t" name="boot_id">Process incarnation.</field>
+      <field type="uint64_t" name="sample_time_us">Monotonic sample time, microseconds.</field>
+      <field type="uint64_t" name="route_session">Route session.</field>
+      <field type="uint64_t" name="plan_revision">Source plan revision.</field>
+      <field type="uint64_t" name="segment_revision">Manager segment revision; guidance reports the applied revision separately.</field>
+      <field type="uint64_t" name="scheduled_revision">Pending continuation revision; zero if absent.</field>
+      <field type="uint64_t" name="planner_revision">Latest planner output revision.</field>
+      <field type="uint32_t" name="event_sequence">Newest event sequence.</field>
+      <field type="uint32_t" name="event_oldest">Oldest retained event sequence.</field>
+      <field type="int32_t" name="target_index">Current target index, -1 if absent.</field>
+      <field type="uint16_t" name="active_count">Accepted route point count.</field>
+      <field type="uint16_t" name="scheduled_count">Scheduled route point count.</field>
+      <field type="uint16_t" name="trim_count">Number removed at last handoff.</field>
+      <field type="uint64_t" name="trim_revision">Source revision of last handoff or rejection.</field>
+      <field type="int32_t" name="home_lat_1e7">Raised RTH target latitude.</field>
+      <field type="int32_t" name="home_lon_1e7">Raised RTH target longitude.</field>
+      <field type="float" name="home_alt_m">Raised RTH target altitude, metres.</field>
+      <field type="float" name="loiter_radius_m">Home loiter waypoint radius, metres.</field>
+      <field type="uint8_t" name="mode">RacerMode.</field>
+      <field type="uint8_t" name="planner_state">FollowingPlanState.</field>
+      <field type="uint8_t" name="ins_state">InsState.</field>
+      <field type="uint8_t" name="refuel_phase">ReFuelPhase.</field>
+      <field type="uint8_t" name="home_state">GPSHomeState.</field>
+      <field type="uint8_t" name="arm_state">ArmState.</field>
+      <field type="uint8_t" name="safety_switch">RCSwitchState.</field>
+      <field type="uint8_t" name="rc_stream">StreamState.</field>
+      <field type="uint8_t" name="flags">Bit 0 waiting for continuation; bit 1 continuation unavailable; bit 2 scheduled plan present.</field>
+    </message>
+    <message id="77070" name="LEAF_PLANNER_DIAGNOSTICS">
+      <description>Latest solve diagnostics, measured at solve_time_us. Geometry uses its own solve revision when a route is retained.</description>
+      <field type="uint64_t" name="boot_id">Process incarnation.</field>
+      <field type="uint64_t" name="sample_time_us">Monotonic sample time, microseconds.</field>
+      <field type="uint64_t" name="solve_revision">Monotonic diagnostic revision.</field>
+      <field type="uint64_t" name="plan_revision">Planner output revision.</field>
+      <field type="uint64_t" name="solve_time_us">Monotonic solve epoch, microseconds.</field>
+      <field type="uint64_t" name="leader_time_us">FC receipt time of consumed leader observation.</field>
+      <field type="uint32_t" name="candidates">Solver candidates.</field>
+      <field type="uint32_t" name="cache_hits">Solver cache hits.</field>
+      <field type="uint32_t" name="search_nodes">Solver search nodes.</field>
+      <field type="float" name="arrival_s">Candidate arrival time from solve epoch.</field>
+      <field type="float" name="residual_s">Candidate timing residual.</field>
+      <field type="float" name="length_m">Candidate path length.</field>
+      <field type="float" name="capture_error_m">Current distance to following slot.</field>
+      <field type="float" name="heading_error_deg">Current slot heading error.</field>
+      <field type="float" name="capture_radius_m">Capture distance tolerance.</field>
+      <field type="float" name="capture_heading_deg">Capture heading tolerance.</field>
+      <field type="float" name="separation_m">Requested separation at solve epoch.</field>
+      <field type="float" name="join_gap_m">Front join gap; NaN if unavailable.</field>
+      <field type="float" name="join_distance_limit_m">Front join distance limit; NaN if unavailable.</field>
+      <field type="float" name="join_separation_error_m">Front join separation error; NaN if unavailable.</field>
+      <field type="float" name="join_separation_limit_m">Front join separation limit; NaN if unavailable.</field>
+      <field type="float" name="prediction_horizon_s">Prediction horizon, seconds; prediction chunks contain the consumed observation then 32 evenly spaced forecast points from solve time.</field>
+      <field type="float" name="leader_speed_mps">Prediction speed at solve time, metres per second.</field>
+      <field type="float" name="follower_speed_mps">Horizontal follower speed at solve time, metres per second.</field>
+      <field type="float" name="route_progress_m">Distance along the retained or accepted planner path, metres.</field>
+      <field type="uint8_t" name="prediction_model">0 linear, 1 quadratic, 2 circular.</field>
+      <field type="uint8_t" name="outcome">0 unavailable, 1 accepted, 2 retained, 3 rejected, 4 chasing.</field>
+      <field type="uint8_t" name="flags">Bit 0 candidate feasible, bit 1 budget exceeded, bit 2 capacity exceeded, bit 3 front approach.</field>
+      <field type="uint8_t" name="family">lfp Family.</field>
+      <field type="uint8_t" name="planner_state">FollowingPlanState.</field>
+      <field type="uint8_t" name="leader_system">Actual configured leader system.</field>
+      <field type="uint8_t" name="leader_component">Actual configured leader component.</field>
+    </message>
+    <message id="77071" name="LEAF_PLANNER_PATH">
+      <description>Exact path primitives in an azimuthal equidistant local ENU frame. Heading is counterclockwise from East. Positive curvature turns left. Marker coordinates use same frame and solve epoch. Only valid flags may be drawn.</description>
+      <field type="uint64_t" name="boot_id">Process incarnation.</field>
+      <field type="uint64_t" name="sample_time_us">Monotonic sample time, microseconds.</field>
+      <field type="uint64_t" name="solve_revision">Geometry solve revision.</field>
+      <field type="uint64_t" name="plan_revision">Planner output revision for active path; latest output when candidate.</field>
+      <field type="uint64_t" name="solve_time_us">Monotonic geometry epoch, microseconds.</field>
+      <field type="int32_t" name="origin_lat_1e7">Projection origin latitude.</field>
+      <field type="int32_t" name="origin_lon_1e7">Projection origin longitude.</field>
+      <field type="float" name="alt_m">Planned altitude, metres.</field>
+      <field type="float" name="start_east_m">Start East, metres.</field>
+      <field type="float" name="start_north_m">Start North, metres.</field>
+      <field type="float" name="start_heading_rad">Start heading, radians.</field>
+      <field type="float[3]" name="length_m">Primitive lengths, metres.</field>
+      <field type="float[3]" name="curvature_inv_m">Primitive signed curvatures, inverse metres.</field>
+      <field type="float[10]" name="markers_en_m">East/North pairs: capture, planning capture, leader at arrival, front join, following slot.</field>
+      <field type="float" name="terminal_start_m">Closing leg starts at path distance, metres.</field>
+      <field type="float" name="capture_heading_rad">Capture heading, radians.</field>
+      <field type="float" name="capture_radius_m">Capture radius, metres.</field>
+      <field type="float" name="capture_heading_deg">Capture heading tolerance, degrees.</field>
+      <field type="uint8_t" name="kind">0 active plan geometry, 1 latest candidate.</field>
+      <field type="uint8_t" name="count">Primitive count, 0 to 3.</field>
+      <field type="uint8_t" name="marker_flags">Validity bits for the five marker pairs.</field>
+      <field type="uint8_t" name="family">lfp Family.</field>
+    </message>
+    <message id="77072" name="LEAF_GPS_PLAN_CHUNK">
+      <description>Atomic geometry transfer. Never combine transfer IDs, route sessions or revisions. WGS84 lat/lon E7, altitude metres. Up to 16 points. Prediction is explicitly sampled, waypoint lists exact.</description>
+      <field type="uint64_t" name="boot_id">Process incarnation.</field>
+      <field type="uint64_t" name="sample_time_us">Monotonic sample time, microseconds.</field>
+      <field type="uint64_t" name="route_session">Route session.</field>
+      <field type="uint64_t" name="plan_revision">Source plan revision.</field>
+      <field type="uint64_t" name="segment_revision">Mission-manager segment when this window was captured.</field>
+      <field type="uint32_t" name="transfer_id">Unique transfer ID within boot.</field>
+      <field type="uint16_t" name="total_points">Full source point count.</field>
+      <field type="uint16_t" name="window_start">First source point in transmitted window.</field>
+      <field type="uint16_t" name="window_count">Total points in this atomic window.</field>
+      <field type="uint16_t" name="offset">Chunk offset within window.</field>
+      <field type="uint8_t" name="count">Valid array entries, 1 to 16.</field>
+      <field type="uint8_t" name="kind">0 accepted route, 1 scheduled continuation, 2 sampled leader prediction, 3 last trimmed source.</field>
+      <field type="uint8_t" name="flags">Bit 0 full source included; bit 1 sampled approximation.</field>
+      <field type="int32_t[16]" name="lat_1e7">Point latitudes.</field>
+      <field type="int32_t[16]" name="lon_1e7">Point longitudes.</field>
+      <field type="float[16]" name="alt_m">Point altitudes, metres.</field>
+    </message>
+    <message id="77073" name="LEAF_GPS_MISSION_EVENT">
+      <description>Bounded event journal, repeated with original sequence and time. Missing sequences are gaps, not inferred transitions.</description>
+      <field type="uint64_t" name="boot_id">Process incarnation.</field>
+      <field type="uint64_t" name="sample_time_us">Monotonic sample time, microseconds.</field>
+      <field type="uint64_t" name="route_session">Route session.</field>
+      <field type="uint64_t" name="plan_revision">Source plan revision.</field>
+      <field type="uint32_t" name="sequence">Monotonic sequence within boot.</field>
+      <field type="uint64_t" name="segment_revision">Segment at event.</field>
+      <field type="int32_t" name="target_index">Target at event.</field>
+      <field type="uint16_t" name="detail">Count or previous state.</field>
+      <field type="uint8_t" name="event">1 route reset, 2 scheduled, 3 activated, 4 arrival, 5 continuation unavailable, 6 waiting, 7 mission complete, 8 home reached, 9 mode changed, 10 refuel phase changed, 11 planner state changed, 12 external RTH request, 13 safety switch changed, 14 arm state changed, 15 INS state changed.</field>
+      <field type="uint8_t" name="state">New state for state changes.</field>
+    </message>
+    <message id="77074" name="LEAF_GIMBAL_MATCHED_ATTITUDE">
+      <description>GimbalLOSCompensation observation sampled at the configured publishing rate. Pan is inner C40D pitch; tilt is outer C40D roll. Physical feedback radians, without command polarity inversion. Fields copy the current observation matched_attitude directly, without holding a previous sample. Emitted only when gimbal compensation is enabled.</description>
+      <field type="double" name="pan_rad" units="rad">LOS-matched inner pan (C40D pitch).</field>
+      <field type="double" name="tilt_rad" units="rad">LOS-matched outer tilt (C40D roll).</field>
+      <field type="uint8_t" name="valid">Current observation matched_attitude.valid: 1 valid, 0 invalid. Ignore angles when 0.</field>
     </message>
   </messages>
 </mavlink>

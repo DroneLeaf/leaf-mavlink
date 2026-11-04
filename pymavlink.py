@@ -6109,6 +6109,16 @@ MAVLINK_MSG_ID_LEAF_RACER_GPS_HOME = 77061
 MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE = 77062
 MAVLINK_MSG_ID_PAN_TILT_RECOMMENDED_AZ_ELE_DEG = 77063
 MAVLINK_MSG_ID_LEAF_DO_RTH = 77064
+MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_CONTROL = 77065
+MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_RESPONSE = 77066
+MAVLINK_MSG_ID_LEAF_GPS_VIEW_REQUEST = 77067
+MAVLINK_MSG_ID_LEAF_GPS_VIEW_STATUS = 77068
+MAVLINK_MSG_ID_LEAF_GPS_MISSION_STATUS = 77069
+MAVLINK_MSG_ID_LEAF_PLANNER_DIAGNOSTICS = 77070
+MAVLINK_MSG_ID_LEAF_PLANNER_PATH = 77071
+MAVLINK_MSG_ID_LEAF_GPS_PLAN_CHUNK = 77072
+MAVLINK_MSG_ID_LEAF_GPS_MISSION_EVENT = 77073
+MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE = 77074
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
 MAVLINK_MSG_ID_PING = 4
@@ -8749,22 +8759,22 @@ class MAVLink_leaf_racer_gps_guidance_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE
     msgname = "LEAF_RACER_GPS_GUIDANCE"
-    fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_aim_valid", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "saturation_flags", "route_mode", "route_revision"]
-    ordered_fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "l1_aim_valid", "saturation_flags", "route_mode", "route_revision"]
-    fieldtypes = ["int32_t", "int32_t", "int32_t", "int32_t", "float", "int32_t", "int32_t", "float", "int32_t", "int32_t", "uint8_t", "float", "float", "float", "float", "float", "uint8_t", "uint8_t", "uint64_t"]
+    fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_aim_valid", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "saturation_flags", "route_mode", "route_revision", "boot_id", "route_session", "plan_revision", "sample_time_us", "controller_active"]
+    ordered_fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "l1_aim_valid", "saturation_flags", "route_mode", "route_revision", "boot_id", "route_session", "plan_revision", "sample_time_us", "controller_active"]
+    fieldtypes = ["int32_t", "int32_t", "int32_t", "int32_t", "float", "int32_t", "int32_t", "float", "int32_t", "int32_t", "uint8_t", "float", "float", "float", "float", "float", "uint8_t", "uint8_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {"saturation_flags": "bitmask"}
     fieldenums_by_name: Dict[str, str] = {"saturation_flags": "LEAF_GPS_GUIDANCE_SATURATION"}
-    fieldunits_by_name: Dict[str, str] = {"from_alt_m": "m", "to_alt_m": "m", "l1_distance_m": "m", "cross_track_error_m": "m", "alt_error_m": "m", "track_heading_rad": "rad", "l1_eta_rad": "rad"}
-    native_format = bytearray(b"<iiiifiifiifffffBBBQ")
-    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 10, 11, 12, 13, 14, 16, 17, 18]
-    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fieldunits_by_name: Dict[str, str] = {"from_alt_m": "m", "to_alt_m": "m", "l1_distance_m": "m", "cross_track_error_m": "m", "alt_error_m": "m", "track_heading_rad": "rad", "l1_eta_rad": "rad", "sample_time_us": "us"}
+    native_format = bytearray(b"<iiiifiifiifffffBBBQQQQQB")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     crc_extra = 76
-    unpacker = struct.Struct("<iiiifiifiifffffBBBQ")
+    unpacker = struct.Struct("<iiiifiifiifffffBBBQQQQQB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0):
+    def __init__(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0):
         MAVLink_message.__init__(self, MAVLink_leaf_racer_gps_guidance_message.id, MAVLink_leaf_racer_gps_guidance_message.msgname)
         self._fieldnames = MAVLink_leaf_racer_gps_guidance_message.fieldnames
         self._instance_field = MAVLink_leaf_racer_gps_guidance_message.instance_field
@@ -8788,9 +8798,14 @@ class MAVLink_leaf_racer_gps_guidance_message(MAVLink_message):
         self.saturation_flags = saturation_flags
         self.route_mode = route_mode
         self.route_revision = route_revision
+        self.boot_id = boot_id
+        self.route_session = route_session
+        self.plan_revision = plan_revision
+        self.sample_time_us = sample_time_us
+        self.controller_active = controller_active
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_index, self.mission_size, self.from_lat_1e7, self.from_lon_1e7, self.from_alt_m, self.to_lat_1e7, self.to_lon_1e7, self.to_alt_m, self.l1_aim_lat_1e7, self.l1_aim_lon_1e7, self.l1_distance_m, self.cross_track_error_m, self.alt_error_m, self.track_heading_rad, self.l1_eta_rad, self.l1_aim_valid, self.saturation_flags, self.route_mode, self.route_revision), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_index, self.mission_size, self.from_lat_1e7, self.from_lon_1e7, self.from_alt_m, self.to_lat_1e7, self.to_lon_1e7, self.to_alt_m, self.l1_aim_lat_1e7, self.l1_aim_lon_1e7, self.l1_distance_m, self.cross_track_error_m, self.alt_error_m, self.track_heading_rad, self.l1_eta_rad, self.l1_aim_valid, self.saturation_flags, self.route_mode, self.route_revision, self.boot_id, self.route_session, self.plan_revision, self.sample_time_us, self.controller_active), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -8877,6 +8892,536 @@ class MAVLink_leaf_do_rth_message(MAVLink_message):
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
 setattr(MAVLink_leaf_do_rth_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gimbal_sine_control_message(MAVLink_message):
+    """
+    C40D forced sine test request. Amplitude and frequency come from
+    config-gimbal_allxf_40d. Each addressed packet is one request;
+    repeat START while active is rejected.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_CONTROL
+    msgname = "LEAF_GIMBAL_SINE_CONTROL"
+    fieldnames = ["request_id", "target_system", "target_component", "action", "axis_mask"]
+    ordered_fieldnames = ["request_id", "target_system", "target_component", "action", "axis_mask"]
+    fieldtypes = ["uint32_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<IBBBB")
+    orders = [0, 1, 2, 3, 4]
+    lengths = [1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0]
+    crc_extra = 10
+    unpacker = struct.Struct("<IBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, request_id: int, target_system: int, target_component: int, action: int, axis_mask: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gimbal_sine_control_message.id, MAVLink_leaf_gimbal_sine_control_message.msgname)
+        self._fieldnames = MAVLink_leaf_gimbal_sine_control_message.fieldnames
+        self._instance_field = MAVLink_leaf_gimbal_sine_control_message.instance_field
+        self._instance_offset = MAVLink_leaf_gimbal_sine_control_message.instance_offset
+        self.request_id = request_id
+        self.target_system = target_system
+        self.target_component = target_component
+        self.action = action
+        self.axis_mask = axis_mask
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.request_id, self.target_system, self.target_component, self.action, self.axis_mask), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gimbal_sine_control_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gimbal_sine_response_message(MAVLink_message):
+    """
+    Result of a C40D forced sine request, or unsolicited cancellation
+    on a hardware fault (request_id zero). STOP returns to limited
+    optical centering when available, otherwise holds the last
+    commanded pose.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_RESPONSE
+    msgname = "LEAF_GIMBAL_SINE_RESPONSE"
+    fieldnames = ["request_id", "result", "active_axis_mask", "session_state"]
+    ordered_fieldnames = ["request_id", "result", "active_axis_mask", "session_state"]
+    fieldtypes = ["uint32_t", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<IBBB")
+    orders = [0, 1, 2, 3]
+    lengths = [1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0]
+    crc_extra = 146
+    unpacker = struct.Struct("<IBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, request_id: int, result: int, active_axis_mask: int, session_state: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gimbal_sine_response_message.id, MAVLink_leaf_gimbal_sine_response_message.msgname)
+        self._fieldnames = MAVLink_leaf_gimbal_sine_response_message.fieldnames
+        self._instance_field = MAVLink_leaf_gimbal_sine_response_message.instance_field
+        self._instance_offset = MAVLink_leaf_gimbal_sine_response_message.instance_offset
+        self.request_id = request_id
+        self.result = result
+        self.active_axis_mask = active_axis_mask
+        self.session_state = session_state
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.request_id, self.result, self.active_axis_mask, self.session_state), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gimbal_sine_response_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gps_view_request_message(MAVLink_message):
+    """
+    Read-only viewing lease. Profile 0 releases only this viewer; 1
+    reduced, 2 live, 3 detail. Renew before expiry. Snapshot 1
+    requests a bounded live window; 2 a full exact route. A nonzero
+    transfer_id requests retransmission starting at offset. Target
+    system/component must match.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GPS_VIEW_REQUEST
+    msgname = "LEAF_GPS_VIEW_REQUEST"
+    fieldnames = ["target_system", "target_component", "viewer_id", "profile", "lease_s", "snapshot", "transfer_id", "offset"]
+    ordered_fieldnames = ["viewer_id", "transfer_id", "lease_s", "offset", "target_system", "target_component", "profile", "snapshot"]
+    fieldtypes = ["uint8_t", "uint8_t", "uint32_t", "uint8_t", "uint16_t", "uint8_t", "uint32_t", "uint16_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<IIHHBBBB")
+    orders = [4, 5, 0, 6, 2, 7, 1, 3]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 196
+    unpacker = struct.Struct("<IIHHBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, target_system: int, target_component: int, viewer_id: int, profile: int, lease_s: int, snapshot: int, transfer_id: int, offset: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gps_view_request_message.id, MAVLink_leaf_gps_view_request_message.msgname)
+        self._fieldnames = MAVLink_leaf_gps_view_request_message.fieldnames
+        self._instance_field = MAVLink_leaf_gps_view_request_message.instance_field
+        self._instance_offset = MAVLink_leaf_gps_view_request_message.instance_offset
+        self.target_system = target_system
+        self.target_component = target_component
+        self.viewer_id = viewer_id
+        self.profile = profile
+        self.lease_s = lease_s
+        self.snapshot = snapshot
+        self.transfer_id = transfer_id
+        self.offset = offset
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.viewer_id, self.transfer_id, self.lease_s, self.offset, self.target_system, self.target_component, self.profile, self.snapshot), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gps_view_request_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gps_view_status_message(MAVLink_message):
+    """
+    Effective multicast telemetry limits; one shared stream for all
+    leases.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GPS_VIEW_STATUS
+    msgname = "LEAF_GPS_VIEW_STATUS"
+    fieldnames = ["boot_id", "sample_time_us", "viewer_id", "profile", "lease_remaining_s", "budget_bytes_s", "guidance_rate_hz", "status_rate_hz", "diagnostics_rate_hz", "result"]
+    ordered_fieldnames = ["boot_id", "sample_time_us", "viewer_id", "budget_bytes_s", "guidance_rate_hz", "status_rate_hz", "diagnostics_rate_hz", "lease_remaining_s", "profile", "result"]
+    fieldtypes = ["uint64_t", "uint64_t", "uint32_t", "uint8_t", "uint16_t", "uint32_t", "float", "float", "float", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<QQIIfffHBB")
+    orders = [0, 1, 2, 8, 7, 3, 4, 5, 6, 9]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 26
+    unpacker = struct.Struct("<QQIIfffHBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, boot_id: int, sample_time_us: int, viewer_id: int, profile: int, lease_remaining_s: int, budget_bytes_s: int, guidance_rate_hz: float, status_rate_hz: float, diagnostics_rate_hz: float, result: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gps_view_status_message.id, MAVLink_leaf_gps_view_status_message.msgname)
+        self._fieldnames = MAVLink_leaf_gps_view_status_message.fieldnames
+        self._instance_field = MAVLink_leaf_gps_view_status_message.instance_field
+        self._instance_offset = MAVLink_leaf_gps_view_status_message.instance_offset
+        self.boot_id = boot_id
+        self.sample_time_us = sample_time_us
+        self.viewer_id = viewer_id
+        self.profile = profile
+        self.lease_remaining_s = lease_remaining_s
+        self.budget_bytes_s = budget_bytes_s
+        self.guidance_rate_hz = guidance_rate_hz
+        self.status_rate_hz = status_rate_hz
+        self.diagnostics_rate_hz = diagnostics_rate_hz
+        self.result = result
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.boot_id, self.sample_time_us, self.viewer_id, self.budget_bytes_s, self.guidance_rate_hz, self.status_rate_hz, self.diagnostics_rate_hz, self.lease_remaining_s, self.profile, self.result), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gps_view_status_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gps_mission_status_message(MAVLink_message):
+    """
+    Authoritative mission-manager snapshot. IDs are independent; a
+    planner revision is not an executed segment.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GPS_MISSION_STATUS
+    msgname = "LEAF_GPS_MISSION_STATUS"
+    fieldnames = ["boot_id", "sample_time_us", "route_session", "plan_revision", "segment_revision", "scheduled_revision", "planner_revision", "event_sequence", "event_oldest", "target_index", "active_count", "scheduled_count", "trim_count", "trim_revision", "home_lat_1e7", "home_lon_1e7", "home_alt_m", "loiter_radius_m", "mode", "planner_state", "ins_state", "refuel_phase", "home_state", "arm_state", "safety_switch", "rc_stream", "flags"]
+    ordered_fieldnames = ["boot_id", "sample_time_us", "route_session", "plan_revision", "segment_revision", "scheduled_revision", "planner_revision", "trim_revision", "event_sequence", "event_oldest", "target_index", "home_lat_1e7", "home_lon_1e7", "home_alt_m", "loiter_radius_m", "active_count", "scheduled_count", "trim_count", "mode", "planner_state", "ins_state", "refuel_phase", "home_state", "arm_state", "safety_switch", "rc_stream", "flags"]
+    fieldtypes = ["uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint32_t", "uint32_t", "int32_t", "uint16_t", "uint16_t", "uint16_t", "uint64_t", "int32_t", "int32_t", "float", "float", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<QQQQQQQQIIiiiffHHHBBBBBBBBB")
+    orders = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 15, 16, 17, 7, 11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 1
+    unpacker = struct.Struct("<QQQQQQQQIIiiiffHHHBBBBBBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, segment_revision: int, scheduled_revision: int, planner_revision: int, event_sequence: int, event_oldest: int, target_index: int, active_count: int, scheduled_count: int, trim_count: int, trim_revision: int, home_lat_1e7: int, home_lon_1e7: int, home_alt_m: float, loiter_radius_m: float, mode: int, planner_state: int, ins_state: int, refuel_phase: int, home_state: int, arm_state: int, safety_switch: int, rc_stream: int, flags: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gps_mission_status_message.id, MAVLink_leaf_gps_mission_status_message.msgname)
+        self._fieldnames = MAVLink_leaf_gps_mission_status_message.fieldnames
+        self._instance_field = MAVLink_leaf_gps_mission_status_message.instance_field
+        self._instance_offset = MAVLink_leaf_gps_mission_status_message.instance_offset
+        self.boot_id = boot_id
+        self.sample_time_us = sample_time_us
+        self.route_session = route_session
+        self.plan_revision = plan_revision
+        self.segment_revision = segment_revision
+        self.scheduled_revision = scheduled_revision
+        self.planner_revision = planner_revision
+        self.event_sequence = event_sequence
+        self.event_oldest = event_oldest
+        self.target_index = target_index
+        self.active_count = active_count
+        self.scheduled_count = scheduled_count
+        self.trim_count = trim_count
+        self.trim_revision = trim_revision
+        self.home_lat_1e7 = home_lat_1e7
+        self.home_lon_1e7 = home_lon_1e7
+        self.home_alt_m = home_alt_m
+        self.loiter_radius_m = loiter_radius_m
+        self.mode = mode
+        self.planner_state = planner_state
+        self.ins_state = ins_state
+        self.refuel_phase = refuel_phase
+        self.home_state = home_state
+        self.arm_state = arm_state
+        self.safety_switch = safety_switch
+        self.rc_stream = rc_stream
+        self.flags = flags
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.boot_id, self.sample_time_us, self.route_session, self.plan_revision, self.segment_revision, self.scheduled_revision, self.planner_revision, self.trim_revision, self.event_sequence, self.event_oldest, self.target_index, self.home_lat_1e7, self.home_lon_1e7, self.home_alt_m, self.loiter_radius_m, self.active_count, self.scheduled_count, self.trim_count, self.mode, self.planner_state, self.ins_state, self.refuel_phase, self.home_state, self.arm_state, self.safety_switch, self.rc_stream, self.flags), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gps_mission_status_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_planner_diagnostics_message(MAVLink_message):
+    """
+    Latest solve diagnostics, measured at solve_time_us. Geometry uses
+    its own solve revision when a route is retained.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_PLANNER_DIAGNOSTICS
+    msgname = "LEAF_PLANNER_DIAGNOSTICS"
+    fieldnames = ["boot_id", "sample_time_us", "solve_revision", "plan_revision", "solve_time_us", "leader_time_us", "candidates", "cache_hits", "search_nodes", "arrival_s", "residual_s", "length_m", "capture_error_m", "heading_error_deg", "capture_radius_m", "capture_heading_deg", "separation_m", "join_gap_m", "join_distance_limit_m", "join_separation_error_m", "join_separation_limit_m", "prediction_horizon_s", "leader_speed_mps", "follower_speed_mps", "route_progress_m", "prediction_model", "outcome", "flags", "family", "planner_state", "leader_system", "leader_component"]
+    ordered_fieldnames = ["boot_id", "sample_time_us", "solve_revision", "plan_revision", "solve_time_us", "leader_time_us", "candidates", "cache_hits", "search_nodes", "arrival_s", "residual_s", "length_m", "capture_error_m", "heading_error_deg", "capture_radius_m", "capture_heading_deg", "separation_m", "join_gap_m", "join_distance_limit_m", "join_separation_error_m", "join_separation_limit_m", "prediction_horizon_s", "leader_speed_mps", "follower_speed_mps", "route_progress_m", "prediction_model", "outcome", "flags", "family", "planner_state", "leader_system", "leader_component"]
+    fieldtypes = ["uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint32_t", "uint32_t", "uint32_t", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<QQQQQQIIIffffffffffffffffBBBBBBB")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 143
+    unpacker = struct.Struct("<QQQQQQIIIffffffffffffffffBBBBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, boot_id: int, sample_time_us: int, solve_revision: int, plan_revision: int, solve_time_us: int, leader_time_us: int, candidates: int, cache_hits: int, search_nodes: int, arrival_s: float, residual_s: float, length_m: float, capture_error_m: float, heading_error_deg: float, capture_radius_m: float, capture_heading_deg: float, separation_m: float, join_gap_m: float, join_distance_limit_m: float, join_separation_error_m: float, join_separation_limit_m: float, prediction_horizon_s: float, leader_speed_mps: float, follower_speed_mps: float, route_progress_m: float, prediction_model: int, outcome: int, flags: int, family: int, planner_state: int, leader_system: int, leader_component: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_planner_diagnostics_message.id, MAVLink_leaf_planner_diagnostics_message.msgname)
+        self._fieldnames = MAVLink_leaf_planner_diagnostics_message.fieldnames
+        self._instance_field = MAVLink_leaf_planner_diagnostics_message.instance_field
+        self._instance_offset = MAVLink_leaf_planner_diagnostics_message.instance_offset
+        self.boot_id = boot_id
+        self.sample_time_us = sample_time_us
+        self.solve_revision = solve_revision
+        self.plan_revision = plan_revision
+        self.solve_time_us = solve_time_us
+        self.leader_time_us = leader_time_us
+        self.candidates = candidates
+        self.cache_hits = cache_hits
+        self.search_nodes = search_nodes
+        self.arrival_s = arrival_s
+        self.residual_s = residual_s
+        self.length_m = length_m
+        self.capture_error_m = capture_error_m
+        self.heading_error_deg = heading_error_deg
+        self.capture_radius_m = capture_radius_m
+        self.capture_heading_deg = capture_heading_deg
+        self.separation_m = separation_m
+        self.join_gap_m = join_gap_m
+        self.join_distance_limit_m = join_distance_limit_m
+        self.join_separation_error_m = join_separation_error_m
+        self.join_separation_limit_m = join_separation_limit_m
+        self.prediction_horizon_s = prediction_horizon_s
+        self.leader_speed_mps = leader_speed_mps
+        self.follower_speed_mps = follower_speed_mps
+        self.route_progress_m = route_progress_m
+        self.prediction_model = prediction_model
+        self.outcome = outcome
+        self.flags = flags
+        self.family = family
+        self.planner_state = planner_state
+        self.leader_system = leader_system
+        self.leader_component = leader_component
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.boot_id, self.sample_time_us, self.solve_revision, self.plan_revision, self.solve_time_us, self.leader_time_us, self.candidates, self.cache_hits, self.search_nodes, self.arrival_s, self.residual_s, self.length_m, self.capture_error_m, self.heading_error_deg, self.capture_radius_m, self.capture_heading_deg, self.separation_m, self.join_gap_m, self.join_distance_limit_m, self.join_separation_error_m, self.join_separation_limit_m, self.prediction_horizon_s, self.leader_speed_mps, self.follower_speed_mps, self.route_progress_m, self.prediction_model, self.outcome, self.flags, self.family, self.planner_state, self.leader_system, self.leader_component), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_planner_diagnostics_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_planner_path_message(MAVLink_message):
+    """
+    Exact path primitives in an azimuthal equidistant local ENU frame.
+    Heading is counterclockwise from East. Positive curvature turns
+    left. Marker coordinates use same frame and solve epoch. Only
+    valid flags may be drawn.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_PLANNER_PATH
+    msgname = "LEAF_PLANNER_PATH"
+    fieldnames = ["boot_id", "sample_time_us", "solve_revision", "plan_revision", "solve_time_us", "origin_lat_1e7", "origin_lon_1e7", "alt_m", "start_east_m", "start_north_m", "start_heading_rad", "length_m", "curvature_inv_m", "markers_en_m", "terminal_start_m", "capture_heading_rad", "capture_radius_m", "capture_heading_deg", "kind", "count", "marker_flags", "family"]
+    ordered_fieldnames = ["boot_id", "sample_time_us", "solve_revision", "plan_revision", "solve_time_us", "origin_lat_1e7", "origin_lon_1e7", "alt_m", "start_east_m", "start_north_m", "start_heading_rad", "length_m", "curvature_inv_m", "markers_en_m", "terminal_start_m", "capture_heading_rad", "capture_radius_m", "capture_heading_deg", "kind", "count", "marker_flags", "family"]
+    fieldtypes = ["uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "int32_t", "int32_t", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "float", "uint8_t", "uint8_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<QQQQQiifffffffffffBBBB")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 10, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 10, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 67
+    unpacker = struct.Struct("<QQQQQiiffff3f3f10fffffBBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, boot_id: int, sample_time_us: int, solve_revision: int, plan_revision: int, solve_time_us: int, origin_lat_1e7: int, origin_lon_1e7: int, alt_m: float, start_east_m: float, start_north_m: float, start_heading_rad: float, length_m: Sequence[float], curvature_inv_m: Sequence[float], markers_en_m: Sequence[float], terminal_start_m: float, capture_heading_rad: float, capture_radius_m: float, capture_heading_deg: float, kind: int, count: int, marker_flags: int, family: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_planner_path_message.id, MAVLink_leaf_planner_path_message.msgname)
+        self._fieldnames = MAVLink_leaf_planner_path_message.fieldnames
+        self._instance_field = MAVLink_leaf_planner_path_message.instance_field
+        self._instance_offset = MAVLink_leaf_planner_path_message.instance_offset
+        self.boot_id = boot_id
+        self.sample_time_us = sample_time_us
+        self.solve_revision = solve_revision
+        self.plan_revision = plan_revision
+        self.solve_time_us = solve_time_us
+        self.origin_lat_1e7 = origin_lat_1e7
+        self.origin_lon_1e7 = origin_lon_1e7
+        self.alt_m = alt_m
+        self.start_east_m = start_east_m
+        self.start_north_m = start_north_m
+        self.start_heading_rad = start_heading_rad
+        self.length_m = length_m
+        self.curvature_inv_m = curvature_inv_m
+        self.markers_en_m = markers_en_m
+        self.terminal_start_m = terminal_start_m
+        self.capture_heading_rad = capture_heading_rad
+        self.capture_radius_m = capture_radius_m
+        self.capture_heading_deg = capture_heading_deg
+        self.kind = kind
+        self.count = count
+        self.marker_flags = marker_flags
+        self.family = family
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.boot_id, self.sample_time_us, self.solve_revision, self.plan_revision, self.solve_time_us, self.origin_lat_1e7, self.origin_lon_1e7, self.alt_m, self.start_east_m, self.start_north_m, self.start_heading_rad, self.length_m[0], self.length_m[1], self.length_m[2], self.curvature_inv_m[0], self.curvature_inv_m[1], self.curvature_inv_m[2], self.markers_en_m[0], self.markers_en_m[1], self.markers_en_m[2], self.markers_en_m[3], self.markers_en_m[4], self.markers_en_m[5], self.markers_en_m[6], self.markers_en_m[7], self.markers_en_m[8], self.markers_en_m[9], self.terminal_start_m, self.capture_heading_rad, self.capture_radius_m, self.capture_heading_deg, self.kind, self.count, self.marker_flags, self.family), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_planner_path_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gps_plan_chunk_message(MAVLink_message):
+    """
+    Atomic geometry transfer. Never combine transfer IDs, route
+    sessions or revisions. WGS84 lat/lon E7, altitude metres. Up to 16
+    points. Prediction is explicitly sampled, waypoint lists exact.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GPS_PLAN_CHUNK
+    msgname = "LEAF_GPS_PLAN_CHUNK"
+    fieldnames = ["boot_id", "sample_time_us", "route_session", "plan_revision", "segment_revision", "transfer_id", "total_points", "window_start", "window_count", "offset", "count", "kind", "flags", "lat_1e7", "lon_1e7", "alt_m"]
+    ordered_fieldnames = ["boot_id", "sample_time_us", "route_session", "plan_revision", "segment_revision", "transfer_id", "lat_1e7", "lon_1e7", "alt_m", "total_points", "window_start", "window_count", "offset", "count", "kind", "flags"]
+    fieldtypes = ["uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint32_t", "uint16_t", "uint16_t", "uint16_t", "uint16_t", "uint8_t", "uint8_t", "uint8_t", "int32_t", "int32_t", "float"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<QQQQQIiifHHHHBBB")
+    orders = [0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 6, 7, 8]
+    lengths = [1, 1, 1, 1, 1, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 16, 16, 16, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 168
+    unpacker = struct.Struct("<QQQQQI16i16i16fHHHHBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, segment_revision: int, transfer_id: int, total_points: int, window_start: int, window_count: int, offset: int, count: int, kind: int, flags: int, lat_1e7: Sequence[int], lon_1e7: Sequence[int], alt_m: Sequence[float]):
+        MAVLink_message.__init__(self, MAVLink_leaf_gps_plan_chunk_message.id, MAVLink_leaf_gps_plan_chunk_message.msgname)
+        self._fieldnames = MAVLink_leaf_gps_plan_chunk_message.fieldnames
+        self._instance_field = MAVLink_leaf_gps_plan_chunk_message.instance_field
+        self._instance_offset = MAVLink_leaf_gps_plan_chunk_message.instance_offset
+        self.boot_id = boot_id
+        self.sample_time_us = sample_time_us
+        self.route_session = route_session
+        self.plan_revision = plan_revision
+        self.segment_revision = segment_revision
+        self.transfer_id = transfer_id
+        self.total_points = total_points
+        self.window_start = window_start
+        self.window_count = window_count
+        self.offset = offset
+        self.count = count
+        self.kind = kind
+        self.flags = flags
+        self.lat_1e7 = lat_1e7
+        self.lon_1e7 = lon_1e7
+        self.alt_m = alt_m
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.boot_id, self.sample_time_us, self.route_session, self.plan_revision, self.segment_revision, self.transfer_id, self.lat_1e7[0], self.lat_1e7[1], self.lat_1e7[2], self.lat_1e7[3], self.lat_1e7[4], self.lat_1e7[5], self.lat_1e7[6], self.lat_1e7[7], self.lat_1e7[8], self.lat_1e7[9], self.lat_1e7[10], self.lat_1e7[11], self.lat_1e7[12], self.lat_1e7[13], self.lat_1e7[14], self.lat_1e7[15], self.lon_1e7[0], self.lon_1e7[1], self.lon_1e7[2], self.lon_1e7[3], self.lon_1e7[4], self.lon_1e7[5], self.lon_1e7[6], self.lon_1e7[7], self.lon_1e7[8], self.lon_1e7[9], self.lon_1e7[10], self.lon_1e7[11], self.lon_1e7[12], self.lon_1e7[13], self.lon_1e7[14], self.lon_1e7[15], self.alt_m[0], self.alt_m[1], self.alt_m[2], self.alt_m[3], self.alt_m[4], self.alt_m[5], self.alt_m[6], self.alt_m[7], self.alt_m[8], self.alt_m[9], self.alt_m[10], self.alt_m[11], self.alt_m[12], self.alt_m[13], self.alt_m[14], self.alt_m[15], self.total_points, self.window_start, self.window_count, self.offset, self.count, self.kind, self.flags), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gps_plan_chunk_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gps_mission_event_message(MAVLink_message):
+    """
+    Bounded event journal, repeated with original sequence and time.
+    Missing sequences are gaps, not inferred transitions.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GPS_MISSION_EVENT
+    msgname = "LEAF_GPS_MISSION_EVENT"
+    fieldnames = ["boot_id", "sample_time_us", "route_session", "plan_revision", "sequence", "segment_revision", "target_index", "detail", "event", "state"]
+    ordered_fieldnames = ["boot_id", "sample_time_us", "route_session", "plan_revision", "segment_revision", "sequence", "target_index", "detail", "event", "state"]
+    fieldtypes = ["uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint32_t", "uint64_t", "int32_t", "uint16_t", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<QQQQQIiHBB")
+    orders = [0, 1, 2, 3, 5, 4, 6, 7, 8, 9]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 248
+    unpacker = struct.Struct("<QQQQQIiHBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, sequence: int, segment_revision: int, target_index: int, detail: int, event: int, state: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gps_mission_event_message.id, MAVLink_leaf_gps_mission_event_message.msgname)
+        self._fieldnames = MAVLink_leaf_gps_mission_event_message.fieldnames
+        self._instance_field = MAVLink_leaf_gps_mission_event_message.instance_field
+        self._instance_offset = MAVLink_leaf_gps_mission_event_message.instance_offset
+        self.boot_id = boot_id
+        self.sample_time_us = sample_time_us
+        self.route_session = route_session
+        self.plan_revision = plan_revision
+        self.sequence = sequence
+        self.segment_revision = segment_revision
+        self.target_index = target_index
+        self.detail = detail
+        self.event = event
+        self.state = state
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.boot_id, self.sample_time_us, self.route_session, self.plan_revision, self.segment_revision, self.sequence, self.target_index, self.detail, self.event, self.state), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gps_mission_event_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gimbal_matched_attitude_message(MAVLink_message):
+    """
+    GimbalLOSCompensation observation sampled at the configured
+    publishing rate. Pan is inner C40D pitch; tilt is outer C40D roll.
+    Physical feedback radians, without command polarity inversion.
+    Fields copy the current observation matched_attitude directly,
+    without holding a previous sample. Emitted only when gimbal
+    compensation is enabled.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE
+    msgname = "LEAF_GIMBAL_MATCHED_ATTITUDE"
+    fieldnames = ["pan_rad", "tilt_rad", "valid"]
+    ordered_fieldnames = ["pan_rad", "tilt_rad", "valid"]
+    fieldtypes = ["double", "double", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {"pan_rad": "rad", "tilt_rad": "rad"}
+    native_format = bytearray(b"<ddB")
+    orders = [0, 1, 2]
+    lengths = [1, 1, 1]
+    array_lengths = [0, 0, 0]
+    crc_extra = 200
+    unpacker = struct.Struct("<ddB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, pan_rad: float, tilt_rad: float, valid: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_gimbal_matched_attitude_message.id, MAVLink_leaf_gimbal_matched_attitude_message.msgname)
+        self._fieldnames = MAVLink_leaf_gimbal_matched_attitude_message.fieldnames
+        self._instance_field = MAVLink_leaf_gimbal_matched_attitude_message.instance_field
+        self._instance_offset = MAVLink_leaf_gimbal_matched_attitude_message.instance_offset
+        self.pan_rad = pan_rad
+        self.tilt_rad = tilt_rad
+        self.valid = valid
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.pan_rad, self.tilt_rad, self.valid), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gimbal_matched_attitude_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_sys_status_message(MAVLink_message):
@@ -20415,6 +20960,16 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE: MAVLink_leaf_racer_gps_guidance_message,
     MAVLINK_MSG_ID_PAN_TILT_RECOMMENDED_AZ_ELE_DEG: MAVLink_pan_tilt_recommended_az_ele_deg_message,
     MAVLINK_MSG_ID_LEAF_DO_RTH: MAVLink_leaf_do_rth_message,
+    MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_CONTROL: MAVLink_leaf_gimbal_sine_control_message,
+    MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_RESPONSE: MAVLink_leaf_gimbal_sine_response_message,
+    MAVLINK_MSG_ID_LEAF_GPS_VIEW_REQUEST: MAVLink_leaf_gps_view_request_message,
+    MAVLINK_MSG_ID_LEAF_GPS_VIEW_STATUS: MAVLink_leaf_gps_view_status_message,
+    MAVLINK_MSG_ID_LEAF_GPS_MISSION_STATUS: MAVLink_leaf_gps_mission_status_message,
+    MAVLINK_MSG_ID_LEAF_PLANNER_DIAGNOSTICS: MAVLink_leaf_planner_diagnostics_message,
+    MAVLINK_MSG_ID_LEAF_PLANNER_PATH: MAVLink_leaf_planner_path_message,
+    MAVLINK_MSG_ID_LEAF_GPS_PLAN_CHUNK: MAVLink_leaf_gps_plan_chunk_message,
+    MAVLINK_MSG_ID_LEAF_GPS_MISSION_EVENT: MAVLink_leaf_gps_mission_event_message,
+    MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE: MAVLink_leaf_gimbal_matched_attitude_message,
     MAVLINK_MSG_ID_SYS_STATUS: MAVLink_sys_status_message,
     MAVLINK_MSG_ID_SYSTEM_TIME: MAVLink_system_time_message,
     MAVLINK_MSG_ID_PING: MAVLink_ping_message,
@@ -22437,14 +22992,14 @@ class MAVLink(object):
         """
         self.send(self.leaf_racer_gps_home_encode(home_lat_1e7, home_lon_1e7, home_alt_m), force_mavlink1=force_mavlink1)
 
-    def leaf_racer_gps_guidance_encode(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0) -> MAVLink_leaf_racer_gps_guidance_message:
+    def leaf_racer_gps_guidance_encode(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0) -> MAVLink_leaf_racer_gps_guidance_message:
         """
         Racer GPS guidance snapshot (drone to GS): the flown segment from ->
         to and the L1 internals. Sent periodically only while the
         guidance holds a target waypoint; silence means no target.
 
         target_index              : Mission index of the target waypoint (to) (type:int32_t)
-        mission_size              : Number of mission waypoints; target_index >= mission_size is the end-of-mission loop (type:int32_t)
+        mission_size              : Number of waypoints in the accepted route; route_mode identifies RTH and home loiter (type:int32_t)
         from_lat_1e7              : Segment start latitude, degrees * 1e7 (type:int32_t)
         from_lon_1e7              : Segment start longitude, degrees * 1e7 (type:int32_t)
         from_alt_m                : Segment start altitude [m] (type:float)
@@ -22462,18 +23017,23 @@ class MAVLink(object):
         saturation_flags          : Command saturations active this tick (type:uint8_t, values:LEAF_GPS_GUIDANCE_SATURATION)
         route_mode                : RacerMode selecting this route; zero for legacy senders. (type:uint8_t)
         route_revision            : Generation of the active segment. (type:uint64_t)
+        boot_id                   : Process incarnation; combine with MAVLink source system/component. (type:uint64_t)
+        route_session             : Route session, independent of waypoint index. (type:uint64_t)
+        plan_revision             : Accepted source plan revision. (type:uint64_t)
+        sample_time_us            : Monotonic sample time. [us] (type:uint64_t)
+        controller_active         : 1 when the GPSGuidance owner is active, independently of L1 aim validity. (type:uint8_t)
 
         """
-        return MAVLink_leaf_racer_gps_guidance_message(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision)
+        return MAVLink_leaf_racer_gps_guidance_message(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision, boot_id, route_session, plan_revision, sample_time_us, controller_active)
 
-    def leaf_racer_gps_guidance_send(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, force_mavlink1: bool = False) -> None:
+    def leaf_racer_gps_guidance_send(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0, force_mavlink1: bool = False) -> None:
         """
         Racer GPS guidance snapshot (drone to GS): the flown segment from ->
         to and the L1 internals. Sent periodically only while the
         guidance holds a target waypoint; silence means no target.
 
         target_index              : Mission index of the target waypoint (to) (type:int32_t)
-        mission_size              : Number of mission waypoints; target_index >= mission_size is the end-of-mission loop (type:int32_t)
+        mission_size              : Number of waypoints in the accepted route; route_mode identifies RTH and home loiter (type:int32_t)
         from_lat_1e7              : Segment start latitude, degrees * 1e7 (type:int32_t)
         from_lon_1e7              : Segment start longitude, degrees * 1e7 (type:int32_t)
         from_alt_m                : Segment start altitude [m] (type:float)
@@ -22491,9 +23051,14 @@ class MAVLink(object):
         saturation_flags          : Command saturations active this tick (type:uint8_t, values:LEAF_GPS_GUIDANCE_SATURATION)
         route_mode                : RacerMode selecting this route; zero for legacy senders. (type:uint8_t)
         route_revision            : Generation of the active segment. (type:uint64_t)
+        boot_id                   : Process incarnation; combine with MAVLink source system/component. (type:uint64_t)
+        route_session             : Route session, independent of waypoint index. (type:uint64_t)
+        plan_revision             : Accepted source plan revision. (type:uint64_t)
+        sample_time_us            : Monotonic sample time. [us] (type:uint64_t)
+        controller_active         : 1 when the GPSGuidance owner is active, independently of L1 aim validity. (type:uint8_t)
 
         """
-        self.send(self.leaf_racer_gps_guidance_encode(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_racer_gps_guidance_encode(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision, boot_id, route_session, plan_revision, sample_time_us, controller_active), force_mavlink1=force_mavlink1)
 
     def pan_tilt_recommended_az_ele_deg_encode(self, time_usec: int, azimuth_deg: float, elevation_deg: float, valid: int) -> MAVLink_pan_tilt_recommended_az_ele_deg_message:
         """
@@ -22540,6 +23105,488 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_do_rth_encode(target_system), force_mavlink1=force_mavlink1)
+
+    def leaf_gimbal_sine_control_encode(self, request_id: int, target_system: int, target_component: int, action: int, axis_mask: int) -> MAVLink_leaf_gimbal_sine_control_message:
+        """
+        C40D forced sine test request. Amplitude and frequency come from
+        config-gimbal_allxf_40d. Each addressed packet is one request;
+        repeat START while active is rejected.
+
+        request_id                : Ground station request correlation ID. (type:uint32_t)
+        target_system             : Aircraft MAVLink system ID; broadcast is not accepted. (type:uint8_t)
+        target_component          : LeafFC component ID. (type:uint8_t)
+        action                    : 0 STOP, 1 START. (type:uint8_t)
+        axis_mask                 : Bit 0 pitch/inner pan; bit 1 roll/outer tilt. START requires 1, 2 or 3; ignored for STOP. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_gimbal_sine_control_message(request_id, target_system, target_component, action, axis_mask)
+
+    def leaf_gimbal_sine_control_send(self, request_id: int, target_system: int, target_component: int, action: int, axis_mask: int, force_mavlink1: bool = False) -> None:
+        """
+        C40D forced sine test request. Amplitude and frequency come from
+        config-gimbal_allxf_40d. Each addressed packet is one request;
+        repeat START while active is rejected.
+
+        request_id                : Ground station request correlation ID. (type:uint32_t)
+        target_system             : Aircraft MAVLink system ID; broadcast is not accepted. (type:uint8_t)
+        target_component          : LeafFC component ID. (type:uint8_t)
+        action                    : 0 STOP, 1 START. (type:uint8_t)
+        axis_mask                 : Bit 0 pitch/inner pan; bit 1 roll/outer tilt. START requires 1, 2 or 3; ignored for STOP. (type:uint8_t)
+
+        """
+        self.send(self.leaf_gimbal_sine_control_encode(request_id, target_system, target_component, action, axis_mask), force_mavlink1=force_mavlink1)
+
+    def leaf_gimbal_sine_response_encode(self, request_id: int, result: int, active_axis_mask: int, session_state: int) -> MAVLink_leaf_gimbal_sine_response_message:
+        """
+        Result of a C40D forced sine request, or unsolicited cancellation on a
+        hardware fault (request_id zero). STOP returns to limited
+        optical centering when available, otherwise holds the last
+        commanded pose.
+
+        request_id                : Request ID, or zero for a hardware cancellation. (type:uint32_t)
+        result                    : 0 accepted, 1 disabled/not ready, 2 invalid action/axes, 3 trajectory outside workspace, 4 already running, 5 hardware fault cancellation. (type:uint8_t)
+        active_axis_mask          : Active excitation axes after this request; 0 stopped, 1 pitch/pan, 2 roll/tilt, 3 both. (type:uint8_t)
+        session_state             : 0 initializing, 1 ready, 2 fault. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_gimbal_sine_response_message(request_id, result, active_axis_mask, session_state)
+
+    def leaf_gimbal_sine_response_send(self, request_id: int, result: int, active_axis_mask: int, session_state: int, force_mavlink1: bool = False) -> None:
+        """
+        Result of a C40D forced sine request, or unsolicited cancellation on a
+        hardware fault (request_id zero). STOP returns to limited
+        optical centering when available, otherwise holds the last
+        commanded pose.
+
+        request_id                : Request ID, or zero for a hardware cancellation. (type:uint32_t)
+        result                    : 0 accepted, 1 disabled/not ready, 2 invalid action/axes, 3 trajectory outside workspace, 4 already running, 5 hardware fault cancellation. (type:uint8_t)
+        active_axis_mask          : Active excitation axes after this request; 0 stopped, 1 pitch/pan, 2 roll/tilt, 3 both. (type:uint8_t)
+        session_state             : 0 initializing, 1 ready, 2 fault. (type:uint8_t)
+
+        """
+        self.send(self.leaf_gimbal_sine_response_encode(request_id, result, active_axis_mask, session_state), force_mavlink1=force_mavlink1)
+
+    def leaf_gps_view_request_encode(self, target_system: int, target_component: int, viewer_id: int, profile: int, lease_s: int, snapshot: int, transfer_id: int, offset: int) -> MAVLink_leaf_gps_view_request_message:
+        """
+        Read-only viewing lease. Profile 0 releases only this viewer; 1
+        reduced, 2 live, 3 detail. Renew before expiry. Snapshot 1
+        requests a bounded live window; 2 a full exact route. A
+        nonzero transfer_id requests retransmission starting at
+        offset. Target system/component must match.
+
+        target_system             : Aircraft system. (type:uint8_t)
+        target_component          : Aircraft component. (type:uint8_t)
+        viewer_id                 : Random viewer session, combined with MAVLink source. (type:uint32_t)
+        profile                   : 0 off, 1 reduced, 2 live, 3 detail. (type:uint8_t)
+        lease_s                   : Requested lease duration, capped by aircraft. (type:uint16_t)
+        snapshot                  : 0 renew, 1 refresh, 2 full route. (type:uint8_t)
+        transfer_id               : Zero for newest; otherwise retry retained transfer. (type:uint32_t)
+        offset                    : First point to retransmit, relative to transmitted window. (type:uint16_t)
+
+        """
+        return MAVLink_leaf_gps_view_request_message(target_system, target_component, viewer_id, profile, lease_s, snapshot, transfer_id, offset)
+
+    def leaf_gps_view_request_send(self, target_system: int, target_component: int, viewer_id: int, profile: int, lease_s: int, snapshot: int, transfer_id: int, offset: int, force_mavlink1: bool = False) -> None:
+        """
+        Read-only viewing lease. Profile 0 releases only this viewer; 1
+        reduced, 2 live, 3 detail. Renew before expiry. Snapshot 1
+        requests a bounded live window; 2 a full exact route. A
+        nonzero transfer_id requests retransmission starting at
+        offset. Target system/component must match.
+
+        target_system             : Aircraft system. (type:uint8_t)
+        target_component          : Aircraft component. (type:uint8_t)
+        viewer_id                 : Random viewer session, combined with MAVLink source. (type:uint32_t)
+        profile                   : 0 off, 1 reduced, 2 live, 3 detail. (type:uint8_t)
+        lease_s                   : Requested lease duration, capped by aircraft. (type:uint16_t)
+        snapshot                  : 0 renew, 1 refresh, 2 full route. (type:uint8_t)
+        transfer_id               : Zero for newest; otherwise retry retained transfer. (type:uint32_t)
+        offset                    : First point to retransmit, relative to transmitted window. (type:uint16_t)
+
+        """
+        self.send(self.leaf_gps_view_request_encode(target_system, target_component, viewer_id, profile, lease_s, snapshot, transfer_id, offset), force_mavlink1=force_mavlink1)
+
+    def leaf_gps_view_status_encode(self, boot_id: int, sample_time_us: int, viewer_id: int, profile: int, lease_remaining_s: int, budget_bytes_s: int, guidance_rate_hz: float, status_rate_hz: float, diagnostics_rate_hz: float, result: int) -> MAVLink_leaf_gps_view_status_message:
+        """
+        Effective multicast telemetry limits; one shared stream for all
+        leases.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        viewer_id                 : Request viewer, zero for periodic status. (type:uint32_t)
+        profile                   : Effective stream profile. (type:uint8_t)
+        lease_remaining_s         : Effective remaining lease. (type:uint16_t)
+        budget_bytes_s            : Maximum framed bytes per second, signing allowance included. (type:uint32_t)
+        guidance_rate_hz          : Maximum guidance rate. (type:float)
+        status_rate_hz            : Maximum mission status rate. (type:float)
+        diagnostics_rate_hz        : Maximum planner diagnostic rate. (type:float)
+        result                    : 0 accepted, 1 unsupported profile, 2 viewer capacity, 3 transfer unavailable. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_gps_view_status_message(boot_id, sample_time_us, viewer_id, profile, lease_remaining_s, budget_bytes_s, guidance_rate_hz, status_rate_hz, diagnostics_rate_hz, result)
+
+    def leaf_gps_view_status_send(self, boot_id: int, sample_time_us: int, viewer_id: int, profile: int, lease_remaining_s: int, budget_bytes_s: int, guidance_rate_hz: float, status_rate_hz: float, diagnostics_rate_hz: float, result: int, force_mavlink1: bool = False) -> None:
+        """
+        Effective multicast telemetry limits; one shared stream for all
+        leases.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        viewer_id                 : Request viewer, zero for periodic status. (type:uint32_t)
+        profile                   : Effective stream profile. (type:uint8_t)
+        lease_remaining_s         : Effective remaining lease. (type:uint16_t)
+        budget_bytes_s            : Maximum framed bytes per second, signing allowance included. (type:uint32_t)
+        guidance_rate_hz          : Maximum guidance rate. (type:float)
+        status_rate_hz            : Maximum mission status rate. (type:float)
+        diagnostics_rate_hz        : Maximum planner diagnostic rate. (type:float)
+        result                    : 0 accepted, 1 unsupported profile, 2 viewer capacity, 3 transfer unavailable. (type:uint8_t)
+
+        """
+        self.send(self.leaf_gps_view_status_encode(boot_id, sample_time_us, viewer_id, profile, lease_remaining_s, budget_bytes_s, guidance_rate_hz, status_rate_hz, diagnostics_rate_hz, result), force_mavlink1=force_mavlink1)
+
+    def leaf_gps_mission_status_encode(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, segment_revision: int, scheduled_revision: int, planner_revision: int, event_sequence: int, event_oldest: int, target_index: int, active_count: int, scheduled_count: int, trim_count: int, trim_revision: int, home_lat_1e7: int, home_lon_1e7: int, home_alt_m: float, loiter_radius_m: float, mode: int, planner_state: int, ins_state: int, refuel_phase: int, home_state: int, arm_state: int, safety_switch: int, rc_stream: int, flags: int) -> MAVLink_leaf_gps_mission_status_message:
+        """
+        Authoritative mission-manager snapshot. IDs are independent; a planner
+        revision is not an executed segment.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        route_session             : Route session. (type:uint64_t)
+        plan_revision             : Source plan revision. (type:uint64_t)
+        segment_revision          : Manager segment revision; guidance reports the applied revision separately. (type:uint64_t)
+        scheduled_revision        : Pending continuation revision; zero if absent. (type:uint64_t)
+        planner_revision          : Latest planner output revision. (type:uint64_t)
+        event_sequence            : Newest event sequence. (type:uint32_t)
+        event_oldest              : Oldest retained event sequence. (type:uint32_t)
+        target_index              : Current target index, -1 if absent. (type:int32_t)
+        active_count              : Accepted route point count. (type:uint16_t)
+        scheduled_count           : Scheduled route point count. (type:uint16_t)
+        trim_count                : Number removed at last handoff. (type:uint16_t)
+        trim_revision             : Source revision of last handoff or rejection. (type:uint64_t)
+        home_lat_1e7              : Raised RTH target latitude. (type:int32_t)
+        home_lon_1e7              : Raised RTH target longitude. (type:int32_t)
+        home_alt_m                : Raised RTH target altitude, metres. (type:float)
+        loiter_radius_m           : Home loiter waypoint radius, metres. (type:float)
+        mode                      : RacerMode. (type:uint8_t)
+        planner_state             : FollowingPlanState. (type:uint8_t)
+        ins_state                 : InsState. (type:uint8_t)
+        refuel_phase              : ReFuelPhase. (type:uint8_t)
+        home_state                : GPSHomeState. (type:uint8_t)
+        arm_state                 : ArmState. (type:uint8_t)
+        safety_switch             : RCSwitchState. (type:uint8_t)
+        rc_stream                 : StreamState. (type:uint8_t)
+        flags                     : Bit 0 waiting for continuation; bit 1 continuation unavailable; bit 2 scheduled plan present. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_gps_mission_status_message(boot_id, sample_time_us, route_session, plan_revision, segment_revision, scheduled_revision, planner_revision, event_sequence, event_oldest, target_index, active_count, scheduled_count, trim_count, trim_revision, home_lat_1e7, home_lon_1e7, home_alt_m, loiter_radius_m, mode, planner_state, ins_state, refuel_phase, home_state, arm_state, safety_switch, rc_stream, flags)
+
+    def leaf_gps_mission_status_send(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, segment_revision: int, scheduled_revision: int, planner_revision: int, event_sequence: int, event_oldest: int, target_index: int, active_count: int, scheduled_count: int, trim_count: int, trim_revision: int, home_lat_1e7: int, home_lon_1e7: int, home_alt_m: float, loiter_radius_m: float, mode: int, planner_state: int, ins_state: int, refuel_phase: int, home_state: int, arm_state: int, safety_switch: int, rc_stream: int, flags: int, force_mavlink1: bool = False) -> None:
+        """
+        Authoritative mission-manager snapshot. IDs are independent; a planner
+        revision is not an executed segment.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        route_session             : Route session. (type:uint64_t)
+        plan_revision             : Source plan revision. (type:uint64_t)
+        segment_revision          : Manager segment revision; guidance reports the applied revision separately. (type:uint64_t)
+        scheduled_revision        : Pending continuation revision; zero if absent. (type:uint64_t)
+        planner_revision          : Latest planner output revision. (type:uint64_t)
+        event_sequence            : Newest event sequence. (type:uint32_t)
+        event_oldest              : Oldest retained event sequence. (type:uint32_t)
+        target_index              : Current target index, -1 if absent. (type:int32_t)
+        active_count              : Accepted route point count. (type:uint16_t)
+        scheduled_count           : Scheduled route point count. (type:uint16_t)
+        trim_count                : Number removed at last handoff. (type:uint16_t)
+        trim_revision             : Source revision of last handoff or rejection. (type:uint64_t)
+        home_lat_1e7              : Raised RTH target latitude. (type:int32_t)
+        home_lon_1e7              : Raised RTH target longitude. (type:int32_t)
+        home_alt_m                : Raised RTH target altitude, metres. (type:float)
+        loiter_radius_m           : Home loiter waypoint radius, metres. (type:float)
+        mode                      : RacerMode. (type:uint8_t)
+        planner_state             : FollowingPlanState. (type:uint8_t)
+        ins_state                 : InsState. (type:uint8_t)
+        refuel_phase              : ReFuelPhase. (type:uint8_t)
+        home_state                : GPSHomeState. (type:uint8_t)
+        arm_state                 : ArmState. (type:uint8_t)
+        safety_switch             : RCSwitchState. (type:uint8_t)
+        rc_stream                 : StreamState. (type:uint8_t)
+        flags                     : Bit 0 waiting for continuation; bit 1 continuation unavailable; bit 2 scheduled plan present. (type:uint8_t)
+
+        """
+        self.send(self.leaf_gps_mission_status_encode(boot_id, sample_time_us, route_session, plan_revision, segment_revision, scheduled_revision, planner_revision, event_sequence, event_oldest, target_index, active_count, scheduled_count, trim_count, trim_revision, home_lat_1e7, home_lon_1e7, home_alt_m, loiter_radius_m, mode, planner_state, ins_state, refuel_phase, home_state, arm_state, safety_switch, rc_stream, flags), force_mavlink1=force_mavlink1)
+
+    def leaf_planner_diagnostics_encode(self, boot_id: int, sample_time_us: int, solve_revision: int, plan_revision: int, solve_time_us: int, leader_time_us: int, candidates: int, cache_hits: int, search_nodes: int, arrival_s: float, residual_s: float, length_m: float, capture_error_m: float, heading_error_deg: float, capture_radius_m: float, capture_heading_deg: float, separation_m: float, join_gap_m: float, join_distance_limit_m: float, join_separation_error_m: float, join_separation_limit_m: float, prediction_horizon_s: float, leader_speed_mps: float, follower_speed_mps: float, route_progress_m: float, prediction_model: int, outcome: int, flags: int, family: int, planner_state: int, leader_system: int, leader_component: int) -> MAVLink_leaf_planner_diagnostics_message:
+        """
+        Latest solve diagnostics, measured at solve_time_us. Geometry uses its
+        own solve revision when a route is retained.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        solve_revision            : Monotonic diagnostic revision. (type:uint64_t)
+        plan_revision             : Planner output revision. (type:uint64_t)
+        solve_time_us             : Monotonic solve epoch, microseconds. (type:uint64_t)
+        leader_time_us            : FC receipt time of consumed leader observation. (type:uint64_t)
+        candidates                : Solver candidates. (type:uint32_t)
+        cache_hits                : Solver cache hits. (type:uint32_t)
+        search_nodes              : Solver search nodes. (type:uint32_t)
+        arrival_s                 : Candidate arrival time from solve epoch. (type:float)
+        residual_s                : Candidate timing residual. (type:float)
+        length_m                  : Candidate path length. (type:float)
+        capture_error_m           : Current distance to following slot. (type:float)
+        heading_error_deg         : Current slot heading error. (type:float)
+        capture_radius_m          : Capture distance tolerance. (type:float)
+        capture_heading_deg        : Capture heading tolerance. (type:float)
+        separation_m              : Requested separation at solve epoch. (type:float)
+        join_gap_m                : Front join gap; NaN if unavailable. (type:float)
+        join_distance_limit_m        : Front join distance limit; NaN if unavailable. (type:float)
+        join_separation_error_m        : Front join separation error; NaN if unavailable. (type:float)
+        join_separation_limit_m        : Front join separation limit; NaN if unavailable. (type:float)
+        prediction_horizon_s        : Prediction horizon, seconds; prediction chunks contain the consumed observation then 32 evenly spaced forecast points from solve time. (type:float)
+        leader_speed_mps          : Prediction speed at solve time, metres per second. (type:float)
+        follower_speed_mps        : Horizontal follower speed at solve time, metres per second. (type:float)
+        route_progress_m          : Distance along the retained or accepted planner path, metres. (type:float)
+        prediction_model          : 0 linear, 1 quadratic, 2 circular. (type:uint8_t)
+        outcome                   : 0 unavailable, 1 accepted, 2 retained, 3 rejected, 4 chasing. (type:uint8_t)
+        flags                     : Bit 0 candidate feasible, bit 1 budget exceeded, bit 2 capacity exceeded, bit 3 front approach. (type:uint8_t)
+        family                    : lfp Family. (type:uint8_t)
+        planner_state             : FollowingPlanState. (type:uint8_t)
+        leader_system             : Actual configured leader system. (type:uint8_t)
+        leader_component          : Actual configured leader component. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_planner_diagnostics_message(boot_id, sample_time_us, solve_revision, plan_revision, solve_time_us, leader_time_us, candidates, cache_hits, search_nodes, arrival_s, residual_s, length_m, capture_error_m, heading_error_deg, capture_radius_m, capture_heading_deg, separation_m, join_gap_m, join_distance_limit_m, join_separation_error_m, join_separation_limit_m, prediction_horizon_s, leader_speed_mps, follower_speed_mps, route_progress_m, prediction_model, outcome, flags, family, planner_state, leader_system, leader_component)
+
+    def leaf_planner_diagnostics_send(self, boot_id: int, sample_time_us: int, solve_revision: int, plan_revision: int, solve_time_us: int, leader_time_us: int, candidates: int, cache_hits: int, search_nodes: int, arrival_s: float, residual_s: float, length_m: float, capture_error_m: float, heading_error_deg: float, capture_radius_m: float, capture_heading_deg: float, separation_m: float, join_gap_m: float, join_distance_limit_m: float, join_separation_error_m: float, join_separation_limit_m: float, prediction_horizon_s: float, leader_speed_mps: float, follower_speed_mps: float, route_progress_m: float, prediction_model: int, outcome: int, flags: int, family: int, planner_state: int, leader_system: int, leader_component: int, force_mavlink1: bool = False) -> None:
+        """
+        Latest solve diagnostics, measured at solve_time_us. Geometry uses its
+        own solve revision when a route is retained.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        solve_revision            : Monotonic diagnostic revision. (type:uint64_t)
+        plan_revision             : Planner output revision. (type:uint64_t)
+        solve_time_us             : Monotonic solve epoch, microseconds. (type:uint64_t)
+        leader_time_us            : FC receipt time of consumed leader observation. (type:uint64_t)
+        candidates                : Solver candidates. (type:uint32_t)
+        cache_hits                : Solver cache hits. (type:uint32_t)
+        search_nodes              : Solver search nodes. (type:uint32_t)
+        arrival_s                 : Candidate arrival time from solve epoch. (type:float)
+        residual_s                : Candidate timing residual. (type:float)
+        length_m                  : Candidate path length. (type:float)
+        capture_error_m           : Current distance to following slot. (type:float)
+        heading_error_deg         : Current slot heading error. (type:float)
+        capture_radius_m          : Capture distance tolerance. (type:float)
+        capture_heading_deg        : Capture heading tolerance. (type:float)
+        separation_m              : Requested separation at solve epoch. (type:float)
+        join_gap_m                : Front join gap; NaN if unavailable. (type:float)
+        join_distance_limit_m        : Front join distance limit; NaN if unavailable. (type:float)
+        join_separation_error_m        : Front join separation error; NaN if unavailable. (type:float)
+        join_separation_limit_m        : Front join separation limit; NaN if unavailable. (type:float)
+        prediction_horizon_s        : Prediction horizon, seconds; prediction chunks contain the consumed observation then 32 evenly spaced forecast points from solve time. (type:float)
+        leader_speed_mps          : Prediction speed at solve time, metres per second. (type:float)
+        follower_speed_mps        : Horizontal follower speed at solve time, metres per second. (type:float)
+        route_progress_m          : Distance along the retained or accepted planner path, metres. (type:float)
+        prediction_model          : 0 linear, 1 quadratic, 2 circular. (type:uint8_t)
+        outcome                   : 0 unavailable, 1 accepted, 2 retained, 3 rejected, 4 chasing. (type:uint8_t)
+        flags                     : Bit 0 candidate feasible, bit 1 budget exceeded, bit 2 capacity exceeded, bit 3 front approach. (type:uint8_t)
+        family                    : lfp Family. (type:uint8_t)
+        planner_state             : FollowingPlanState. (type:uint8_t)
+        leader_system             : Actual configured leader system. (type:uint8_t)
+        leader_component          : Actual configured leader component. (type:uint8_t)
+
+        """
+        self.send(self.leaf_planner_diagnostics_encode(boot_id, sample_time_us, solve_revision, plan_revision, solve_time_us, leader_time_us, candidates, cache_hits, search_nodes, arrival_s, residual_s, length_m, capture_error_m, heading_error_deg, capture_radius_m, capture_heading_deg, separation_m, join_gap_m, join_distance_limit_m, join_separation_error_m, join_separation_limit_m, prediction_horizon_s, leader_speed_mps, follower_speed_mps, route_progress_m, prediction_model, outcome, flags, family, planner_state, leader_system, leader_component), force_mavlink1=force_mavlink1)
+
+    def leaf_planner_path_encode(self, boot_id: int, sample_time_us: int, solve_revision: int, plan_revision: int, solve_time_us: int, origin_lat_1e7: int, origin_lon_1e7: int, alt_m: float, start_east_m: float, start_north_m: float, start_heading_rad: float, length_m: Sequence[float], curvature_inv_m: Sequence[float], markers_en_m: Sequence[float], terminal_start_m: float, capture_heading_rad: float, capture_radius_m: float, capture_heading_deg: float, kind: int, count: int, marker_flags: int, family: int) -> MAVLink_leaf_planner_path_message:
+        """
+        Exact path primitives in an azimuthal equidistant local ENU frame.
+        Heading is counterclockwise from East. Positive curvature
+        turns left. Marker coordinates use same frame and solve epoch.
+        Only valid flags may be drawn.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        solve_revision            : Geometry solve revision. (type:uint64_t)
+        plan_revision             : Planner output revision for active path; latest output when candidate. (type:uint64_t)
+        solve_time_us             : Monotonic geometry epoch, microseconds. (type:uint64_t)
+        origin_lat_1e7            : Projection origin latitude. (type:int32_t)
+        origin_lon_1e7            : Projection origin longitude. (type:int32_t)
+        alt_m                     : Planned altitude, metres. (type:float)
+        start_east_m              : Start East, metres. (type:float)
+        start_north_m             : Start North, metres. (type:float)
+        start_heading_rad         : Start heading, radians. (type:float)
+        length_m                  : Primitive lengths, metres. (type:float)
+        curvature_inv_m           : Primitive signed curvatures, inverse metres. (type:float)
+        markers_en_m              : East/North pairs: capture, planning capture, leader at arrival, front join, following slot. (type:float)
+        terminal_start_m          : Closing leg starts at path distance, metres. (type:float)
+        capture_heading_rad        : Capture heading, radians. (type:float)
+        capture_radius_m          : Capture radius, metres. (type:float)
+        capture_heading_deg        : Capture heading tolerance, degrees. (type:float)
+        kind                      : 0 active plan geometry, 1 latest candidate. (type:uint8_t)
+        count                     : Primitive count, 0 to 3. (type:uint8_t)
+        marker_flags              : Validity bits for the five marker pairs. (type:uint8_t)
+        family                    : lfp Family. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_planner_path_message(boot_id, sample_time_us, solve_revision, plan_revision, solve_time_us, origin_lat_1e7, origin_lon_1e7, alt_m, start_east_m, start_north_m, start_heading_rad, length_m, curvature_inv_m, markers_en_m, terminal_start_m, capture_heading_rad, capture_radius_m, capture_heading_deg, kind, count, marker_flags, family)
+
+    def leaf_planner_path_send(self, boot_id: int, sample_time_us: int, solve_revision: int, plan_revision: int, solve_time_us: int, origin_lat_1e7: int, origin_lon_1e7: int, alt_m: float, start_east_m: float, start_north_m: float, start_heading_rad: float, length_m: Sequence[float], curvature_inv_m: Sequence[float], markers_en_m: Sequence[float], terminal_start_m: float, capture_heading_rad: float, capture_radius_m: float, capture_heading_deg: float, kind: int, count: int, marker_flags: int, family: int, force_mavlink1: bool = False) -> None:
+        """
+        Exact path primitives in an azimuthal equidistant local ENU frame.
+        Heading is counterclockwise from East. Positive curvature
+        turns left. Marker coordinates use same frame and solve epoch.
+        Only valid flags may be drawn.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        solve_revision            : Geometry solve revision. (type:uint64_t)
+        plan_revision             : Planner output revision for active path; latest output when candidate. (type:uint64_t)
+        solve_time_us             : Monotonic geometry epoch, microseconds. (type:uint64_t)
+        origin_lat_1e7            : Projection origin latitude. (type:int32_t)
+        origin_lon_1e7            : Projection origin longitude. (type:int32_t)
+        alt_m                     : Planned altitude, metres. (type:float)
+        start_east_m              : Start East, metres. (type:float)
+        start_north_m             : Start North, metres. (type:float)
+        start_heading_rad         : Start heading, radians. (type:float)
+        length_m                  : Primitive lengths, metres. (type:float)
+        curvature_inv_m           : Primitive signed curvatures, inverse metres. (type:float)
+        markers_en_m              : East/North pairs: capture, planning capture, leader at arrival, front join, following slot. (type:float)
+        terminal_start_m          : Closing leg starts at path distance, metres. (type:float)
+        capture_heading_rad        : Capture heading, radians. (type:float)
+        capture_radius_m          : Capture radius, metres. (type:float)
+        capture_heading_deg        : Capture heading tolerance, degrees. (type:float)
+        kind                      : 0 active plan geometry, 1 latest candidate. (type:uint8_t)
+        count                     : Primitive count, 0 to 3. (type:uint8_t)
+        marker_flags              : Validity bits for the five marker pairs. (type:uint8_t)
+        family                    : lfp Family. (type:uint8_t)
+
+        """
+        self.send(self.leaf_planner_path_encode(boot_id, sample_time_us, solve_revision, plan_revision, solve_time_us, origin_lat_1e7, origin_lon_1e7, alt_m, start_east_m, start_north_m, start_heading_rad, length_m, curvature_inv_m, markers_en_m, terminal_start_m, capture_heading_rad, capture_radius_m, capture_heading_deg, kind, count, marker_flags, family), force_mavlink1=force_mavlink1)
+
+    def leaf_gps_plan_chunk_encode(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, segment_revision: int, transfer_id: int, total_points: int, window_start: int, window_count: int, offset: int, count: int, kind: int, flags: int, lat_1e7: Sequence[int], lon_1e7: Sequence[int], alt_m: Sequence[float]) -> MAVLink_leaf_gps_plan_chunk_message:
+        """
+        Atomic geometry transfer. Never combine transfer IDs, route sessions
+        or revisions. WGS84 lat/lon E7, altitude metres. Up to 16
+        points. Prediction is explicitly sampled, waypoint lists
+        exact.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        route_session             : Route session. (type:uint64_t)
+        plan_revision             : Source plan revision. (type:uint64_t)
+        segment_revision          : Mission-manager segment when this window was captured. (type:uint64_t)
+        transfer_id               : Unique transfer ID within boot. (type:uint32_t)
+        total_points              : Full source point count. (type:uint16_t)
+        window_start              : First source point in transmitted window. (type:uint16_t)
+        window_count              : Total points in this atomic window. (type:uint16_t)
+        offset                    : Chunk offset within window. (type:uint16_t)
+        count                     : Valid array entries, 1 to 16. (type:uint8_t)
+        kind                      : 0 accepted route, 1 scheduled continuation, 2 sampled leader prediction, 3 last trimmed source. (type:uint8_t)
+        flags                     : Bit 0 full source included; bit 1 sampled approximation. (type:uint8_t)
+        lat_1e7                   : Point latitudes. (type:int32_t)
+        lon_1e7                   : Point longitudes. (type:int32_t)
+        alt_m                     : Point altitudes, metres. (type:float)
+
+        """
+        return MAVLink_leaf_gps_plan_chunk_message(boot_id, sample_time_us, route_session, plan_revision, segment_revision, transfer_id, total_points, window_start, window_count, offset, count, kind, flags, lat_1e7, lon_1e7, alt_m)
+
+    def leaf_gps_plan_chunk_send(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, segment_revision: int, transfer_id: int, total_points: int, window_start: int, window_count: int, offset: int, count: int, kind: int, flags: int, lat_1e7: Sequence[int], lon_1e7: Sequence[int], alt_m: Sequence[float], force_mavlink1: bool = False) -> None:
+        """
+        Atomic geometry transfer. Never combine transfer IDs, route sessions
+        or revisions. WGS84 lat/lon E7, altitude metres. Up to 16
+        points. Prediction is explicitly sampled, waypoint lists
+        exact.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        route_session             : Route session. (type:uint64_t)
+        plan_revision             : Source plan revision. (type:uint64_t)
+        segment_revision          : Mission-manager segment when this window was captured. (type:uint64_t)
+        transfer_id               : Unique transfer ID within boot. (type:uint32_t)
+        total_points              : Full source point count. (type:uint16_t)
+        window_start              : First source point in transmitted window. (type:uint16_t)
+        window_count              : Total points in this atomic window. (type:uint16_t)
+        offset                    : Chunk offset within window. (type:uint16_t)
+        count                     : Valid array entries, 1 to 16. (type:uint8_t)
+        kind                      : 0 accepted route, 1 scheduled continuation, 2 sampled leader prediction, 3 last trimmed source. (type:uint8_t)
+        flags                     : Bit 0 full source included; bit 1 sampled approximation. (type:uint8_t)
+        lat_1e7                   : Point latitudes. (type:int32_t)
+        lon_1e7                   : Point longitudes. (type:int32_t)
+        alt_m                     : Point altitudes, metres. (type:float)
+
+        """
+        self.send(self.leaf_gps_plan_chunk_encode(boot_id, sample_time_us, route_session, plan_revision, segment_revision, transfer_id, total_points, window_start, window_count, offset, count, kind, flags, lat_1e7, lon_1e7, alt_m), force_mavlink1=force_mavlink1)
+
+    def leaf_gps_mission_event_encode(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, sequence: int, segment_revision: int, target_index: int, detail: int, event: int, state: int) -> MAVLink_leaf_gps_mission_event_message:
+        """
+        Bounded event journal, repeated with original sequence and time.
+        Missing sequences are gaps, not inferred transitions.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        route_session             : Route session. (type:uint64_t)
+        plan_revision             : Source plan revision. (type:uint64_t)
+        sequence                  : Monotonic sequence within boot. (type:uint32_t)
+        segment_revision          : Segment at event. (type:uint64_t)
+        target_index              : Target at event. (type:int32_t)
+        detail                    : Count or previous state. (type:uint16_t)
+        event                     : 1 route reset, 2 scheduled, 3 activated, 4 arrival, 5 continuation unavailable, 6 waiting, 7 mission complete, 8 home reached, 9 mode changed, 10 refuel phase changed, 11 planner state changed, 12 external RTH request, 13 safety switch changed, 14 arm state changed, 15 INS state changed. (type:uint8_t)
+        state                     : New state for state changes. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_gps_mission_event_message(boot_id, sample_time_us, route_session, plan_revision, sequence, segment_revision, target_index, detail, event, state)
+
+    def leaf_gps_mission_event_send(self, boot_id: int, sample_time_us: int, route_session: int, plan_revision: int, sequence: int, segment_revision: int, target_index: int, detail: int, event: int, state: int, force_mavlink1: bool = False) -> None:
+        """
+        Bounded event journal, repeated with original sequence and time.
+        Missing sequences are gaps, not inferred transitions.
+
+        boot_id                   : Process incarnation. (type:uint64_t)
+        sample_time_us            : Monotonic sample time, microseconds. (type:uint64_t)
+        route_session             : Route session. (type:uint64_t)
+        plan_revision             : Source plan revision. (type:uint64_t)
+        sequence                  : Monotonic sequence within boot. (type:uint32_t)
+        segment_revision          : Segment at event. (type:uint64_t)
+        target_index              : Target at event. (type:int32_t)
+        detail                    : Count or previous state. (type:uint16_t)
+        event                     : 1 route reset, 2 scheduled, 3 activated, 4 arrival, 5 continuation unavailable, 6 waiting, 7 mission complete, 8 home reached, 9 mode changed, 10 refuel phase changed, 11 planner state changed, 12 external RTH request, 13 safety switch changed, 14 arm state changed, 15 INS state changed. (type:uint8_t)
+        state                     : New state for state changes. (type:uint8_t)
+
+        """
+        self.send(self.leaf_gps_mission_event_encode(boot_id, sample_time_us, route_session, plan_revision, sequence, segment_revision, target_index, detail, event, state), force_mavlink1=force_mavlink1)
+
+    def leaf_gimbal_matched_attitude_encode(self, pan_rad: float, tilt_rad: float, valid: int) -> MAVLink_leaf_gimbal_matched_attitude_message:
+        """
+        GimbalLOSCompensation observation sampled at the configured publishing
+        rate. Pan is inner C40D pitch; tilt is outer C40D roll.
+        Physical feedback radians, without command polarity inversion.
+        Fields copy the current observation matched_attitude directly,
+        without holding a previous sample. Emitted only when gimbal
+        compensation is enabled.
+
+        pan_rad                   : LOS-matched inner pan (C40D pitch). [rad] (type:double)
+        tilt_rad                  : LOS-matched outer tilt (C40D roll). [rad] (type:double)
+        valid                     : Current observation matched_attitude.valid: 1 valid, 0 invalid. Ignore angles when 0. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_gimbal_matched_attitude_message(pan_rad, tilt_rad, valid)
+
+    def leaf_gimbal_matched_attitude_send(self, pan_rad: float, tilt_rad: float, valid: int, force_mavlink1: bool = False) -> None:
+        """
+        GimbalLOSCompensation observation sampled at the configured publishing
+        rate. Pan is inner C40D pitch; tilt is outer C40D roll.
+        Physical feedback radians, without command polarity inversion.
+        Fields copy the current observation matched_attitude directly,
+        without holding a previous sample. Emitted only when gimbal
+        compensation is enabled.
+
+        pan_rad                   : LOS-matched inner pan (C40D pitch). [rad] (type:double)
+        tilt_rad                  : LOS-matched outer tilt (C40D roll). [rad] (type:double)
+        valid                     : Current observation matched_attitude.valid: 1 valid, 0 invalid. Ignore angles when 0. (type:uint8_t)
+
+        """
+        self.send(self.leaf_gimbal_matched_attitude_encode(pan_rad, tilt_rad, valid), force_mavlink1=force_mavlink1)
 
     def sys_status_encode(self, onboard_control_sensors_present: int, onboard_control_sensors_enabled: int, onboard_control_sensors_health: int, load: int, voltage_battery: int, current_battery: int, battery_remaining: int, drop_rate_comm: int, errors_comm: int, errors_count1: int, errors_count2: int, errors_count3: int, errors_count4: int, onboard_control_sensors_present_extended: int = 0, onboard_control_sensors_enabled_extended: int = 0, onboard_control_sensors_health_extended: int = 0) -> MAVLink_sys_status_message:
         """
