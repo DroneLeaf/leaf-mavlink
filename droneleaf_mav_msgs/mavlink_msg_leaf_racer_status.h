@@ -17,7 +17,7 @@ typedef struct __mavlink_leaf_racer_status_t {
  uint8_t rc_connection; /*<  RC link connected (0/1)*/
  uint8_t refuel_switch_state; /*<  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)*/
  uint8_t pilot_safety_takeover_state; /*<  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)*/
- uint8_t auto_refuel; /*<  Auto-refuel (auto-refuel) enabled (0/1)*/
+ uint8_t auto_refuel; /*<  Reserved, always 0 (FC auto-refuel removed)*/
  uint8_t gps_num_sat; /*<  Number of satellites*/
  uint8_t gps_fix; /*<  GPS fix (0=no fix, 1=fix)*/
 } mavlink_leaf_racer_status_t;
@@ -90,7 +90,7 @@ typedef struct __mavlink_leaf_racer_status_t {
  * @param rc_connection  RC link connected (0/1)
  * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
+ * @param auto_refuel  Reserved, always 0 (FC auto-refuel removed)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -161,7 +161,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack(uint8_t system_id, uin
  * @param rc_connection  RC link connected (0/1)
  * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
+ * @param auto_refuel  Reserved, always 0 (FC auto-refuel removed)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -235,7 +235,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_pack_status(uint8_t system_
  * @param rc_connection  RC link connected (0/1)
  * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
+ * @param auto_refuel  Reserved, always 0 (FC auto-refuel removed)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -345,7 +345,7 @@ static inline uint16_t mavlink_msg_leaf_racer_status_encode_status(uint8_t syste
  * @param rc_connection  RC link connected (0/1)
  * @param refuel_switch_state  ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
  * @param pilot_safety_takeover_state  Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH)
- * @param auto_refuel  Auto-refuel (auto-refuel) enabled (0/1)
+ * @param auto_refuel  Reserved, always 0 (FC auto-refuel removed)
  * @param gps_lat_1e7  Latitude, degrees * 1e7
  * @param gps_lon_1e7  Longitude, degrees * 1e7
  * @param gps_alt_m  Altitude, meters
@@ -543,7 +543,7 @@ static inline uint8_t mavlink_msg_leaf_racer_status_get_pilot_safety_takeover_st
 /**
  * @brief Get field auto_refuel from leaf_racer_status message
  *
- * @return  Auto-refuel (auto-refuel) enabled (0/1)
+ * @return  Reserved, always 0 (FC auto-refuel removed)
  */
 static inline uint8_t mavlink_msg_leaf_racer_status_get_auto_refuel(const mavlink_message_t* msg)
 {

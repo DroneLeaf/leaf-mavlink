@@ -6107,7 +6107,7 @@ MAVLINK_MSG_ID_LEAF_DO_VIDEO_STREAM = 77059
 MAVLINK_MSG_ID_LEAF_VIDEO_STREAM_RESPONSE = 77060
 MAVLINK_MSG_ID_LEAF_RACER_GPS_HOME = 77061
 MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE = 77062
-MAVLINK_MSG_ID_PAN_TILT_RECOMMENDED_AZ_ELE_DEG = 77063
+MAVLINK_MSG_ID_LEAF_PAN_TILT_RECOMMENDED_AZ_ELE_DEG = 77063
 MAVLINK_MSG_ID_LEAF_DO_RTH = 77064
 MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_CONTROL = 77065
 MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_RESPONSE = 77066
@@ -6119,6 +6119,8 @@ MAVLINK_MSG_ID_LEAF_PLANNER_PATH = 77071
 MAVLINK_MSG_ID_LEAF_GPS_PLAN_CHUNK = 77072
 MAVLINK_MSG_ID_LEAF_GPS_MISSION_EVENT = 77073
 MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE = 77074
+MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL = 77075
+MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS = 77076
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
 MAVLINK_MSG_ID_PING = 4
@@ -8140,7 +8142,9 @@ setattr(MAVLink_leaf_mission_heartbeat_v2_message, "name", mavlink_msg_deprecate
 
 class MAVLink_leaf_do_refuel_message(MAVLink_message):
     """
-    Engage or disengage refuel mode on the racer
+    Engage or disengage refuel mode on the racer. Renamed from
+    LEAF_DO_TERMINAL (field terminal); CRC_EXTRA changed, see leaf-
+    racer-ground-station docs/refuel-migration.md.
     """
 
     id = MAVLINK_MSG_ID_LEAF_DO_REFUEL
@@ -8270,7 +8274,10 @@ setattr(MAVLink_leaf_bbox_telemetry_message, "name", mavlink_msg_deprecated_name
 
 class MAVLink_leaf_racer_status_message(MAVLink_message):
     """
-    Racer system status telemetry (drone to GS).
+    Racer system status telemetry (drone to GS). Fields
+    terminal_switch_state and auto_terminal were renamed to
+    refuel_switch_state and auto_refuel; CRC_EXTRA changed, see leaf-
+    racer-ground-station docs/refuel-migration.md.
     """
 
     id = MAVLINK_MSG_ID_LEAF_RACER_STATUS
@@ -8759,22 +8766,22 @@ class MAVLink_leaf_racer_gps_guidance_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE
     msgname = "LEAF_RACER_GPS_GUIDANCE"
-    fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_aim_valid", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "saturation_flags", "route_mode", "route_revision", "boot_id", "route_session", "plan_revision", "sample_time_us", "controller_active"]
-    ordered_fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "l1_aim_valid", "saturation_flags", "route_mode", "route_revision", "boot_id", "route_session", "plan_revision", "sample_time_us", "controller_active"]
-    fieldtypes = ["int32_t", "int32_t", "int32_t", "int32_t", "float", "int32_t", "int32_t", "float", "int32_t", "int32_t", "uint8_t", "float", "float", "float", "float", "float", "uint8_t", "uint8_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint8_t"]
+    fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_aim_valid", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "saturation_flags", "route_mode", "route_revision", "boot_id", "route_session", "plan_revision", "sample_time_us", "controller_active", "alt_setpoint_m", "speed_setpoint_m_s"]
+    ordered_fieldnames = ["target_index", "mission_size", "from_lat_1e7", "from_lon_1e7", "from_alt_m", "to_lat_1e7", "to_lon_1e7", "to_alt_m", "l1_aim_lat_1e7", "l1_aim_lon_1e7", "l1_distance_m", "cross_track_error_m", "alt_error_m", "track_heading_rad", "l1_eta_rad", "l1_aim_valid", "saturation_flags", "route_mode", "route_revision", "boot_id", "route_session", "plan_revision", "sample_time_us", "controller_active", "alt_setpoint_m", "speed_setpoint_m_s"]
+    fieldtypes = ["int32_t", "int32_t", "int32_t", "int32_t", "float", "int32_t", "int32_t", "float", "int32_t", "int32_t", "uint8_t", "float", "float", "float", "float", "float", "uint8_t", "uint8_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint64_t", "uint8_t", "float", "float"]
     fielddisplays_by_name: Dict[str, str] = {"saturation_flags": "bitmask"}
     fieldenums_by_name: Dict[str, str] = {"saturation_flags": "LEAF_GPS_GUIDANCE_SATURATION"}
-    fieldunits_by_name: Dict[str, str] = {"from_alt_m": "m", "to_alt_m": "m", "l1_distance_m": "m", "cross_track_error_m": "m", "alt_error_m": "m", "track_heading_rad": "rad", "l1_eta_rad": "rad", "sample_time_us": "us"}
-    native_format = bytearray(b"<iiiifiifiifffffBBBQQQQQB")
-    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23]
-    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fieldunits_by_name: Dict[str, str] = {"from_alt_m": "m", "to_alt_m": "m", "l1_distance_m": "m", "cross_track_error_m": "m", "alt_error_m": "m", "track_heading_rad": "rad", "l1_eta_rad": "rad", "sample_time_us": "us", "alt_setpoint_m": "m", "speed_setpoint_m_s": "m/s"}
+    native_format = bytearray(b"<iiiifiifiifffffBBBQQQQQBff")
+    orders = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     crc_extra = 76
-    unpacker = struct.Struct("<iiiifiifiifffffBBBQQQQQB")
+    unpacker = struct.Struct("<iiiifiifiifffffBBBQQQQQBff")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0):
+    def __init__(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0, alt_setpoint_m: float = 0, speed_setpoint_m_s: float = 0):
         MAVLink_message.__init__(self, MAVLink_leaf_racer_gps_guidance_message.id, MAVLink_leaf_racer_gps_guidance_message.msgname)
         self._fieldnames = MAVLink_leaf_racer_gps_guidance_message.fieldnames
         self._instance_field = MAVLink_leaf_racer_gps_guidance_message.instance_field
@@ -8803,9 +8810,11 @@ class MAVLink_leaf_racer_gps_guidance_message(MAVLink_message):
         self.plan_revision = plan_revision
         self.sample_time_us = sample_time_us
         self.controller_active = controller_active
+        self.alt_setpoint_m = alt_setpoint_m
+        self.speed_setpoint_m_s = speed_setpoint_m_s
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_index, self.mission_size, self.from_lat_1e7, self.from_lon_1e7, self.from_alt_m, self.to_lat_1e7, self.to_lon_1e7, self.to_alt_m, self.l1_aim_lat_1e7, self.l1_aim_lon_1e7, self.l1_distance_m, self.cross_track_error_m, self.alt_error_m, self.track_heading_rad, self.l1_eta_rad, self.l1_aim_valid, self.saturation_flags, self.route_mode, self.route_revision, self.boot_id, self.route_session, self.plan_revision, self.sample_time_us, self.controller_active), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.target_index, self.mission_size, self.from_lat_1e7, self.from_lon_1e7, self.from_alt_m, self.to_lat_1e7, self.to_lon_1e7, self.to_alt_m, self.l1_aim_lat_1e7, self.l1_aim_lon_1e7, self.l1_distance_m, self.cross_track_error_m, self.alt_error_m, self.track_heading_rad, self.l1_eta_rad, self.l1_aim_valid, self.saturation_flags, self.route_mode, self.route_revision, self.boot_id, self.route_session, self.plan_revision, self.sample_time_us, self.controller_active, self.alt_setpoint_m, self.speed_setpoint_m_s), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -8813,14 +8822,14 @@ class MAVLink_leaf_racer_gps_guidance_message(MAVLink_message):
 setattr(MAVLink_leaf_racer_gps_guidance_message, "name", mavlink_msg_deprecated_name_property())
 
 
-class MAVLink_pan_tilt_recommended_az_ele_deg_message(MAVLink_message):
+class MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message(MAVLink_message):
     """
     Recommended follower departure direction. Informational only; not
     a vehicle command.
     """
 
-    id = MAVLINK_MSG_ID_PAN_TILT_RECOMMENDED_AZ_ELE_DEG
-    msgname = "PAN_TILT_RECOMMENDED_AZ_ELE_DEG"
+    id = MAVLINK_MSG_ID_LEAF_PAN_TILT_RECOMMENDED_AZ_ELE_DEG
+    msgname = "LEAF_PAN_TILT_RECOMMENDED_AZ_ELE_DEG"
     fieldnames = ["time_usec", "azimuth_deg", "elevation_deg", "valid"]
     ordered_fieldnames = ["time_usec", "azimuth_deg", "elevation_deg", "valid"]
     fieldtypes = ["uint64_t", "float", "float", "uint8_t"]
@@ -8831,16 +8840,16 @@ class MAVLink_pan_tilt_recommended_az_ele_deg_message(MAVLink_message):
     orders = [0, 1, 2, 3]
     lengths = [1, 1, 1, 1]
     array_lengths = [0, 0, 0, 0]
-    crc_extra = 148
+    crc_extra = 96
     unpacker = struct.Struct("<QffB")
     instance_field = None
     instance_offset = -1
 
     def __init__(self, time_usec: int, azimuth_deg: float, elevation_deg: float, valid: int):
-        MAVLink_message.__init__(self, MAVLink_pan_tilt_recommended_az_ele_deg_message.id, MAVLink_pan_tilt_recommended_az_ele_deg_message.msgname)
-        self._fieldnames = MAVLink_pan_tilt_recommended_az_ele_deg_message.fieldnames
-        self._instance_field = MAVLink_pan_tilt_recommended_az_ele_deg_message.instance_field
-        self._instance_offset = MAVLink_pan_tilt_recommended_az_ele_deg_message.instance_offset
+        MAVLink_message.__init__(self, MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message.id, MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message.msgname)
+        self._fieldnames = MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message.fieldnames
+        self._instance_field = MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message.instance_field
+        self._instance_offset = MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message.instance_offset
         self.time_usec = time_usec
         self.azimuth_deg = azimuth_deg
         self.elevation_deg = elevation_deg
@@ -8852,7 +8861,7 @@ class MAVLink_pan_tilt_recommended_az_ele_deg_message(MAVLink_message):
 
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
-setattr(MAVLink_pan_tilt_recommended_az_ele_deg_message, "name", mavlink_msg_deprecated_name_property())
+setattr(MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_leaf_do_rth_message(MAVLink_message):
@@ -9422,6 +9431,104 @@ class MAVLink_leaf_gimbal_matched_attitude_message(MAVLink_message):
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
 setattr(MAVLink_leaf_gimbal_matched_attitude_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gimbal_manual_control_message(MAVLink_message):
+    """
+    Ground-station manual gimbal control. ACTIVATE puts the gimbal in
+    HOLD and stops tracker, racer-mode and sine control of it;
+    SETPOINT moves the held pose while active; DEACTIVATE restores
+    automatic behaviour. Angles are FC joint degrees (pan inner, tilt
+    outer) and are clamped to the operating limits reported in
+    LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is answered by
+    one LEAF_GIMBAL_MANUAL_STATUS.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL
+    msgname = "LEAF_GIMBAL_MANUAL_CONTROL"
+    fieldnames = ["request_id", "target_system", "target_component", "action", "pan_setpoint_deg", "tilt_setpoint_deg"]
+    ordered_fieldnames = ["request_id", "pan_setpoint_deg", "tilt_setpoint_deg", "target_system", "target_component", "action"]
+    fieldtypes = ["uint32_t", "uint8_t", "uint8_t", "uint8_t", "float", "float"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {"pan_setpoint_deg": "deg", "tilt_setpoint_deg": "deg"}
+    native_format = bytearray(b"<IffBBB")
+    orders = [0, 3, 4, 5, 1, 2]
+    lengths = [1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0]
+    crc_extra = 151
+    unpacker = struct.Struct("<IffBBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, request_id: int, target_system: int, target_component: int, action: int, pan_setpoint_deg: float, tilt_setpoint_deg: float):
+        MAVLink_message.__init__(self, MAVLink_leaf_gimbal_manual_control_message.id, MAVLink_leaf_gimbal_manual_control_message.msgname)
+        self._fieldnames = MAVLink_leaf_gimbal_manual_control_message.fieldnames
+        self._instance_field = MAVLink_leaf_gimbal_manual_control_message.instance_field
+        self._instance_offset = MAVLink_leaf_gimbal_manual_control_message.instance_offset
+        self.request_id = request_id
+        self.target_system = target_system
+        self.target_component = target_component
+        self.action = action
+        self.pan_setpoint_deg = pan_setpoint_deg
+        self.tilt_setpoint_deg = tilt_setpoint_deg
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.request_id, self.pan_setpoint_deg, self.tilt_setpoint_deg, self.target_system, self.target_component, self.action), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gimbal_manual_control_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_gimbal_manual_status_message(MAVLink_message):
+    """
+    Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-
+    gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest
+    kept). Limits are the operating joint limits from config-gimbal
+    and the C40D range, inset by joint_margin_deg.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS
+    msgname = "LEAF_GIMBAL_MANUAL_STATUS"
+    fieldnames = ["request_id", "active", "session_state", "pan_min_deg", "pan_max_deg", "tilt_min_deg", "tilt_max_deg", "pan_command_deg", "tilt_command_deg"]
+    ordered_fieldnames = ["request_id", "pan_min_deg", "pan_max_deg", "tilt_min_deg", "tilt_max_deg", "pan_command_deg", "tilt_command_deg", "active", "session_state"]
+    fieldtypes = ["uint32_t", "uint8_t", "uint8_t", "float", "float", "float", "float", "float", "float"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {"pan_min_deg": "deg", "pan_max_deg": "deg", "tilt_min_deg": "deg", "tilt_max_deg": "deg", "pan_command_deg": "deg", "tilt_command_deg": "deg"}
+    native_format = bytearray(b"<IffffffBB")
+    orders = [0, 7, 8, 1, 2, 3, 4, 5, 6]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    crc_extra = 190
+    unpacker = struct.Struct("<IffffffBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, request_id: int, active: int, session_state: int, pan_min_deg: float, pan_max_deg: float, tilt_min_deg: float, tilt_max_deg: float, pan_command_deg: float, tilt_command_deg: float):
+        MAVLink_message.__init__(self, MAVLink_leaf_gimbal_manual_status_message.id, MAVLink_leaf_gimbal_manual_status_message.msgname)
+        self._fieldnames = MAVLink_leaf_gimbal_manual_status_message.fieldnames
+        self._instance_field = MAVLink_leaf_gimbal_manual_status_message.instance_field
+        self._instance_offset = MAVLink_leaf_gimbal_manual_status_message.instance_offset
+        self.request_id = request_id
+        self.active = active
+        self.session_state = session_state
+        self.pan_min_deg = pan_min_deg
+        self.pan_max_deg = pan_max_deg
+        self.tilt_min_deg = tilt_min_deg
+        self.tilt_max_deg = tilt_max_deg
+        self.pan_command_deg = pan_command_deg
+        self.tilt_command_deg = tilt_command_deg
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.request_id, self.pan_min_deg, self.pan_max_deg, self.tilt_min_deg, self.tilt_max_deg, self.pan_command_deg, self.tilt_command_deg, self.active, self.session_state), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_gimbal_manual_status_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_sys_status_message(MAVLink_message):
@@ -20958,7 +21065,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_VIDEO_STREAM_RESPONSE: MAVLink_leaf_video_stream_response_message,
     MAVLINK_MSG_ID_LEAF_RACER_GPS_HOME: MAVLink_leaf_racer_gps_home_message,
     MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE: MAVLink_leaf_racer_gps_guidance_message,
-    MAVLINK_MSG_ID_PAN_TILT_RECOMMENDED_AZ_ELE_DEG: MAVLink_pan_tilt_recommended_az_ele_deg_message,
+    MAVLINK_MSG_ID_LEAF_PAN_TILT_RECOMMENDED_AZ_ELE_DEG: MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message,
     MAVLINK_MSG_ID_LEAF_DO_RTH: MAVLink_leaf_do_rth_message,
     MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_CONTROL: MAVLink_leaf_gimbal_sine_control_message,
     MAVLINK_MSG_ID_LEAF_GIMBAL_SINE_RESPONSE: MAVLink_leaf_gimbal_sine_response_message,
@@ -20970,6 +21077,8 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_GPS_PLAN_CHUNK: MAVLink_leaf_gps_plan_chunk_message,
     MAVLINK_MSG_ID_LEAF_GPS_MISSION_EVENT: MAVLink_leaf_gps_mission_event_message,
     MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE: MAVLink_leaf_gimbal_matched_attitude_message,
+    MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL: MAVLink_leaf_gimbal_manual_control_message,
+    MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS: MAVLink_leaf_gimbal_manual_status_message,
     MAVLINK_MSG_ID_SYS_STATUS: MAVLink_sys_status_message,
     MAVLINK_MSG_ID_SYSTEM_TIME: MAVLink_system_time_message,
     MAVLINK_MSG_ID_PING: MAVLink_ping_message,
@@ -22586,7 +22695,9 @@ class MAVLink(object):
 
     def leaf_do_refuel_encode(self, target_system: int, refuel: int) -> MAVLink_leaf_do_refuel_message:
         """
-        Engage or disengage refuel mode on the racer
+        Engage or disengage refuel mode on the racer. Renamed from
+        LEAF_DO_TERMINAL (field terminal); CRC_EXTRA changed, see
+        leaf-racer-ground-station docs/refuel-migration.md.
 
         target_system             : The target system (type:uint8_t)
         refuel                    : 1 to engage refuel, 0 to disengage (type:uint8_t)
@@ -22596,7 +22707,9 @@ class MAVLink(object):
 
     def leaf_do_refuel_send(self, target_system: int, refuel: int, force_mavlink1: bool = False) -> None:
         """
-        Engage or disengage refuel mode on the racer
+        Engage or disengage refuel mode on the racer. Renamed from
+        LEAF_DO_TERMINAL (field terminal); CRC_EXTRA changed, see
+        leaf-racer-ground-station docs/refuel-migration.md.
 
         target_system             : The target system (type:uint8_t)
         refuel                    : 1 to engage refuel, 0 to disengage (type:uint8_t)
@@ -22670,7 +22783,10 @@ class MAVLink(object):
 
     def leaf_racer_status_encode(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, refuel_switch_state: int, pilot_safety_takeover_state: int, auto_refuel: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int) -> MAVLink_leaf_racer_status_message:
         """
-        Racer system status telemetry (drone to GS).
+        Racer system status telemetry (drone to GS). Fields
+        terminal_switch_state and auto_terminal were renamed to
+        refuel_switch_state and auto_refuel; CRC_EXTRA changed, see
+        leaf-racer-ground-station docs/refuel-migration.md.
 
         msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
         current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS) (type:uint8_t)
@@ -22679,7 +22795,7 @@ class MAVLink(object):
         rc_connection             : RC link connected (0/1) (type:uint8_t)
         refuel_switch_state        : ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
         pilot_safety_takeover_state        : Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
-        auto_refuel               : Auto-refuel (auto-refuel) enabled (0/1) (type:uint8_t)
+        auto_refuel               : Reserved, always 0 (FC auto-refuel removed) (type:uint8_t)
         gps_lat_1e7               : Latitude, degrees * 1e7 (type:int32_t)
         gps_lon_1e7               : Longitude, degrees * 1e7 (type:int32_t)
         gps_alt_m                 : Altitude, meters (type:int16_t)
@@ -22693,7 +22809,10 @@ class MAVLink(object):
 
     def leaf_racer_status_send(self, msp_status: int, current_racer_mode: int, tracker_health_state: int, estimator_health: int, rc_connection: int, refuel_switch_state: int, pilot_safety_takeover_state: int, auto_refuel: int, gps_lat_1e7: int, gps_lon_1e7: int, gps_alt_m: int, gps_num_sat: int, gps_fix: int, gps_ground_speed_cms: int, gps_ground_course_decideg: int, force_mavlink1: bool = False) -> None:
         """
-        Racer system status telemetry (drone to GS).
+        Racer system status telemetry (drone to GS). Fields
+        terminal_switch_state and auto_terminal were renamed to
+        refuel_switch_state and auto_refuel; CRC_EXTRA changed, see
+        leaf-racer-ground-station docs/refuel-migration.md.
 
         msp_status                : Betaflight MSP link status (0/1) (type:uint8_t)
         current_racer_mode        : Racer mode (0=Angle,1=AutomatedRollPitch,2=ReFuel,3=OscillationTest,4=GPS) (type:uint8_t)
@@ -22702,7 +22821,7 @@ class MAVLink(object):
         rc_connection             : RC link connected (0/1) (type:uint8_t)
         refuel_switch_state        : ReFuel switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
         pilot_safety_takeover_state        : Pilot safety-takeover switch state (0=UNKNOWN,1=LOW,2=MID,3=HIGH) (type:uint8_t)
-        auto_refuel               : Auto-refuel (auto-refuel) enabled (0/1) (type:uint8_t)
+        auto_refuel               : Reserved, always 0 (FC auto-refuel removed) (type:uint8_t)
         gps_lat_1e7               : Latitude, degrees * 1e7 (type:int32_t)
         gps_lon_1e7               : Longitude, degrees * 1e7 (type:int32_t)
         gps_alt_m                 : Altitude, meters (type:int16_t)
@@ -22992,7 +23111,7 @@ class MAVLink(object):
         """
         self.send(self.leaf_racer_gps_home_encode(home_lat_1e7, home_lon_1e7, home_alt_m), force_mavlink1=force_mavlink1)
 
-    def leaf_racer_gps_guidance_encode(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0) -> MAVLink_leaf_racer_gps_guidance_message:
+    def leaf_racer_gps_guidance_encode(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0, alt_setpoint_m: float = 0, speed_setpoint_m_s: float = 0) -> MAVLink_leaf_racer_gps_guidance_message:
         """
         Racer GPS guidance snapshot (drone to GS): the flown segment from ->
         to and the L1 internals. Sent periodically only while the
@@ -23022,11 +23141,13 @@ class MAVLink(object):
         plan_revision             : Accepted source plan revision. (type:uint64_t)
         sample_time_us            : Monotonic sample time. [us] (type:uint64_t)
         controller_active         : 1 when the GPSGuidance owner is active, independently of L1 aim validity. (type:uint8_t)
+        alt_setpoint_m            : Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive. [m] (type:float)
+        speed_setpoint_m_s        : Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive. [m/s] (type:float)
 
         """
-        return MAVLink_leaf_racer_gps_guidance_message(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision, boot_id, route_session, plan_revision, sample_time_us, controller_active)
+        return MAVLink_leaf_racer_gps_guidance_message(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision, boot_id, route_session, plan_revision, sample_time_us, controller_active, alt_setpoint_m, speed_setpoint_m_s)
 
-    def leaf_racer_gps_guidance_send(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0, force_mavlink1: bool = False) -> None:
+    def leaf_racer_gps_guidance_send(self, target_index: int, mission_size: int, from_lat_1e7: int, from_lon_1e7: int, from_alt_m: float, to_lat_1e7: int, to_lon_1e7: int, to_alt_m: float, l1_aim_lat_1e7: int, l1_aim_lon_1e7: int, l1_aim_valid: int, l1_distance_m: float, cross_track_error_m: float, alt_error_m: float, track_heading_rad: float, l1_eta_rad: float, saturation_flags: int, route_mode: int = 0, route_revision: int = 0, boot_id: int = 0, route_session: int = 0, plan_revision: int = 0, sample_time_us: int = 0, controller_active: int = 0, alt_setpoint_m: float = 0, speed_setpoint_m_s: float = 0, force_mavlink1: bool = False) -> None:
         """
         Racer GPS guidance snapshot (drone to GS): the flown segment from ->
         to and the L1 internals. Sent periodically only while the
@@ -23056,24 +23177,13 @@ class MAVLink(object):
         plan_revision             : Accepted source plan revision. (type:uint64_t)
         sample_time_us            : Monotonic sample time. [us] (type:uint64_t)
         controller_active         : 1 when the GPSGuidance owner is active, independently of L1 aim validity. (type:uint8_t)
+        alt_setpoint_m            : Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive. [m] (type:float)
+        speed_setpoint_m_s        : Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive. [m/s] (type:float)
 
         """
-        self.send(self.leaf_racer_gps_guidance_encode(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision, boot_id, route_session, plan_revision, sample_time_us, controller_active), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_racer_gps_guidance_encode(target_index, mission_size, from_lat_1e7, from_lon_1e7, from_alt_m, to_lat_1e7, to_lon_1e7, to_alt_m, l1_aim_lat_1e7, l1_aim_lon_1e7, l1_aim_valid, l1_distance_m, cross_track_error_m, alt_error_m, track_heading_rad, l1_eta_rad, saturation_flags, route_mode, route_revision, boot_id, route_session, plan_revision, sample_time_us, controller_active, alt_setpoint_m, speed_setpoint_m_s), force_mavlink1=force_mavlink1)
 
-    def pan_tilt_recommended_az_ele_deg_encode(self, time_usec: int, azimuth_deg: float, elevation_deg: float, valid: int) -> MAVLink_pan_tilt_recommended_az_ele_deg_message:
-        """
-        Recommended follower departure direction. Informational only; not a
-        vehicle command.
-
-        time_usec                 : Monotonic generation timestamp. [us] (type:uint64_t)
-        azimuth_deg               : Clockwise from north; NaN when invalid. [deg] (type:float)
-        elevation_deg             : Configured departure angle above horizon; NaN when invalid. [deg] (type:float)
-        valid                     : One when the recommendation is valid. (type:uint8_t)
-
-        """
-        return MAVLink_pan_tilt_recommended_az_ele_deg_message(time_usec, azimuth_deg, elevation_deg, valid)
-
-    def pan_tilt_recommended_az_ele_deg_send(self, time_usec: int, azimuth_deg: float, elevation_deg: float, valid: int, force_mavlink1: bool = False) -> None:
+    def leaf_pan_tilt_recommended_az_ele_deg_encode(self, time_usec: int, azimuth_deg: float, elevation_deg: float, valid: int) -> MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message:
         """
         Recommended follower departure direction. Informational only; not a
         vehicle command.
@@ -23084,7 +23194,20 @@ class MAVLink(object):
         valid                     : One when the recommendation is valid. (type:uint8_t)
 
         """
-        self.send(self.pan_tilt_recommended_az_ele_deg_encode(time_usec, azimuth_deg, elevation_deg, valid), force_mavlink1=force_mavlink1)
+        return MAVLink_leaf_pan_tilt_recommended_az_ele_deg_message(time_usec, azimuth_deg, elevation_deg, valid)
+
+    def leaf_pan_tilt_recommended_az_ele_deg_send(self, time_usec: int, azimuth_deg: float, elevation_deg: float, valid: int, force_mavlink1: bool = False) -> None:
+        """
+        Recommended follower departure direction. Informational only; not a
+        vehicle command.
+
+        time_usec                 : Monotonic generation timestamp. [us] (type:uint64_t)
+        azimuth_deg               : Clockwise from north; NaN when invalid. [deg] (type:float)
+        elevation_deg             : Configured departure angle above horizon; NaN when invalid. [deg] (type:float)
+        valid                     : One when the recommendation is valid. (type:uint8_t)
+
+        """
+        self.send(self.leaf_pan_tilt_recommended_az_ele_deg_encode(time_usec, azimuth_deg, elevation_deg, valid), force_mavlink1=force_mavlink1)
 
     def leaf_do_rth_encode(self, target_system: int) -> MAVLink_leaf_do_rth_message:
         """
@@ -23587,6 +23710,86 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_gimbal_matched_attitude_encode(pan_rad, tilt_rad, valid), force_mavlink1=force_mavlink1)
+
+    def leaf_gimbal_manual_control_encode(self, request_id: int, target_system: int, target_component: int, action: int, pan_setpoint_deg: float, tilt_setpoint_deg: float) -> MAVLink_leaf_gimbal_manual_control_message:
+        """
+        Ground-station manual gimbal control. ACTIVATE puts the gimbal in HOLD
+        and stops tracker, racer-mode and sine control of it; SETPOINT
+        moves the held pose while active; DEACTIVATE restores
+        automatic behaviour. Angles are FC joint degrees (pan inner,
+        tilt outer) and are clamped to the operating limits reported
+        in LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is
+        answered by one LEAF_GIMBAL_MANUAL_STATUS.
+
+        request_id                : Ground station request correlation ID. (type:uint32_t)
+        target_system             : Aircraft MAVLink system ID; broadcast is not accepted. (type:uint8_t)
+        target_component          : LeafFC component ID. (type:uint8_t)
+        action                    : 0 DEACTIVATE, 1 ACTIVATE, 2 SETPOINT. (type:uint8_t)
+        pan_setpoint_deg          : Pan setpoint; used only for SETPOINT. [deg] (type:float)
+        tilt_setpoint_deg         : Tilt setpoint; used only for SETPOINT. [deg] (type:float)
+
+        """
+        return MAVLink_leaf_gimbal_manual_control_message(request_id, target_system, target_component, action, pan_setpoint_deg, tilt_setpoint_deg)
+
+    def leaf_gimbal_manual_control_send(self, request_id: int, target_system: int, target_component: int, action: int, pan_setpoint_deg: float, tilt_setpoint_deg: float, force_mavlink1: bool = False) -> None:
+        """
+        Ground-station manual gimbal control. ACTIVATE puts the gimbal in HOLD
+        and stops tracker, racer-mode and sine control of it; SETPOINT
+        moves the held pose while active; DEACTIVATE restores
+        automatic behaviour. Angles are FC joint degrees (pan inner,
+        tilt outer) and are clamped to the operating limits reported
+        in LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is
+        answered by one LEAF_GIMBAL_MANUAL_STATUS.
+
+        request_id                : Ground station request correlation ID. (type:uint32_t)
+        target_system             : Aircraft MAVLink system ID; broadcast is not accepted. (type:uint8_t)
+        target_component          : LeafFC component ID. (type:uint8_t)
+        action                    : 0 DEACTIVATE, 1 ACTIVATE, 2 SETPOINT. (type:uint8_t)
+        pan_setpoint_deg          : Pan setpoint; used only for SETPOINT. [deg] (type:float)
+        tilt_setpoint_deg         : Tilt setpoint; used only for SETPOINT. [deg] (type:float)
+
+        """
+        self.send(self.leaf_gimbal_manual_control_encode(request_id, target_system, target_component, action, pan_setpoint_deg, tilt_setpoint_deg), force_mavlink1=force_mavlink1)
+
+    def leaf_gimbal_manual_status_encode(self, request_id: int, active: int, session_state: int, pan_min_deg: float, pan_max_deg: float, tilt_min_deg: float, tilt_max_deg: float, pan_command_deg: float, tilt_command_deg: float) -> MAVLink_leaf_gimbal_manual_status_message:
+        """
+        Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-
+        gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest
+        kept). Limits are the operating joint limits from config-
+        gimbal and the C40D range, inset by joint_margin_deg.
+
+        request_id                : Request ID this status answers. (type:uint32_t)
+        active                    : 1 manual control active, 0 automatic behaviour. (type:uint8_t)
+        session_state             : 0 initializing, 1 ready, 2 fault or disabled. (type:uint8_t)
+        pan_min_deg               : Lowest accepted pan setpoint. [deg] (type:float)
+        pan_max_deg               : Highest accepted pan setpoint. [deg] (type:float)
+        tilt_min_deg              : Lowest accepted tilt setpoint. [deg] (type:float)
+        tilt_max_deg              : Highest accepted tilt setpoint. [deg] (type:float)
+        pan_command_deg           : Pan command held when this status was built. [deg] (type:float)
+        tilt_command_deg          : Tilt command held when this status was built. [deg] (type:float)
+
+        """
+        return MAVLink_leaf_gimbal_manual_status_message(request_id, active, session_state, pan_min_deg, pan_max_deg, tilt_min_deg, tilt_max_deg, pan_command_deg, tilt_command_deg)
+
+    def leaf_gimbal_manual_status_send(self, request_id: int, active: int, session_state: int, pan_min_deg: float, pan_max_deg: float, tilt_min_deg: float, tilt_max_deg: float, pan_command_deg: float, tilt_command_deg: float, force_mavlink1: bool = False) -> None:
+        """
+        Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-
+        gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest
+        kept). Limits are the operating joint limits from config-
+        gimbal and the C40D range, inset by joint_margin_deg.
+
+        request_id                : Request ID this status answers. (type:uint32_t)
+        active                    : 1 manual control active, 0 automatic behaviour. (type:uint8_t)
+        session_state             : 0 initializing, 1 ready, 2 fault or disabled. (type:uint8_t)
+        pan_min_deg               : Lowest accepted pan setpoint. [deg] (type:float)
+        pan_max_deg               : Highest accepted pan setpoint. [deg] (type:float)
+        tilt_min_deg              : Lowest accepted tilt setpoint. [deg] (type:float)
+        tilt_max_deg              : Highest accepted tilt setpoint. [deg] (type:float)
+        pan_command_deg           : Pan command held when this status was built. [deg] (type:float)
+        tilt_command_deg          : Tilt command held when this status was built. [deg] (type:float)
+
+        """
+        self.send(self.leaf_gimbal_manual_status_encode(request_id, active, session_state, pan_min_deg, pan_max_deg, tilt_min_deg, tilt_max_deg, pan_command_deg, tilt_command_deg), force_mavlink1=force_mavlink1)
 
     def sys_status_encode(self, onboard_control_sensors_present: int, onboard_control_sensors_enabled: int, onboard_control_sensors_health: int, load: int, voltage_battery: int, current_battery: int, battery_remaining: int, drop_rate_comm: int, errors_comm: int, errors_count1: int, errors_count2: int, errors_count3: int, errors_count4: int, onboard_control_sensors_present_extended: int = 0, onboard_control_sensors_enabled_extended: int = 0, onboard_control_sensors_health_extended: int = 0) -> MAVLink_sys_status_message:
         """

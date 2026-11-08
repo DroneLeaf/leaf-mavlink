@@ -29,11 +29,13 @@ typedef struct __mavlink_leaf_racer_gps_guidance_t {
  uint64_t plan_revision; /*<  Accepted source plan revision.*/
  uint64_t sample_time_us; /*< [us] Monotonic sample time.*/
  uint8_t controller_active; /*<  1 when the GPSGuidance owner is active, independently of L1 aim validity.*/
+ float alt_setpoint_m; /*< [m] Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive.*/
+ float speed_setpoint_m_s; /*< [m/s] Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive.*/
 }) mavlink_leaf_racer_gps_guidance_t;
 
-#define MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN 104
+#define MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN 112
 #define MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN 62
-#define MAVLINK_MSG_ID_77062_LEN 104
+#define MAVLINK_MSG_ID_77062_LEN 112
 #define MAVLINK_MSG_ID_77062_MIN_LEN 62
 
 #define MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_CRC 76
@@ -45,7 +47,7 @@ typedef struct __mavlink_leaf_racer_gps_guidance_t {
 #define MAVLINK_MESSAGE_INFO_LEAF_RACER_GPS_GUIDANCE { \
     77062, \
     "LEAF_RACER_GPS_GUIDANCE", \
-    24, \
+    26, \
     {  { "target_index", NULL, MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_leaf_racer_gps_guidance_t, target_index) }, \
          { "mission_size", NULL, MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_leaf_racer_gps_guidance_t, mission_size) }, \
          { "from_lat_1e7", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_leaf_racer_gps_guidance_t, from_lat_1e7) }, \
@@ -70,12 +72,14 @@ typedef struct __mavlink_leaf_racer_gps_guidance_t {
          { "plan_revision", NULL, MAVLINK_TYPE_UINT64_T, 0, 87, offsetof(mavlink_leaf_racer_gps_guidance_t, plan_revision) }, \
          { "sample_time_us", NULL, MAVLINK_TYPE_UINT64_T, 0, 95, offsetof(mavlink_leaf_racer_gps_guidance_t, sample_time_us) }, \
          { "controller_active", NULL, MAVLINK_TYPE_UINT8_T, 0, 103, offsetof(mavlink_leaf_racer_gps_guidance_t, controller_active) }, \
+         { "alt_setpoint_m", NULL, MAVLINK_TYPE_FLOAT, 0, 104, offsetof(mavlink_leaf_racer_gps_guidance_t, alt_setpoint_m) }, \
+         { "speed_setpoint_m_s", NULL, MAVLINK_TYPE_FLOAT, 0, 108, offsetof(mavlink_leaf_racer_gps_guidance_t, speed_setpoint_m_s) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_LEAF_RACER_GPS_GUIDANCE { \
     "LEAF_RACER_GPS_GUIDANCE", \
-    24, \
+    26, \
     {  { "target_index", NULL, MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_leaf_racer_gps_guidance_t, target_index) }, \
          { "mission_size", NULL, MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_leaf_racer_gps_guidance_t, mission_size) }, \
          { "from_lat_1e7", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_leaf_racer_gps_guidance_t, from_lat_1e7) }, \
@@ -100,6 +104,8 @@ typedef struct __mavlink_leaf_racer_gps_guidance_t {
          { "plan_revision", NULL, MAVLINK_TYPE_UINT64_T, 0, 87, offsetof(mavlink_leaf_racer_gps_guidance_t, plan_revision) }, \
          { "sample_time_us", NULL, MAVLINK_TYPE_UINT64_T, 0, 95, offsetof(mavlink_leaf_racer_gps_guidance_t, sample_time_us) }, \
          { "controller_active", NULL, MAVLINK_TYPE_UINT8_T, 0, 103, offsetof(mavlink_leaf_racer_gps_guidance_t, controller_active) }, \
+         { "alt_setpoint_m", NULL, MAVLINK_TYPE_FLOAT, 0, 104, offsetof(mavlink_leaf_racer_gps_guidance_t, alt_setpoint_m) }, \
+         { "speed_setpoint_m_s", NULL, MAVLINK_TYPE_FLOAT, 0, 108, offsetof(mavlink_leaf_racer_gps_guidance_t, speed_setpoint_m_s) }, \
          } \
 }
 #endif
@@ -134,10 +140,12 @@ typedef struct __mavlink_leaf_racer_gps_guidance_t {
  * @param plan_revision  Accepted source plan revision.
  * @param sample_time_us [us] Monotonic sample time.
  * @param controller_active  1 when the GPSGuidance owner is active, independently of L1 aim validity.
+ * @param alt_setpoint_m [m] Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive.
+ * @param speed_setpoint_m_s [m/s] Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active)
+                               int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active, float alt_setpoint_m, float speed_setpoint_m_s)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN];
@@ -165,6 +173,8 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack(uint8_t system_i
     _mav_put_uint64_t(buf, 87, plan_revision);
     _mav_put_uint64_t(buf, 95, sample_time_us);
     _mav_put_uint8_t(buf, 103, controller_active);
+    _mav_put_float(buf, 104, alt_setpoint_m);
+    _mav_put_float(buf, 108, speed_setpoint_m_s);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN);
 #else
@@ -193,6 +203,8 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack(uint8_t system_i
     packet.plan_revision = plan_revision;
     packet.sample_time_us = sample_time_us;
     packet.controller_active = controller_active;
+    packet.alt_setpoint_m = alt_setpoint_m;
+    packet.speed_setpoint_m_s = speed_setpoint_m_s;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN);
 #endif
@@ -232,10 +244,12 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack(uint8_t system_i
  * @param plan_revision  Accepted source plan revision.
  * @param sample_time_us [us] Monotonic sample time.
  * @param controller_active  1 when the GPSGuidance owner is active, independently of L1 aim validity.
+ * @param alt_setpoint_m [m] Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive.
+ * @param speed_setpoint_m_s [m/s] Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active)
+                               int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active, float alt_setpoint_m, float speed_setpoint_m_s)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN];
@@ -263,6 +277,8 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_status(uint8_t s
     _mav_put_uint64_t(buf, 87, plan_revision);
     _mav_put_uint64_t(buf, 95, sample_time_us);
     _mav_put_uint8_t(buf, 103, controller_active);
+    _mav_put_float(buf, 104, alt_setpoint_m);
+    _mav_put_float(buf, 108, speed_setpoint_m_s);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN);
 #else
@@ -291,6 +307,8 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_status(uint8_t s
     packet.plan_revision = plan_revision;
     packet.sample_time_us = sample_time_us;
     packet.controller_active = controller_active;
+    packet.alt_setpoint_m = alt_setpoint_m;
+    packet.speed_setpoint_m_s = speed_setpoint_m_s;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN);
 #endif
@@ -333,11 +351,13 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_status(uint8_t s
  * @param plan_revision  Accepted source plan revision.
  * @param sample_time_us [us] Monotonic sample time.
  * @param controller_active  1 when the GPSGuidance owner is active, independently of L1 aim validity.
+ * @param alt_setpoint_m [m] Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive.
+ * @param speed_setpoint_m_s [m/s] Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   int32_t target_index,int32_t mission_size,int32_t from_lat_1e7,int32_t from_lon_1e7,float from_alt_m,int32_t to_lat_1e7,int32_t to_lon_1e7,float to_alt_m,int32_t l1_aim_lat_1e7,int32_t l1_aim_lon_1e7,uint8_t l1_aim_valid,float l1_distance_m,float cross_track_error_m,float alt_error_m,float track_heading_rad,float l1_eta_rad,uint8_t saturation_flags,uint8_t route_mode,uint64_t route_revision,uint64_t boot_id,uint64_t route_session,uint64_t plan_revision,uint64_t sample_time_us,uint8_t controller_active)
+                                   int32_t target_index,int32_t mission_size,int32_t from_lat_1e7,int32_t from_lon_1e7,float from_alt_m,int32_t to_lat_1e7,int32_t to_lon_1e7,float to_alt_m,int32_t l1_aim_lat_1e7,int32_t l1_aim_lon_1e7,uint8_t l1_aim_valid,float l1_distance_m,float cross_track_error_m,float alt_error_m,float track_heading_rad,float l1_eta_rad,uint8_t saturation_flags,uint8_t route_mode,uint64_t route_revision,uint64_t boot_id,uint64_t route_session,uint64_t plan_revision,uint64_t sample_time_us,uint8_t controller_active,float alt_setpoint_m,float speed_setpoint_m_s)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN];
@@ -365,6 +385,8 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_chan(uint8_t sys
     _mav_put_uint64_t(buf, 87, plan_revision);
     _mav_put_uint64_t(buf, 95, sample_time_us);
     _mav_put_uint8_t(buf, 103, controller_active);
+    _mav_put_float(buf, 104, alt_setpoint_m);
+    _mav_put_float(buf, 108, speed_setpoint_m_s);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN);
 #else
@@ -393,6 +415,8 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_chan(uint8_t sys
     packet.plan_revision = plan_revision;
     packet.sample_time_us = sample_time_us;
     packet.controller_active = controller_active;
+    packet.alt_setpoint_m = alt_setpoint_m;
+    packet.speed_setpoint_m_s = speed_setpoint_m_s;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN);
 #endif
@@ -411,7 +435,7 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_pack_chan(uint8_t sys
  */
 static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_racer_gps_guidance_t* leaf_racer_gps_guidance)
 {
-    return mavlink_msg_leaf_racer_gps_guidance_pack(system_id, component_id, msg, leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active);
+    return mavlink_msg_leaf_racer_gps_guidance_pack(system_id, component_id, msg, leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active, leaf_racer_gps_guidance->alt_setpoint_m, leaf_racer_gps_guidance->speed_setpoint_m_s);
 }
 
 /**
@@ -425,7 +449,7 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_encode(uint8_t system
  */
 static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_racer_gps_guidance_t* leaf_racer_gps_guidance)
 {
-    return mavlink_msg_leaf_racer_gps_guidance_pack_chan(system_id, component_id, chan, msg, leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active);
+    return mavlink_msg_leaf_racer_gps_guidance_pack_chan(system_id, component_id, chan, msg, leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active, leaf_racer_gps_guidance->alt_setpoint_m, leaf_racer_gps_guidance->speed_setpoint_m_s);
 }
 
 /**
@@ -439,7 +463,7 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_encode_chan(uint8_t s
  */
 static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_racer_gps_guidance_t* leaf_racer_gps_guidance)
 {
-    return mavlink_msg_leaf_racer_gps_guidance_pack_status(system_id, component_id, _status, msg,  leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active);
+    return mavlink_msg_leaf_racer_gps_guidance_pack_status(system_id, component_id, _status, msg,  leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active, leaf_racer_gps_guidance->alt_setpoint_m, leaf_racer_gps_guidance->speed_setpoint_m_s);
 }
 
 /**
@@ -470,10 +494,12 @@ static inline uint16_t mavlink_msg_leaf_racer_gps_guidance_encode_status(uint8_t
  * @param plan_revision  Accepted source plan revision.
  * @param sample_time_us [us] Monotonic sample time.
  * @param controller_active  1 when the GPSGuidance owner is active, independently of L1 aim validity.
+ * @param alt_setpoint_m [m] Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive.
+ * @param speed_setpoint_m_s [m/s] Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_racer_gps_guidance_send(mavlink_channel_t chan, int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active)
+static inline void mavlink_msg_leaf_racer_gps_guidance_send(mavlink_channel_t chan, int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active, float alt_setpoint_m, float speed_setpoint_m_s)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN];
@@ -501,6 +527,8 @@ static inline void mavlink_msg_leaf_racer_gps_guidance_send(mavlink_channel_t ch
     _mav_put_uint64_t(buf, 87, plan_revision);
     _mav_put_uint64_t(buf, 95, sample_time_us);
     _mav_put_uint8_t(buf, 103, controller_active);
+    _mav_put_float(buf, 104, alt_setpoint_m);
+    _mav_put_float(buf, 108, speed_setpoint_m_s);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE, buf, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_CRC);
 #else
@@ -529,6 +557,8 @@ static inline void mavlink_msg_leaf_racer_gps_guidance_send(mavlink_channel_t ch
     packet.plan_revision = plan_revision;
     packet.sample_time_us = sample_time_us;
     packet.controller_active = controller_active;
+    packet.alt_setpoint_m = alt_setpoint_m;
+    packet.speed_setpoint_m_s = speed_setpoint_m_s;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE, (const char *)&packet, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_CRC);
 #endif
@@ -542,7 +572,7 @@ static inline void mavlink_msg_leaf_racer_gps_guidance_send(mavlink_channel_t ch
 static inline void mavlink_msg_leaf_racer_gps_guidance_send_struct(mavlink_channel_t chan, const mavlink_leaf_racer_gps_guidance_t* leaf_racer_gps_guidance)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_racer_gps_guidance_send(chan, leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active);
+    mavlink_msg_leaf_racer_gps_guidance_send(chan, leaf_racer_gps_guidance->target_index, leaf_racer_gps_guidance->mission_size, leaf_racer_gps_guidance->from_lat_1e7, leaf_racer_gps_guidance->from_lon_1e7, leaf_racer_gps_guidance->from_alt_m, leaf_racer_gps_guidance->to_lat_1e7, leaf_racer_gps_guidance->to_lon_1e7, leaf_racer_gps_guidance->to_alt_m, leaf_racer_gps_guidance->l1_aim_lat_1e7, leaf_racer_gps_guidance->l1_aim_lon_1e7, leaf_racer_gps_guidance->l1_aim_valid, leaf_racer_gps_guidance->l1_distance_m, leaf_racer_gps_guidance->cross_track_error_m, leaf_racer_gps_guidance->alt_error_m, leaf_racer_gps_guidance->track_heading_rad, leaf_racer_gps_guidance->l1_eta_rad, leaf_racer_gps_guidance->saturation_flags, leaf_racer_gps_guidance->route_mode, leaf_racer_gps_guidance->route_revision, leaf_racer_gps_guidance->boot_id, leaf_racer_gps_guidance->route_session, leaf_racer_gps_guidance->plan_revision, leaf_racer_gps_guidance->sample_time_us, leaf_racer_gps_guidance->controller_active, leaf_racer_gps_guidance->alt_setpoint_m, leaf_racer_gps_guidance->speed_setpoint_m_s);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE, (const char *)leaf_racer_gps_guidance, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_CRC);
 #endif
@@ -556,7 +586,7 @@ static inline void mavlink_msg_leaf_racer_gps_guidance_send_struct(mavlink_chann
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_racer_gps_guidance_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active)
+static inline void mavlink_msg_leaf_racer_gps_guidance_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  int32_t target_index, int32_t mission_size, int32_t from_lat_1e7, int32_t from_lon_1e7, float from_alt_m, int32_t to_lat_1e7, int32_t to_lon_1e7, float to_alt_m, int32_t l1_aim_lat_1e7, int32_t l1_aim_lon_1e7, uint8_t l1_aim_valid, float l1_distance_m, float cross_track_error_m, float alt_error_m, float track_heading_rad, float l1_eta_rad, uint8_t saturation_flags, uint8_t route_mode, uint64_t route_revision, uint64_t boot_id, uint64_t route_session, uint64_t plan_revision, uint64_t sample_time_us, uint8_t controller_active, float alt_setpoint_m, float speed_setpoint_m_s)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -584,6 +614,8 @@ static inline void mavlink_msg_leaf_racer_gps_guidance_send_buf(mavlink_message_
     _mav_put_uint64_t(buf, 87, plan_revision);
     _mav_put_uint64_t(buf, 95, sample_time_us);
     _mav_put_uint8_t(buf, 103, controller_active);
+    _mav_put_float(buf, 104, alt_setpoint_m);
+    _mav_put_float(buf, 108, speed_setpoint_m_s);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE, buf, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_CRC);
 #else
@@ -612,6 +644,8 @@ static inline void mavlink_msg_leaf_racer_gps_guidance_send_buf(mavlink_message_
     packet->plan_revision = plan_revision;
     packet->sample_time_us = sample_time_us;
     packet->controller_active = controller_active;
+    packet->alt_setpoint_m = alt_setpoint_m;
+    packet->speed_setpoint_m_s = speed_setpoint_m_s;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE, (const char *)packet, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_MIN_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_CRC);
 #endif
@@ -864,6 +898,26 @@ static inline uint8_t mavlink_msg_leaf_racer_gps_guidance_get_controller_active(
 }
 
 /**
+ * @brief Get field alt_setpoint_m from leaf_racer_gps_guidance message
+ *
+ * @return [m] Rate-limited altitude setpoint tracked by the altitude PID; 0 while GPSGuidance is inactive.
+ */
+static inline float mavlink_msg_leaf_racer_gps_guidance_get_alt_setpoint_m(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_float(msg,  104);
+}
+
+/**
+ * @brief Get field speed_setpoint_m_s from leaf_racer_gps_guidance message
+ *
+ * @return [m/s] Rate-limited speed setpoint tracked by the speed PID; 0 while the speed feedback is inactive.
+ */
+static inline float mavlink_msg_leaf_racer_gps_guidance_get_speed_setpoint_m_s(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_float(msg,  108);
+}
+
+/**
  * @brief Decode a leaf_racer_gps_guidance message into a struct
  *
  * @param msg The message to decode
@@ -896,6 +950,8 @@ static inline void mavlink_msg_leaf_racer_gps_guidance_decode(const mavlink_mess
     leaf_racer_gps_guidance->plan_revision = mavlink_msg_leaf_racer_gps_guidance_get_plan_revision(msg);
     leaf_racer_gps_guidance->sample_time_us = mavlink_msg_leaf_racer_gps_guidance_get_sample_time_us(msg);
     leaf_racer_gps_guidance->controller_active = mavlink_msg_leaf_racer_gps_guidance_get_controller_active(msg);
+    leaf_racer_gps_guidance->alt_setpoint_m = mavlink_msg_leaf_racer_gps_guidance_get_alt_setpoint_m(msg);
+    leaf_racer_gps_guidance->speed_setpoint_m_s = mavlink_msg_leaf_racer_gps_guidance_get_speed_setpoint_m_s(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN? msg->len : MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN;
         memset(leaf_racer_gps_guidance, 0, MAVLINK_MSG_ID_LEAF_RACER_GPS_GUIDANCE_LEN);
