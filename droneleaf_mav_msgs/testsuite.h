@@ -2982,7 +2982,7 @@ static void mavlink_test_leaf_bf_status_ex(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_bf_status_ex_t packet_in = {
-        963497464,963497672,17651,17755,17859,17963,18067,187,254,65,132
+        963497464,963497672,17651,17755,17859,17963,18067,187,254,65,132,963498608
     };
     mavlink_leaf_bf_status_ex_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -2997,6 +2997,7 @@ static void mavlink_test_leaf_bf_status_ex(uint8_t system_id, uint8_t component_
         packet1.flight_mode_count = packet_in.flight_mode_count;
         packet1.arming_disable_count = packet_in.arming_disable_count;
         packet1.config_state_flags = packet_in.config_state_flags;
+        packet1.flight_mode_flags_ext = packet_in.flight_mode_flags_ext;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -3011,12 +3012,12 @@ static void mavlink_test_leaf_bf_status_ex(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bf_status_ex_pack(system_id, component_id, &msg , packet1.cycle_time_us , packet1.i2c_errors , packet1.sensor_mask , packet1.flight_mode_flags , packet1.profile , packet1.system_load , packet1.gyro_cycle_time , packet1.flight_mode_count , packet1.arming_disable_count , packet1.arming_disable_flags , packet1.config_state_flags );
+    mavlink_msg_leaf_bf_status_ex_pack(system_id, component_id, &msg , packet1.cycle_time_us , packet1.i2c_errors , packet1.sensor_mask , packet1.flight_mode_flags , packet1.profile , packet1.system_load , packet1.gyro_cycle_time , packet1.flight_mode_count , packet1.arming_disable_count , packet1.arming_disable_flags , packet1.config_state_flags , packet1.flight_mode_flags_ext );
     mavlink_msg_leaf_bf_status_ex_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bf_status_ex_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.cycle_time_us , packet1.i2c_errors , packet1.sensor_mask , packet1.flight_mode_flags , packet1.profile , packet1.system_load , packet1.gyro_cycle_time , packet1.flight_mode_count , packet1.arming_disable_count , packet1.arming_disable_flags , packet1.config_state_flags );
+    mavlink_msg_leaf_bf_status_ex_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.cycle_time_us , packet1.i2c_errors , packet1.sensor_mask , packet1.flight_mode_flags , packet1.profile , packet1.system_load , packet1.gyro_cycle_time , packet1.flight_mode_count , packet1.arming_disable_count , packet1.arming_disable_flags , packet1.config_state_flags , packet1.flight_mode_flags_ext );
     mavlink_msg_leaf_bf_status_ex_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -3029,7 +3030,7 @@ static void mavlink_test_leaf_bf_status_ex(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bf_status_ex_send(MAVLINK_COMM_1 , packet1.cycle_time_us , packet1.i2c_errors , packet1.sensor_mask , packet1.flight_mode_flags , packet1.profile , packet1.system_load , packet1.gyro_cycle_time , packet1.flight_mode_count , packet1.arming_disable_count , packet1.arming_disable_flags , packet1.config_state_flags );
+    mavlink_msg_leaf_bf_status_ex_send(MAVLINK_COMM_1 , packet1.cycle_time_us , packet1.i2c_errors , packet1.sensor_mask , packet1.flight_mode_flags , packet1.profile , packet1.system_load , packet1.gyro_cycle_time , packet1.flight_mode_count , packet1.arming_disable_count , packet1.arming_disable_flags , packet1.config_state_flags , packet1.flight_mode_flags_ext );
     mavlink_msg_leaf_bf_status_ex_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -3051,10 +3052,12 @@ static void mavlink_test_leaf_bf_box_names(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_leaf_bf_box_names_t packet_in = {
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTU"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTU",55,122
     };
     mavlink_leaf_bf_box_names_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
+        packet1.chunk_index = packet_in.chunk_index;
+        packet1.chunk_count = packet_in.chunk_count;
         
         mav_array_memcpy(packet1.box_names, packet_in.box_names, sizeof(char)*230);
         
@@ -3070,12 +3073,12 @@ static void mavlink_test_leaf_bf_box_names(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bf_box_names_pack(system_id, component_id, &msg , packet1.box_names );
+    mavlink_msg_leaf_bf_box_names_pack(system_id, component_id, &msg , packet1.box_names , packet1.chunk_index , packet1.chunk_count );
     mavlink_msg_leaf_bf_box_names_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bf_box_names_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.box_names );
+    mavlink_msg_leaf_bf_box_names_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.box_names , packet1.chunk_index , packet1.chunk_count );
     mavlink_msg_leaf_bf_box_names_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -3088,7 +3091,7 @@ static void mavlink_test_leaf_bf_box_names(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_leaf_bf_box_names_send(MAVLINK_COMM_1 , packet1.box_names );
+    mavlink_msg_leaf_bf_box_names_send(MAVLINK_COMM_1 , packet1.box_names , packet1.chunk_index , packet1.chunk_count );
     mavlink_msg_leaf_bf_box_names_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 

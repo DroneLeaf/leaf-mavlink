@@ -3,7 +3,7 @@
 
 #define MAVLINK_MSG_ID_LEAF_BF_STATUS_EX 77052
 
-
+MAVPACKED(
 typedef struct __mavlink_leaf_bf_status_ex_t {
  uint32_t flight_mode_flags; /*<  Active flight-mode flags bitmask*/
  uint32_t arming_disable_flags; /*<  Arming-disable flags bitmask*/
@@ -16,11 +16,12 @@ typedef struct __mavlink_leaf_bf_status_ex_t {
  uint8_t flight_mode_count; /*<  Number of flight-mode flag bits*/
  uint8_t arming_disable_count; /*<  Number of arming-disable flag bits*/
  uint8_t config_state_flags; /*<  Configuration state flags*/
-} mavlink_leaf_bf_status_ex_t;
+ uint32_t flight_mode_flags_ext; /*<  Active flight-mode flags bitmask for boxes 32-63*/
+}) mavlink_leaf_bf_status_ex_t;
 
-#define MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN 22
+#define MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN 26
 #define MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_MIN_LEN 22
-#define MAVLINK_MSG_ID_77052_LEN 22
+#define MAVLINK_MSG_ID_77052_LEN 26
 #define MAVLINK_MSG_ID_77052_MIN_LEN 22
 
 #define MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_CRC 107
@@ -32,7 +33,7 @@ typedef struct __mavlink_leaf_bf_status_ex_t {
 #define MAVLINK_MESSAGE_INFO_LEAF_BF_STATUS_EX { \
     77052, \
     "LEAF_BF_STATUS_EX", \
-    11, \
+    12, \
     {  { "cycle_time_us", NULL, MAVLINK_TYPE_UINT16_T, 0, 8, offsetof(mavlink_leaf_bf_status_ex_t, cycle_time_us) }, \
          { "i2c_errors", NULL, MAVLINK_TYPE_UINT16_T, 0, 10, offsetof(mavlink_leaf_bf_status_ex_t, i2c_errors) }, \
          { "sensor_mask", NULL, MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_leaf_bf_status_ex_t, sensor_mask) }, \
@@ -44,12 +45,13 @@ typedef struct __mavlink_leaf_bf_status_ex_t {
          { "arming_disable_count", NULL, MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_leaf_bf_status_ex_t, arming_disable_count) }, \
          { "arming_disable_flags", NULL, MAVLINK_TYPE_UINT32_T, 0, 4, offsetof(mavlink_leaf_bf_status_ex_t, arming_disable_flags) }, \
          { "config_state_flags", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_bf_status_ex_t, config_state_flags) }, \
+         { "flight_mode_flags_ext", NULL, MAVLINK_TYPE_UINT32_T, 0, 22, offsetof(mavlink_leaf_bf_status_ex_t, flight_mode_flags_ext) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_LEAF_BF_STATUS_EX { \
     "LEAF_BF_STATUS_EX", \
-    11, \
+    12, \
     {  { "cycle_time_us", NULL, MAVLINK_TYPE_UINT16_T, 0, 8, offsetof(mavlink_leaf_bf_status_ex_t, cycle_time_us) }, \
          { "i2c_errors", NULL, MAVLINK_TYPE_UINT16_T, 0, 10, offsetof(mavlink_leaf_bf_status_ex_t, i2c_errors) }, \
          { "sensor_mask", NULL, MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_leaf_bf_status_ex_t, sensor_mask) }, \
@@ -61,6 +63,7 @@ typedef struct __mavlink_leaf_bf_status_ex_t {
          { "arming_disable_count", NULL, MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_leaf_bf_status_ex_t, arming_disable_count) }, \
          { "arming_disable_flags", NULL, MAVLINK_TYPE_UINT32_T, 0, 4, offsetof(mavlink_leaf_bf_status_ex_t, arming_disable_flags) }, \
          { "config_state_flags", NULL, MAVLINK_TYPE_UINT8_T, 0, 21, offsetof(mavlink_leaf_bf_status_ex_t, config_state_flags) }, \
+         { "flight_mode_flags_ext", NULL, MAVLINK_TYPE_UINT32_T, 0, 22, offsetof(mavlink_leaf_bf_status_ex_t, flight_mode_flags_ext) }, \
          } \
 }
 #endif
@@ -82,10 +85,11 @@ typedef struct __mavlink_leaf_bf_status_ex_t {
  * @param arming_disable_count  Number of arming-disable flag bits
  * @param arming_disable_flags  Arming-disable flags bitmask
  * @param config_state_flags  Configuration state flags
+ * @param flight_mode_flags_ext  Active flight-mode flags bitmask for boxes 32-63
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags)
+                               uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags, uint32_t flight_mode_flags_ext)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN];
@@ -100,6 +104,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack(uint8_t system_id, uin
     _mav_put_uint8_t(buf, 19, flight_mode_count);
     _mav_put_uint8_t(buf, 20, arming_disable_count);
     _mav_put_uint8_t(buf, 21, config_state_flags);
+    _mav_put_uint32_t(buf, 22, flight_mode_flags_ext);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN);
 #else
@@ -115,6 +120,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack(uint8_t system_id, uin
     packet.flight_mode_count = flight_mode_count;
     packet.arming_disable_count = arming_disable_count;
     packet.config_state_flags = config_state_flags;
+    packet.flight_mode_flags_ext = flight_mode_flags_ext;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN);
 #endif
@@ -141,10 +147,11 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack(uint8_t system_id, uin
  * @param arming_disable_count  Number of arming-disable flag bits
  * @param arming_disable_flags  Arming-disable flags bitmask
  * @param config_state_flags  Configuration state flags
+ * @param flight_mode_flags_ext  Active flight-mode flags bitmask for boxes 32-63
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags)
+                               uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags, uint32_t flight_mode_flags_ext)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN];
@@ -159,6 +166,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_status(uint8_t system_
     _mav_put_uint8_t(buf, 19, flight_mode_count);
     _mav_put_uint8_t(buf, 20, arming_disable_count);
     _mav_put_uint8_t(buf, 21, config_state_flags);
+    _mav_put_uint32_t(buf, 22, flight_mode_flags_ext);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN);
 #else
@@ -174,6 +182,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_status(uint8_t system_
     packet.flight_mode_count = flight_mode_count;
     packet.arming_disable_count = arming_disable_count;
     packet.config_state_flags = config_state_flags;
+    packet.flight_mode_flags_ext = flight_mode_flags_ext;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN);
 #endif
@@ -203,11 +212,12 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_status(uint8_t system_
  * @param arming_disable_count  Number of arming-disable flag bits
  * @param arming_disable_flags  Arming-disable flags bitmask
  * @param config_state_flags  Configuration state flags
+ * @param flight_mode_flags_ext  Active flight-mode flags bitmask for boxes 32-63
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint16_t cycle_time_us,uint16_t i2c_errors,uint16_t sensor_mask,uint32_t flight_mode_flags,uint8_t profile,uint16_t system_load,uint16_t gyro_cycle_time,uint8_t flight_mode_count,uint8_t arming_disable_count,uint32_t arming_disable_flags,uint8_t config_state_flags)
+                                   uint16_t cycle_time_us,uint16_t i2c_errors,uint16_t sensor_mask,uint32_t flight_mode_flags,uint8_t profile,uint16_t system_load,uint16_t gyro_cycle_time,uint8_t flight_mode_count,uint8_t arming_disable_count,uint32_t arming_disable_flags,uint8_t config_state_flags,uint32_t flight_mode_flags_ext)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN];
@@ -222,6 +232,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_chan(uint8_t system_id
     _mav_put_uint8_t(buf, 19, flight_mode_count);
     _mav_put_uint8_t(buf, 20, arming_disable_count);
     _mav_put_uint8_t(buf, 21, config_state_flags);
+    _mav_put_uint32_t(buf, 22, flight_mode_flags_ext);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN);
 #else
@@ -237,6 +248,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_chan(uint8_t system_id
     packet.flight_mode_count = flight_mode_count;
     packet.arming_disable_count = arming_disable_count;
     packet.config_state_flags = config_state_flags;
+    packet.flight_mode_flags_ext = flight_mode_flags_ext;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN);
 #endif
@@ -255,7 +267,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_pack_chan(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_leaf_bf_status_ex_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_leaf_bf_status_ex_t* leaf_bf_status_ex)
 {
-    return mavlink_msg_leaf_bf_status_ex_pack(system_id, component_id, msg, leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags);
+    return mavlink_msg_leaf_bf_status_ex_pack(system_id, component_id, msg, leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags, leaf_bf_status_ex->flight_mode_flags_ext);
 }
 
 /**
@@ -269,7 +281,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_encode(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_leaf_bf_status_ex_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_leaf_bf_status_ex_t* leaf_bf_status_ex)
 {
-    return mavlink_msg_leaf_bf_status_ex_pack_chan(system_id, component_id, chan, msg, leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags);
+    return mavlink_msg_leaf_bf_status_ex_pack_chan(system_id, component_id, chan, msg, leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags, leaf_bf_status_ex->flight_mode_flags_ext);
 }
 
 /**
@@ -283,7 +295,7 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_encode_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_leaf_bf_status_ex_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_leaf_bf_status_ex_t* leaf_bf_status_ex)
 {
-    return mavlink_msg_leaf_bf_status_ex_pack_status(system_id, component_id, _status, msg,  leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags);
+    return mavlink_msg_leaf_bf_status_ex_pack_status(system_id, component_id, _status, msg,  leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags, leaf_bf_status_ex->flight_mode_flags_ext);
 }
 
 /**
@@ -301,10 +313,11 @@ static inline uint16_t mavlink_msg_leaf_bf_status_ex_encode_status(uint8_t syste
  * @param arming_disable_count  Number of arming-disable flag bits
  * @param arming_disable_flags  Arming-disable flags bitmask
  * @param config_state_flags  Configuration state flags
+ * @param flight_mode_flags_ext  Active flight-mode flags bitmask for boxes 32-63
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_leaf_bf_status_ex_send(mavlink_channel_t chan, uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags)
+static inline void mavlink_msg_leaf_bf_status_ex_send(mavlink_channel_t chan, uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags, uint32_t flight_mode_flags_ext)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN];
@@ -319,6 +332,7 @@ static inline void mavlink_msg_leaf_bf_status_ex_send(mavlink_channel_t chan, ui
     _mav_put_uint8_t(buf, 19, flight_mode_count);
     _mav_put_uint8_t(buf, 20, arming_disable_count);
     _mav_put_uint8_t(buf, 21, config_state_flags);
+    _mav_put_uint32_t(buf, 22, flight_mode_flags_ext);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX, buf, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_MIN_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_CRC);
 #else
@@ -334,6 +348,7 @@ static inline void mavlink_msg_leaf_bf_status_ex_send(mavlink_channel_t chan, ui
     packet.flight_mode_count = flight_mode_count;
     packet.arming_disable_count = arming_disable_count;
     packet.config_state_flags = config_state_flags;
+    packet.flight_mode_flags_ext = flight_mode_flags_ext;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX, (const char *)&packet, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_MIN_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_CRC);
 #endif
@@ -347,7 +362,7 @@ static inline void mavlink_msg_leaf_bf_status_ex_send(mavlink_channel_t chan, ui
 static inline void mavlink_msg_leaf_bf_status_ex_send_struct(mavlink_channel_t chan, const mavlink_leaf_bf_status_ex_t* leaf_bf_status_ex)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_leaf_bf_status_ex_send(chan, leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags);
+    mavlink_msg_leaf_bf_status_ex_send(chan, leaf_bf_status_ex->cycle_time_us, leaf_bf_status_ex->i2c_errors, leaf_bf_status_ex->sensor_mask, leaf_bf_status_ex->flight_mode_flags, leaf_bf_status_ex->profile, leaf_bf_status_ex->system_load, leaf_bf_status_ex->gyro_cycle_time, leaf_bf_status_ex->flight_mode_count, leaf_bf_status_ex->arming_disable_count, leaf_bf_status_ex->arming_disable_flags, leaf_bf_status_ex->config_state_flags, leaf_bf_status_ex->flight_mode_flags_ext);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX, (const char *)leaf_bf_status_ex, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_MIN_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_CRC);
 #endif
@@ -361,7 +376,7 @@ static inline void mavlink_msg_leaf_bf_status_ex_send_struct(mavlink_channel_t c
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_leaf_bf_status_ex_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags)
+static inline void mavlink_msg_leaf_bf_status_ex_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint16_t cycle_time_us, uint16_t i2c_errors, uint16_t sensor_mask, uint32_t flight_mode_flags, uint8_t profile, uint16_t system_load, uint16_t gyro_cycle_time, uint8_t flight_mode_count, uint8_t arming_disable_count, uint32_t arming_disable_flags, uint8_t config_state_flags, uint32_t flight_mode_flags_ext)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -376,6 +391,7 @@ static inline void mavlink_msg_leaf_bf_status_ex_send_buf(mavlink_message_t *msg
     _mav_put_uint8_t(buf, 19, flight_mode_count);
     _mav_put_uint8_t(buf, 20, arming_disable_count);
     _mav_put_uint8_t(buf, 21, config_state_flags);
+    _mav_put_uint32_t(buf, 22, flight_mode_flags_ext);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX, buf, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_MIN_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_CRC);
 #else
@@ -391,6 +407,7 @@ static inline void mavlink_msg_leaf_bf_status_ex_send_buf(mavlink_message_t *msg
     packet->flight_mode_count = flight_mode_count;
     packet->arming_disable_count = arming_disable_count;
     packet->config_state_flags = config_state_flags;
+    packet->flight_mode_flags_ext = flight_mode_flags_ext;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX, (const char *)packet, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_MIN_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_CRC);
 #endif
@@ -513,6 +530,16 @@ static inline uint8_t mavlink_msg_leaf_bf_status_ex_get_config_state_flags(const
 }
 
 /**
+ * @brief Get field flight_mode_flags_ext from leaf_bf_status_ex message
+ *
+ * @return  Active flight-mode flags bitmask for boxes 32-63
+ */
+static inline uint32_t mavlink_msg_leaf_bf_status_ex_get_flight_mode_flags_ext(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint32_t(msg,  22);
+}
+
+/**
  * @brief Decode a leaf_bf_status_ex message into a struct
  *
  * @param msg The message to decode
@@ -532,6 +559,7 @@ static inline void mavlink_msg_leaf_bf_status_ex_decode(const mavlink_message_t*
     leaf_bf_status_ex->flight_mode_count = mavlink_msg_leaf_bf_status_ex_get_flight_mode_count(msg);
     leaf_bf_status_ex->arming_disable_count = mavlink_msg_leaf_bf_status_ex_get_arming_disable_count(msg);
     leaf_bf_status_ex->config_state_flags = mavlink_msg_leaf_bf_status_ex_get_config_state_flags(msg);
+    leaf_bf_status_ex->flight_mode_flags_ext = mavlink_msg_leaf_bf_status_ex_get_flight_mode_flags_ext(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN? msg->len : MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN;
         memset(leaf_bf_status_ex, 0, MAVLINK_MSG_ID_LEAF_BF_STATUS_EX_LEN);

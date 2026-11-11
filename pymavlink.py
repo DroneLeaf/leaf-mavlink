@@ -8334,22 +8334,22 @@ class MAVLink_leaf_bf_status_ex_message(MAVLink_message):
 
     id = MAVLINK_MSG_ID_LEAF_BF_STATUS_EX
     msgname = "LEAF_BF_STATUS_EX"
-    fieldnames = ["cycle_time_us", "i2c_errors", "sensor_mask", "flight_mode_flags", "profile", "system_load", "gyro_cycle_time", "flight_mode_count", "arming_disable_count", "arming_disable_flags", "config_state_flags"]
-    ordered_fieldnames = ["flight_mode_flags", "arming_disable_flags", "cycle_time_us", "i2c_errors", "sensor_mask", "system_load", "gyro_cycle_time", "profile", "flight_mode_count", "arming_disable_count", "config_state_flags"]
-    fieldtypes = ["uint16_t", "uint16_t", "uint16_t", "uint32_t", "uint8_t", "uint16_t", "uint16_t", "uint8_t", "uint8_t", "uint32_t", "uint8_t"]
+    fieldnames = ["cycle_time_us", "i2c_errors", "sensor_mask", "flight_mode_flags", "profile", "system_load", "gyro_cycle_time", "flight_mode_count", "arming_disable_count", "arming_disable_flags", "config_state_flags", "flight_mode_flags_ext"]
+    ordered_fieldnames = ["flight_mode_flags", "arming_disable_flags", "cycle_time_us", "i2c_errors", "sensor_mask", "system_load", "gyro_cycle_time", "profile", "flight_mode_count", "arming_disable_count", "config_state_flags", "flight_mode_flags_ext"]
+    fieldtypes = ["uint16_t", "uint16_t", "uint16_t", "uint32_t", "uint8_t", "uint16_t", "uint16_t", "uint8_t", "uint8_t", "uint32_t", "uint8_t", "uint32_t"]
     fielddisplays_by_name: Dict[str, str] = {}
     fieldenums_by_name: Dict[str, str] = {}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<IIHHHHHBBBB")
-    orders = [2, 3, 4, 0, 7, 5, 6, 8, 9, 1, 10]
-    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    native_format = bytearray(b"<IIHHHHHBBBBI")
+    orders = [2, 3, 4, 0, 7, 5, 6, 8, 9, 1, 10, 11]
+    lengths = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     crc_extra = 107
-    unpacker = struct.Struct("<IIHHHHHBBBB")
+    unpacker = struct.Struct("<IIHHHHHBBBBI")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int):
+    def __init__(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int, flight_mode_flags_ext: int = 0):
         MAVLink_message.__init__(self, MAVLink_leaf_bf_status_ex_message.id, MAVLink_leaf_bf_status_ex_message.msgname)
         self._fieldnames = MAVLink_leaf_bf_status_ex_message.fieldnames
         self._instance_field = MAVLink_leaf_bf_status_ex_message.instance_field
@@ -8365,9 +8365,10 @@ class MAVLink_leaf_bf_status_ex_message(MAVLink_message):
         self.arming_disable_count = arming_disable_count
         self.arming_disable_flags = arming_disable_flags
         self.config_state_flags = config_state_flags
+        self.flight_mode_flags_ext = flight_mode_flags_ext
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.flight_mode_flags, self.arming_disable_flags, self.cycle_time_us, self.i2c_errors, self.sensor_mask, self.system_load, self.gyro_cycle_time, self.profile, self.flight_mode_count, self.arming_disable_count, self.config_state_flags), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.flight_mode_flags, self.arming_disable_flags, self.cycle_time_us, self.i2c_errors, self.sensor_mask, self.system_load, self.gyro_cycle_time, self.profile, self.flight_mode_count, self.arming_disable_count, self.config_state_flags, self.flight_mode_flags_ext), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -8378,36 +8379,39 @@ setattr(MAVLink_leaf_bf_status_ex_message, "name", mavlink_msg_deprecated_name_p
 class MAVLink_leaf_bf_box_names_message(MAVLink_message):
     """
     Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-
-    separated, forwarded to GS.
+    separated, forwarded to GS in chunks cut at name boundaries; the
+    full list is the chunks joined in chunk_index order.
     """
 
     id = MAVLINK_MSG_ID_LEAF_BF_BOX_NAMES
     msgname = "LEAF_BF_BOX_NAMES"
-    fieldnames = ["box_names"]
-    ordered_fieldnames = ["box_names"]
-    fieldtypes = ["char"]
+    fieldnames = ["box_names", "chunk_index", "chunk_count"]
+    ordered_fieldnames = ["box_names", "chunk_index", "chunk_count"]
+    fieldtypes = ["char", "uint8_t", "uint8_t"]
     fielddisplays_by_name: Dict[str, str] = {}
     fieldenums_by_name: Dict[str, str] = {}
     fieldunits_by_name: Dict[str, str] = {}
-    native_format = bytearray(b"<c")
-    orders = [0]
-    lengths = [1]
-    array_lengths = [230]
+    native_format = bytearray(b"<cBB")
+    orders = [0, 1, 2]
+    lengths = [1, 1, 1]
+    array_lengths = [230, 0, 0]
     crc_extra = 102
-    unpacker = struct.Struct("<230s")
+    unpacker = struct.Struct("<230sBB")
     instance_field = None
     instance_offset = -1
 
-    def __init__(self, box_names: bytes):
+    def __init__(self, box_names: bytes, chunk_index: int = 0, chunk_count: int = 0):
         MAVLink_message.__init__(self, MAVLink_leaf_bf_box_names_message.id, MAVLink_leaf_bf_box_names_message.msgname)
         self._fieldnames = MAVLink_leaf_bf_box_names_message.fieldnames
         self._instance_field = MAVLink_leaf_bf_box_names_message.instance_field
         self._instance_offset = MAVLink_leaf_bf_box_names_message.instance_offset
         self._box_names_raw = box_names
         self.box_names = box_names.split(b"\x00", 1)[0].decode("ascii", errors="replace")
+        self.chunk_index = chunk_index
+        self.chunk_count = chunk_count
 
     def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
-        return self._pack(mav, self.crc_extra, self.unpacker.pack(self._box_names_raw), force_mavlink1=force_mavlink1)
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self._box_names_raw, self.chunk_index, self.chunk_count), force_mavlink1=force_mavlink1)
 
 
 # Define name on the class for backwards compatibility (it is now msgname).
@@ -22833,7 +22837,7 @@ class MAVLink(object):
         """
         self.send(self.leaf_racer_status_encode(msp_status, current_racer_mode, tracker_health_state, estimator_health, rc_connection, refuel_switch_state, pilot_safety_takeover_state, auto_refuel, gps_lat_1e7, gps_lon_1e7, gps_alt_m, gps_num_sat, gps_fix, gps_ground_speed_cms, gps_ground_course_decideg), force_mavlink1=force_mavlink1)
 
-    def leaf_bf_status_ex_encode(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int) -> MAVLink_leaf_bf_status_ex_message:
+    def leaf_bf_status_ex_encode(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int, flight_mode_flags_ext: int = 0) -> MAVLink_leaf_bf_status_ex_message:
         """
         Betaflight extended status (MSP_STATUS_EX) forwarded to GS.
 
@@ -22848,11 +22852,12 @@ class MAVLink(object):
         arming_disable_count        : Number of arming-disable flag bits (type:uint8_t)
         arming_disable_flags        : Arming-disable flags bitmask (type:uint32_t)
         config_state_flags        : Configuration state flags (type:uint8_t)
+        flight_mode_flags_ext        : Active flight-mode flags bitmask for boxes 32-63 (type:uint32_t)
 
         """
-        return MAVLink_leaf_bf_status_ex_message(cycle_time_us, i2c_errors, sensor_mask, flight_mode_flags, profile, system_load, gyro_cycle_time, flight_mode_count, arming_disable_count, arming_disable_flags, config_state_flags)
+        return MAVLink_leaf_bf_status_ex_message(cycle_time_us, i2c_errors, sensor_mask, flight_mode_flags, profile, system_load, gyro_cycle_time, flight_mode_count, arming_disable_count, arming_disable_flags, config_state_flags, flight_mode_flags_ext)
 
-    def leaf_bf_status_ex_send(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int, force_mavlink1: bool = False) -> None:
+    def leaf_bf_status_ex_send(self, cycle_time_us: int, i2c_errors: int, sensor_mask: int, flight_mode_flags: int, profile: int, system_load: int, gyro_cycle_time: int, flight_mode_count: int, arming_disable_count: int, arming_disable_flags: int, config_state_flags: int, flight_mode_flags_ext: int = 0, force_mavlink1: bool = False) -> None:
         """
         Betaflight extended status (MSP_STATUS_EX) forwarded to GS.
 
@@ -22867,29 +22872,36 @@ class MAVLink(object):
         arming_disable_count        : Number of arming-disable flag bits (type:uint8_t)
         arming_disable_flags        : Arming-disable flags bitmask (type:uint32_t)
         config_state_flags        : Configuration state flags (type:uint8_t)
+        flight_mode_flags_ext        : Active flight-mode flags bitmask for boxes 32-63 (type:uint32_t)
 
         """
-        self.send(self.leaf_bf_status_ex_encode(cycle_time_us, i2c_errors, sensor_mask, flight_mode_flags, profile, system_load, gyro_cycle_time, flight_mode_count, arming_disable_count, arming_disable_flags, config_state_flags), force_mavlink1=force_mavlink1)
+        self.send(self.leaf_bf_status_ex_encode(cycle_time_us, i2c_errors, sensor_mask, flight_mode_flags, profile, system_load, gyro_cycle_time, flight_mode_count, arming_disable_count, arming_disable_flags, config_state_flags, flight_mode_flags_ext), force_mavlink1=force_mavlink1)
 
-    def leaf_bf_box_names_encode(self, box_names: bytes) -> MAVLink_leaf_bf_box_names_message:
-        """
-        Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated,
-        forwarded to GS.
-
-        box_names                 : Semicolon-separated Betaflight box-name string (truncated to fit) (type:char)
-
-        """
-        return MAVLink_leaf_bf_box_names_message(box_names)
-
-    def leaf_bf_box_names_send(self, box_names: bytes, force_mavlink1: bool = False) -> None:
+    def leaf_bf_box_names_encode(self, box_names: bytes, chunk_index: int = 0, chunk_count: int = 0) -> MAVLink_leaf_bf_box_names_message:
         """
         Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated,
-        forwarded to GS.
+        forwarded to GS in chunks cut at name boundaries; the full
+        list is the chunks joined in chunk_index order.
 
-        box_names                 : Semicolon-separated Betaflight box-name string (truncated to fit) (type:char)
+        box_names                 : Semicolon-separated Betaflight box names of this chunk (type:char)
+        chunk_index               : Index of this chunk, 0-based (type:uint8_t)
+        chunk_count               : Number of chunks in the full list (type:uint8_t)
 
         """
-        self.send(self.leaf_bf_box_names_encode(box_names), force_mavlink1=force_mavlink1)
+        return MAVLink_leaf_bf_box_names_message(box_names, chunk_index, chunk_count)
+
+    def leaf_bf_box_names_send(self, box_names: bytes, chunk_index: int = 0, chunk_count: int = 0, force_mavlink1: bool = False) -> None:
+        """
+        Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated,
+        forwarded to GS in chunks cut at name boundaries; the full
+        list is the chunks joined in chunk_index order.
+
+        box_names                 : Semicolon-separated Betaflight box names of this chunk (type:char)
+        chunk_index               : Index of this chunk, 0-based (type:uint8_t)
+        chunk_count               : Number of chunks in the full list (type:uint8_t)
+
+        """
+        self.send(self.leaf_bf_box_names_encode(box_names, chunk_index, chunk_count), force_mavlink1=force_mavlink1)
 
     def leaf_set_rc_loss_behavior_encode(self, target_system: int, generate_frame: int) -> MAVLink_leaf_set_rc_loss_behavior_message:
         """

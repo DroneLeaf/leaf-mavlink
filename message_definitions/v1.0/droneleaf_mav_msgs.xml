@@ -606,10 +606,15 @@
       <field type="uint8_t" name="arming_disable_count">Number of arming-disable flag bits</field>
       <field type="uint32_t" name="arming_disable_flags">Arming-disable flags bitmask</field>
       <field type="uint8_t" name="config_state_flags">Configuration state flags</field>
+      <extensions/>
+      <field type="uint32_t" name="flight_mode_flags_ext">Active flight-mode flags bitmask for boxes 32-63</field>
     </message>
     <message id="77053" name="LEAF_BF_BOX_NAMES">
-      <description>Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated, forwarded to GS.</description>
-      <field type="char[230]" name="box_names">Semicolon-separated Betaflight box-name string (truncated to fit)</field>
+      <description>Betaflight flight-mode box names (MSP_BOXNAMES), semicolon-separated, forwarded to GS in chunks cut at name boundaries; the full list is the chunks joined in chunk_index order.</description>
+      <field type="char[230]" name="box_names">Semicolon-separated Betaflight box names of this chunk</field>
+      <extensions/>
+      <field type="uint8_t" name="chunk_index">Index of this chunk, 0-based</field>
+      <field type="uint8_t" name="chunk_count">Number of chunks in the full list</field>
     </message>
     <message id="77054" name="LEAF_SET_RC_LOSS_BEHAVIOR">
       <description>Select the racer behaviour on RC-link loss: whether LeafFC generates a takeover CRSF frame or stays silent so Betaflight runs its own failsafe.</description>
