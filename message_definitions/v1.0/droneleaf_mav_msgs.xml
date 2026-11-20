@@ -872,7 +872,7 @@
       <field type="uint8_t" name="state">New state for state changes.</field>
     </message>
     <message id="77074" name="LEAF_GIMBAL_MATCHED_ATTITUDE">
-      <description>GimbalLOSCompensation observation sampled at the configured publishing rate. Pan is inner C40D pitch; tilt is outer C40D roll. Physical feedback radians, without command polarity inversion. Fields copy the current observation matched_attitude directly, without holding a previous sample. Emitted only when gimbal compensation is enabled.</description>
+      <description>GimbalLOSCompensation observation sampled at the configured publishing rate. Pan is inner C40D pitch; tilt is outer C40D roll. True joint radians: the C40D physical feedback mapped through config-gimbal's joint calibration (identical to the physical feedback when joint_calibration_enabled is false), without command polarity inversion. Fields copy the current observation matched_attitude directly, without holding a previous sample. Emitted only when gimbal compensation is enabled.</description>
       <field type="double" name="pan_rad" units="rad">LOS-matched inner pan (C40D pitch).</field>
       <field type="double" name="tilt_rad" units="rad">LOS-matched outer tilt (C40D roll).</field>
       <field type="uint8_t" name="valid">Current observation matched_attitude.valid: 1 valid, 0 invalid. Ignore angles when 0.</field>
