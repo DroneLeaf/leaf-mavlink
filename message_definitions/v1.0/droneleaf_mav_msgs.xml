@@ -286,6 +286,78 @@
         <description>Altitude command clamped at the horizon (no downward thrust)</description>
       </entry>
     </enum>
+    <enum name="LEAF_ARM_CLEARANCE_WITHHELD_REASON" bitmask="true">
+      <description>Why LeafFC withholds the Betaflight arm clearance (Betaflight arming-disable flag LEAF_FC).</description>
+      <entry value="1" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_BUILD_DATE_UNKNOWN">
+        <description>No MSP_BUILD_INFO reply yet, or its build date could not be parsed</description>
+      </entry>
+      <entry value="2" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_BUILD_DATE_OLDER">
+        <description>Betaflight build date is older than config-betaflight_manager_requirements.required_build_date</description>
+      </entry>
+      <entry value="4" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_GIT_REVISION_UNKNOWN">
+        <description>A git revision is required but MSP_BUILD_INFO has not been received yet</description>
+      </entry>
+      <entry value="8" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_GIT_REVISION_MISMATCH">
+        <description>Betaflight git revision does not match config-betaflight_manager_requirements.required_git_revision</description>
+      </entry>
+      <entry value="16" name="LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_UNKNOWN">
+        <description>No LEAF_IMU reception state reported yet</description>
+      </entry>
+      <entry value="32" name="LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_NOT_RECEIVING">
+        <description>Betaflight LEAF_IMU frames are not arriving</description>
+      </entry>
+      <entry value="64" name="LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_NOT_REQUIRED">
+        <description>LEAF frames reported as not required; arm clearance always requires them</description>
+      </entry>
+      <entry value="128" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_UNKNOWN">
+        <description>No MSP_BOXNAMES or MSP_STATUS_EX yet, so the Betaflight flight mode is unknown</description>
+      </entry>
+      <entry value="256" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_ANGLE">
+        <description>Betaflight is in ANGLE (angle switch, failsafe, ALTHOLD or POSHOLD), not ACRO</description>
+      </entry>
+      <entry value="512" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_HORIZON">
+        <description>Betaflight is in HORIZON, not ACRO</description>
+      </entry>
+      <entry value="1024" name="LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_GPS_RESCUE">
+        <description>Betaflight is in GPS_RESCUE, not ACRO</description>
+      </entry>
+      <entry value="2048" name="LEAF_ARM_CLEARANCE_WITHHELD_IMU_LIVENESS_UNKNOWN">
+        <description>Gyro and acc values have not been reported as changing yet</description>
+      </entry>
+      <entry value="4096" name="LEAF_ARM_CLEARANCE_WITHHELD_IMU_FROZEN">
+        <description>Gyro or acc values have not changed for the liveness window</description>
+      </entry>
+      <entry value="8192" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_UNKNOWN">
+        <description>No MSP_MODE_RANGES reply read yet</description>
+      </entry>
+      <entry value="16384" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MALFORMED_REPLY">
+        <description>MSP_MODE_RANGES reply empty or malformed</description>
+      </entry>
+      <entry value="32768" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_EXTRA_COUNT_MISMATCH">
+        <description>MSP_MODE_RANGES_EXTRA and MSP_MODE_RANGES differ in entry count</description>
+      </entry>
+      <entry value="65536" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_SLOT_MODE_MISMATCH">
+        <description>A slot's mode differs between MSP_MODE_RANGES and MSP_MODE_RANGES_EXTRA</description>
+      </entry>
+      <entry value="131072" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_CONDITION_COUNT">
+        <description>Betaflight Modes tab does not have exactly one ARM condition</description>
+      </entry>
+      <entry value="262144" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_LINKED">
+        <description>ARM is linked to another mode instead of a switch range</description>
+      </entry>
+      <entry value="524288" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_CHANNEL_NOT_ON_CRSF">
+        <description>ARM is on a channel above CH16, which CRSF cannot carry</description>
+      </entry>
+      <entry value="1048576" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_RANGE_UNREACHABLE">
+        <description>No CRSF-reachable arm value in the ARM range</description>
+      </entry>
+      <entry value="2097152" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_NO_SAFE_DISARM_VALUE">
+        <description>Neither 1000 nor 2000 is safely outside the ARM range</description>
+      </entry>
+      <entry value="4194304" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MODE_ACTIVE_ON_RC_LOSS">
+        <description>Another mode is active at a value the generated RC frame writes while the RC link is lost</description>
+      </entry>
+    </enum>
   </enums>
   <messages>
     <message id="77000" name="LEAF_MODE">
@@ -905,6 +977,11 @@
       <field type="float" name="avg_motor_rpm" units="rpm">Average mechanical motor speed over all motors. Ignore when flags bit 2 is clear.</field>
       <field type="uint8_t" name="rpm_source">0 none, 1 bidirectional DShot telemetry, 2 ESC sensor.</field>
       <field type="uint8_t" name="flags">Bit 0 voltage valid, bit 1 current valid, bit 2 rpm valid.</field>
+    </message>
+    <message id="77078" name="LEAF_ARM_CLEARANCE_STATUS">
+      <description>LeafFC Betaflight arm clearance and every reason it is withheld (drone to GS), sent periodically at config-betaflight_manager_requirements.arm_clearance_status_rate_hz.</description>
+      <field type="uint32_t" name="withheld_reasons" enum="LEAF_ARM_CLEARANCE_WITHHELD_REASON" display="bitmask">Every check currently withholding the clearance; 0 when cleared.</field>
+      <field type="uint8_t" name="cleared">1 when LeafFC grants Betaflight arming, 0 when it withholds it.</field>
     </message>
   </messages>
 </mavlink>

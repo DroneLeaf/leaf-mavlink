@@ -577,6 +577,58 @@ enums["LEAF_GPS_GUIDANCE_SATURATION"][8] = EnumEntry("LEAF_GPS_GUIDANCE_SATURATI
 LEAF_GPS_GUIDANCE_SATURATION_ENUM_END = 9
 enums["LEAF_GPS_GUIDANCE_SATURATION"][9] = EnumEntry("LEAF_GPS_GUIDANCE_SATURATION_ENUM_END", """""")
 
+# LEAF_ARM_CLEARANCE_WITHHELD_REASON
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"] = Enum()
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"].bitmask = True
+LEAF_ARM_CLEARANCE_WITHHELD_BF_BUILD_DATE_UNKNOWN = 1
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][1] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_BUILD_DATE_UNKNOWN", """No MSP_BUILD_INFO reply yet, or its build date could not be parsed""")
+LEAF_ARM_CLEARANCE_WITHHELD_BF_BUILD_DATE_OLDER = 2
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][2] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_BUILD_DATE_OLDER", """Betaflight build date is older than config-betaflight_manager_requirements.required_build_date""")
+LEAF_ARM_CLEARANCE_WITHHELD_BF_GIT_REVISION_UNKNOWN = 4
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][4] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_GIT_REVISION_UNKNOWN", """A git revision is required but MSP_BUILD_INFO has not been received yet""")
+LEAF_ARM_CLEARANCE_WITHHELD_BF_GIT_REVISION_MISMATCH = 8
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][8] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_GIT_REVISION_MISMATCH", """Betaflight git revision does not match config-betaflight_manager_requirements.required_git_revision""")
+LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_UNKNOWN = 16
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][16] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_UNKNOWN", """No LEAF_IMU reception state reported yet""")
+LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_NOT_RECEIVING = 32
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][32] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_NOT_RECEIVING", """Betaflight LEAF_IMU frames are not arriving""")
+LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_NOT_REQUIRED = 64
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][64] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_LEAF_FRAMES_NOT_REQUIRED", """LEAF frames reported as not required; arm clearance always requires them""")
+LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_UNKNOWN = 128
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][128] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_UNKNOWN", """No MSP_BOXNAMES or MSP_STATUS_EX yet, so the Betaflight flight mode is unknown""")
+LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_ANGLE = 256
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][256] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_ANGLE", """Betaflight is in ANGLE (angle switch, failsafe, ALTHOLD or POSHOLD), not ACRO""")
+LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_HORIZON = 512
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][512] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_HORIZON", """Betaflight is in HORIZON, not ACRO""")
+LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_GPS_RESCUE = 1024
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][1024] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_BF_FLIGHT_MODE_GPS_RESCUE", """Betaflight is in GPS_RESCUE, not ACRO""")
+LEAF_ARM_CLEARANCE_WITHHELD_IMU_LIVENESS_UNKNOWN = 2048
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][2048] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_IMU_LIVENESS_UNKNOWN", """Gyro and acc values have not been reported as changing yet""")
+LEAF_ARM_CLEARANCE_WITHHELD_IMU_FROZEN = 4096
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][4096] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_IMU_FROZEN", """Gyro or acc values have not changed for the liveness window""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_UNKNOWN = 8192
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][8192] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_UNKNOWN", """No MSP_MODE_RANGES reply read yet""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MALFORMED_REPLY = 16384
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][16384] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MALFORMED_REPLY", """MSP_MODE_RANGES reply empty or malformed""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_EXTRA_COUNT_MISMATCH = 32768
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][32768] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_EXTRA_COUNT_MISMATCH", """MSP_MODE_RANGES_EXTRA and MSP_MODE_RANGES differ in entry count""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_SLOT_MODE_MISMATCH = 65536
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][65536] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_SLOT_MODE_MISMATCH", """A slot's mode differs between MSP_MODE_RANGES and MSP_MODE_RANGES_EXTRA""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_CONDITION_COUNT = 131072
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][131072] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_CONDITION_COUNT", """Betaflight Modes tab does not have exactly one ARM condition""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_LINKED = 262144
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][262144] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_LINKED", """ARM is linked to another mode instead of a switch range""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_CHANNEL_NOT_ON_CRSF = 524288
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][524288] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_CHANNEL_NOT_ON_CRSF", """ARM is on a channel above CH16, which CRSF cannot carry""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_RANGE_UNREACHABLE = 1048576
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][1048576] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_RANGE_UNREACHABLE", """No CRSF-reachable arm value in the ARM range""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_NO_SAFE_DISARM_VALUE = 2097152
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][2097152] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_NO_SAFE_DISARM_VALUE", """Neither 1000 nor 2000 is safely outside the ARM range""")
+LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MODE_ACTIVE_ON_RC_LOSS = 4194304
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][4194304] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MODE_ACTIVE_ON_RC_LOSS", """Another mode is active at a value the generated RC frame writes while the RC link is lost""")
+LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END = 4194305
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][4194305] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END", """""")
+
 # FIRMWARE_VERSION_TYPE
 enums["FIRMWARE_VERSION_TYPE"] = Enum()
 enums["FIRMWARE_VERSION_TYPE"].bitmask = False
@@ -6122,6 +6174,7 @@ MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE = 77074
 MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL = 77075
 MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS = 77076
 MAVLINK_MSG_ID_LEAF_ESC_MEAS = 77077
+MAVLINK_MSG_ID_LEAF_ARM_CLEARANCE_STATUS = 77078
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
 MAVLINK_MSG_ID_PING = 4
@@ -9397,10 +9450,12 @@ class MAVLink_leaf_gimbal_matched_attitude_message(MAVLink_message):
     """
     GimbalLOSCompensation observation sampled at the configured
     publishing rate. Pan is inner C40D pitch; tilt is outer C40D roll.
-    Physical feedback radians, without command polarity inversion.
-    Fields copy the current observation matched_attitude directly,
-    without holding a previous sample. Emitted only when gimbal
-    compensation is enabled.
+    True joint radians: the C40D physical feedback mapped through
+    config-gimbal's joint calibration (identical to the physical
+    feedback when joint_calibration_enabled is false), without command
+    polarity inversion. Fields copy the current observation
+    matched_attitude directly, without holding a previous sample.
+    Emitted only when gimbal compensation is enabled.
     """
 
     id = MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE
@@ -9444,7 +9499,11 @@ class MAVLink_leaf_gimbal_manual_control_message(MAVLink_message):
     HOLD and stops tracker, racer-mode and sine control of it;
     SETPOINT moves the held pose while active; DEACTIVATE restores
     automatic behaviour. Angles are FC joint degrees (pan inner, tilt
-    outer) and are clamped to the operating limits reported in
+    outer): TRUE joints, the frame of LEAF_GIMBAL_MATCHED_ATTITUDE.
+    With config-gimbal joint_calibration_enabled the FC maps a
+    setpoint through the inverse joint calibration to the C40D's
+    reported joints; disabled, they are the reported joints. Setpoints
+    are clamped to the operating limits reported in
     LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is answered by
     one LEAF_GIMBAL_MANUAL_STATUS.
     """
@@ -9492,7 +9551,11 @@ class MAVLink_leaf_gimbal_manual_status_message(MAVLink_message):
     Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-
     gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest
     kept). Limits are the operating joint limits from config-gimbal
-    and the C40D range, inset by joint_margin_deg.
+    and the C40D range, inset by joint_margin_deg. Every angle is in
+    TRUE joints (as LEAF_GIMBAL_MANUAL_CONTROL): with the joint
+    calibration enabled the limits are the calibrated reported limits
+    (each at the other joint's zero) and the command is the held
+    reported command mapped through the calibration.
     """
 
     id = MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS
@@ -9578,6 +9641,47 @@ class MAVLink_leaf_esc_meas_message(MAVLink_message):
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
 setattr(MAVLink_leaf_esc_meas_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_arm_clearance_status_message(MAVLink_message):
+    """
+    LeafFC Betaflight arm clearance and every reason it is withheld
+    (drone to GS), sent periodically at config-
+    betaflight_manager_requirements.arm_clearance_status_rate_hz.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_ARM_CLEARANCE_STATUS
+    msgname = "LEAF_ARM_CLEARANCE_STATUS"
+    fieldnames = ["withheld_reasons", "cleared"]
+    ordered_fieldnames = ["withheld_reasons", "cleared"]
+    fieldtypes = ["uint32_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {"withheld_reasons": "bitmask"}
+    fieldenums_by_name: Dict[str, str] = {"withheld_reasons": "LEAF_ARM_CLEARANCE_WITHHELD_REASON"}
+    fieldunits_by_name: Dict[str, str] = {}
+    native_format = bytearray(b"<IB")
+    orders = [0, 1]
+    lengths = [1, 1]
+    array_lengths = [0, 0]
+    crc_extra = 80
+    unpacker = struct.Struct("<IB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, withheld_reasons: int, cleared: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_arm_clearance_status_message.id, MAVLink_leaf_arm_clearance_status_message.msgname)
+        self._fieldnames = MAVLink_leaf_arm_clearance_status_message.fieldnames
+        self._instance_field = MAVLink_leaf_arm_clearance_status_message.instance_field
+        self._instance_offset = MAVLink_leaf_arm_clearance_status_message.instance_offset
+        self.withheld_reasons = withheld_reasons
+        self.cleared = cleared
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.withheld_reasons, self.cleared), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_arm_clearance_status_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_sys_status_message(MAVLink_message):
@@ -21129,6 +21233,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL: MAVLink_leaf_gimbal_manual_control_message,
     MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS: MAVLink_leaf_gimbal_manual_status_message,
     MAVLINK_MSG_ID_LEAF_ESC_MEAS: MAVLink_leaf_esc_meas_message,
+    MAVLINK_MSG_ID_LEAF_ARM_CLEARANCE_STATUS: MAVLink_leaf_arm_clearance_status_message,
     MAVLINK_MSG_ID_SYS_STATUS: MAVLink_sys_status_message,
     MAVLINK_MSG_ID_SYSTEM_TIME: MAVLink_system_time_message,
     MAVLINK_MSG_ID_PING: MAVLink_ping_message,
@@ -23740,11 +23845,14 @@ class MAVLink(object):
     def leaf_gimbal_matched_attitude_encode(self, pan_rad: float, tilt_rad: float, valid: int) -> MAVLink_leaf_gimbal_matched_attitude_message:
         """
         GimbalLOSCompensation observation sampled at the configured publishing
-        rate. Pan is inner C40D pitch; tilt is outer C40D roll.
-        Physical feedback radians, without command polarity inversion.
-        Fields copy the current observation matched_attitude directly,
-        without holding a previous sample. Emitted only when gimbal
-        compensation is enabled.
+        rate. Pan is inner C40D pitch; tilt is outer C40D roll. True
+        joint radians: the C40D physical feedback mapped through
+        config-gimbal's joint calibration (identical to the physical
+        feedback when joint_calibration_enabled is false), without
+        command polarity inversion. Fields copy the current
+        observation matched_attitude directly, without holding a
+        previous sample. Emitted only when gimbal compensation is
+        enabled.
 
         pan_rad                   : LOS-matched inner pan (C40D pitch). [rad] (type:double)
         tilt_rad                  : LOS-matched outer tilt (C40D roll). [rad] (type:double)
@@ -23756,11 +23864,14 @@ class MAVLink(object):
     def leaf_gimbal_matched_attitude_send(self, pan_rad: float, tilt_rad: float, valid: int, force_mavlink1: bool = False) -> None:
         """
         GimbalLOSCompensation observation sampled at the configured publishing
-        rate. Pan is inner C40D pitch; tilt is outer C40D roll.
-        Physical feedback radians, without command polarity inversion.
-        Fields copy the current observation matched_attitude directly,
-        without holding a previous sample. Emitted only when gimbal
-        compensation is enabled.
+        rate. Pan is inner C40D pitch; tilt is outer C40D roll. True
+        joint radians: the C40D physical feedback mapped through
+        config-gimbal's joint calibration (identical to the physical
+        feedback when joint_calibration_enabled is false), without
+        command polarity inversion. Fields copy the current
+        observation matched_attitude directly, without holding a
+        previous sample. Emitted only when gimbal compensation is
+        enabled.
 
         pan_rad                   : LOS-matched inner pan (C40D pitch). [rad] (type:double)
         tilt_rad                  : LOS-matched outer tilt (C40D roll). [rad] (type:double)
@@ -23775,9 +23886,14 @@ class MAVLink(object):
         and stops tracker, racer-mode and sine control of it; SETPOINT
         moves the held pose while active; DEACTIVATE restores
         automatic behaviour. Angles are FC joint degrees (pan inner,
-        tilt outer) and are clamped to the operating limits reported
-        in LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is
-        answered by one LEAF_GIMBAL_MANUAL_STATUS.
+        tilt outer): TRUE joints, the frame of
+        LEAF_GIMBAL_MATCHED_ATTITUDE. With config-gimbal
+        joint_calibration_enabled the FC maps a setpoint through the
+        inverse joint calibration to the C40D's reported joints;
+        disabled, they are the reported joints. Setpoints are clamped
+        to the operating limits reported in LEAF_GIMBAL_MANUAL_STATUS.
+        Each addressed packet is answered by one
+        LEAF_GIMBAL_MANUAL_STATUS.
 
         request_id                : Ground station request correlation ID. (type:uint32_t)
         target_system             : Aircraft MAVLink system ID; broadcast is not accepted. (type:uint8_t)
@@ -23795,9 +23911,14 @@ class MAVLink(object):
         and stops tracker, racer-mode and sine control of it; SETPOINT
         moves the held pose while active; DEACTIVATE restores
         automatic behaviour. Angles are FC joint degrees (pan inner,
-        tilt outer) and are clamped to the operating limits reported
-        in LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is
-        answered by one LEAF_GIMBAL_MANUAL_STATUS.
+        tilt outer): TRUE joints, the frame of
+        LEAF_GIMBAL_MATCHED_ATTITUDE. With config-gimbal
+        joint_calibration_enabled the FC maps a setpoint through the
+        inverse joint calibration to the C40D's reported joints;
+        disabled, they are the reported joints. Setpoints are clamped
+        to the operating limits reported in LEAF_GIMBAL_MANUAL_STATUS.
+        Each addressed packet is answered by one
+        LEAF_GIMBAL_MANUAL_STATUS.
 
         request_id                : Ground station request correlation ID. (type:uint32_t)
         target_system             : Aircraft MAVLink system ID; broadcast is not accepted. (type:uint8_t)
@@ -23814,7 +23935,12 @@ class MAVLink(object):
         Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-
         gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest
         kept). Limits are the operating joint limits from config-
-        gimbal and the C40D range, inset by joint_margin_deg.
+        gimbal and the C40D range, inset by joint_margin_deg. Every
+        angle is in TRUE joints (as LEAF_GIMBAL_MANUAL_CONTROL): with
+        the joint calibration enabled the limits are the calibrated
+        reported limits (each at the other joint's zero) and the
+        command is the held reported command mapped through the
+        calibration.
 
         request_id                : Request ID this status answers. (type:uint32_t)
         active                    : 1 manual control active, 0 automatic behaviour. (type:uint8_t)
@@ -23834,7 +23960,12 @@ class MAVLink(object):
         Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-
         gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest
         kept). Limits are the operating joint limits from config-
-        gimbal and the C40D range, inset by joint_margin_deg.
+        gimbal and the C40D range, inset by joint_margin_deg. Every
+        angle is in TRUE joints (as LEAF_GIMBAL_MANUAL_CONTROL): with
+        the joint calibration enabled the limits are the calibrated
+        reported limits (each at the other joint's zero) and the
+        command is the held reported command mapped through the
+        calibration.
 
         request_id                : Request ID this status answers. (type:uint32_t)
         active                    : 1 manual control active, 0 automatic behaviour. (type:uint8_t)
@@ -23880,6 +24011,30 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_esc_meas_encode(battery_voltage_v, battery_current_a, avg_motor_rpm, rpm_source, flags), force_mavlink1=force_mavlink1)
+
+    def leaf_arm_clearance_status_encode(self, withheld_reasons: int, cleared: int) -> MAVLink_leaf_arm_clearance_status_message:
+        """
+        LeafFC Betaflight arm clearance and every reason it is withheld (drone
+        to GS), sent periodically at config-
+        betaflight_manager_requirements.arm_clearance_status_rate_hz.
+
+        withheld_reasons          : Every check currently withholding the clearance; 0 when cleared. (type:uint32_t, values:LEAF_ARM_CLEARANCE_WITHHELD_REASON)
+        cleared                   : 1 when LeafFC grants Betaflight arming, 0 when it withholds it. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_arm_clearance_status_message(withheld_reasons, cleared)
+
+    def leaf_arm_clearance_status_send(self, withheld_reasons: int, cleared: int, force_mavlink1: bool = False) -> None:
+        """
+        LeafFC Betaflight arm clearance and every reason it is withheld (drone
+        to GS), sent periodically at config-
+        betaflight_manager_requirements.arm_clearance_status_rate_hz.
+
+        withheld_reasons          : Every check currently withholding the clearance; 0 when cleared. (type:uint32_t, values:LEAF_ARM_CLEARANCE_WITHHELD_REASON)
+        cleared                   : 1 when LeafFC grants Betaflight arming, 0 when it withholds it. (type:uint8_t)
+
+        """
+        self.send(self.leaf_arm_clearance_status_encode(withheld_reasons, cleared), force_mavlink1=force_mavlink1)
 
     def sys_status_encode(self, onboard_control_sensors_present: int, onboard_control_sensors_enabled: int, onboard_control_sensors_health: int, load: int, voltage_battery: int, current_battery: int, battery_remaining: int, drop_rate_comm: int, errors_comm: int, errors_count1: int, errors_count2: int, errors_count3: int, errors_count4: int, onboard_control_sensors_present_extended: int = 0, onboard_control_sensors_enabled_extended: int = 0, onboard_control_sensors_health_extended: int = 0) -> MAVLink_sys_status_message:
         """
