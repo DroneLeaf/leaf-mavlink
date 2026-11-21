@@ -6121,6 +6121,7 @@ MAVLINK_MSG_ID_LEAF_GPS_MISSION_EVENT = 77073
 MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE = 77074
 MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL = 77075
 MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS = 77076
+MAVLINK_MSG_ID_LEAF_ESC_MEAS = 77077
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
 MAVLINK_MSG_ID_PING = 4
@@ -9533,6 +9534,50 @@ class MAVLink_leaf_gimbal_manual_status_message(MAVLink_message):
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
 setattr(MAVLink_leaf_gimbal_manual_status_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_esc_meas_message(MAVLink_message):
+    """
+    Battery and motor measurements from Betaflight (drone to GS),
+    forwarded from the pushed MSPv2 LEAF_ESC_MEAS frame and rate
+    limited to config-target.esc_meas_publish_rate_hz (newest kept).
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_ESC_MEAS
+    msgname = "LEAF_ESC_MEAS"
+    fieldnames = ["battery_voltage_v", "battery_current_a", "avg_motor_rpm", "rpm_source", "flags"]
+    ordered_fieldnames = ["battery_voltage_v", "battery_current_a", "avg_motor_rpm", "rpm_source", "flags"]
+    fieldtypes = ["float", "float", "float", "uint8_t", "uint8_t"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {"battery_voltage_v": "V", "battery_current_a": "A", "avg_motor_rpm": "rpm"}
+    native_format = bytearray(b"<fffBB")
+    orders = [0, 1, 2, 3, 4]
+    lengths = [1, 1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0, 0]
+    crc_extra = 226
+    unpacker = struct.Struct("<fffBB")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, battery_voltage_v: float, battery_current_a: float, avg_motor_rpm: float, rpm_source: int, flags: int):
+        MAVLink_message.__init__(self, MAVLink_leaf_esc_meas_message.id, MAVLink_leaf_esc_meas_message.msgname)
+        self._fieldnames = MAVLink_leaf_esc_meas_message.fieldnames
+        self._instance_field = MAVLink_leaf_esc_meas_message.instance_field
+        self._instance_offset = MAVLink_leaf_esc_meas_message.instance_offset
+        self.battery_voltage_v = battery_voltage_v
+        self.battery_current_a = battery_current_a
+        self.avg_motor_rpm = avg_motor_rpm
+        self.rpm_source = rpm_source
+        self.flags = flags
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.battery_voltage_v, self.battery_current_a, self.avg_motor_rpm, self.rpm_source, self.flags), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_esc_meas_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_sys_status_message(MAVLink_message):
@@ -21083,6 +21128,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_GIMBAL_MATCHED_ATTITUDE: MAVLink_leaf_gimbal_matched_attitude_message,
     MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL: MAVLink_leaf_gimbal_manual_control_message,
     MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS: MAVLink_leaf_gimbal_manual_status_message,
+    MAVLINK_MSG_ID_LEAF_ESC_MEAS: MAVLink_leaf_esc_meas_message,
     MAVLINK_MSG_ID_SYS_STATUS: MAVLink_sys_status_message,
     MAVLINK_MSG_ID_SYSTEM_TIME: MAVLink_system_time_message,
     MAVLINK_MSG_ID_PING: MAVLink_ping_message,
@@ -23802,6 +23848,38 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_gimbal_manual_status_encode(request_id, active, session_state, pan_min_deg, pan_max_deg, tilt_min_deg, tilt_max_deg, pan_command_deg, tilt_command_deg), force_mavlink1=force_mavlink1)
+
+    def leaf_esc_meas_encode(self, battery_voltage_v: float, battery_current_a: float, avg_motor_rpm: float, rpm_source: int, flags: int) -> MAVLink_leaf_esc_meas_message:
+        """
+        Battery and motor measurements from Betaflight (drone to GS),
+        forwarded from the pushed MSPv2 LEAF_ESC_MEAS frame and rate
+        limited to config-target.esc_meas_publish_rate_hz (newest
+        kept).
+
+        battery_voltage_v         : Battery voltage from the configured battery_meter. Ignore when flags bit 0 is clear. [V] (type:float)
+        battery_current_a         : Battery current from the configured current_meter. Ignore when flags bit 1 is clear. [A] (type:float)
+        avg_motor_rpm             : Average mechanical motor speed over all motors. Ignore when flags bit 2 is clear. [rpm] (type:float)
+        rpm_source                : 0 none, 1 bidirectional DShot telemetry, 2 ESC sensor. (type:uint8_t)
+        flags                     : Bit 0 voltage valid, bit 1 current valid, bit 2 rpm valid. (type:uint8_t)
+
+        """
+        return MAVLink_leaf_esc_meas_message(battery_voltage_v, battery_current_a, avg_motor_rpm, rpm_source, flags)
+
+    def leaf_esc_meas_send(self, battery_voltage_v: float, battery_current_a: float, avg_motor_rpm: float, rpm_source: int, flags: int, force_mavlink1: bool = False) -> None:
+        """
+        Battery and motor measurements from Betaflight (drone to GS),
+        forwarded from the pushed MSPv2 LEAF_ESC_MEAS frame and rate
+        limited to config-target.esc_meas_publish_rate_hz (newest
+        kept).
+
+        battery_voltage_v         : Battery voltage from the configured battery_meter. Ignore when flags bit 0 is clear. [V] (type:float)
+        battery_current_a         : Battery current from the configured current_meter. Ignore when flags bit 1 is clear. [A] (type:float)
+        avg_motor_rpm             : Average mechanical motor speed over all motors. Ignore when flags bit 2 is clear. [rpm] (type:float)
+        rpm_source                : 0 none, 1 bidirectional DShot telemetry, 2 ESC sensor. (type:uint8_t)
+        flags                     : Bit 0 voltage valid, bit 1 current valid, bit 2 rpm valid. (type:uint8_t)
+
+        """
+        self.send(self.leaf_esc_meas_encode(battery_voltage_v, battery_current_a, avg_motor_rpm, rpm_source, flags), force_mavlink1=force_mavlink1)
 
     def sys_status_encode(self, onboard_control_sensors_present: int, onboard_control_sensors_enabled: int, onboard_control_sensors_health: int, load: int, voltage_battery: int, current_battery: int, battery_remaining: int, drop_rate_comm: int, errors_comm: int, errors_count1: int, errors_count2: int, errors_count3: int, errors_count4: int, onboard_control_sensors_present_extended: int = 0, onboard_control_sensors_enabled_extended: int = 0, onboard_control_sensors_health_extended: int = 0) -> MAVLink_sys_status_message:
         """

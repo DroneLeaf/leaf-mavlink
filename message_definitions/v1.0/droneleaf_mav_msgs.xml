@@ -898,5 +898,13 @@
       <field type="float" name="pan_command_deg" units="deg">Pan command held when this status was built.</field>
       <field type="float" name="tilt_command_deg" units="deg">Tilt command held when this status was built.</field>
     </message>
+    <message id="77077" name="LEAF_ESC_MEAS">
+      <description>Battery and motor measurements from Betaflight (drone to GS), forwarded from the pushed MSPv2 LEAF_ESC_MEAS frame and rate limited to config-target.esc_meas_publish_rate_hz (newest kept).</description>
+      <field type="float" name="battery_voltage_v" units="V">Battery voltage from the configured battery_meter. Ignore when flags bit 0 is clear.</field>
+      <field type="float" name="battery_current_a" units="A">Battery current from the configured current_meter. Ignore when flags bit 1 is clear.</field>
+      <field type="float" name="avg_motor_rpm" units="rpm">Average mechanical motor speed over all motors. Ignore when flags bit 2 is clear.</field>
+      <field type="uint8_t" name="rpm_source">0 none, 1 bidirectional DShot telemetry, 2 ESC sensor.</field>
+      <field type="uint8_t" name="flags">Bit 0 voltage valid, bit 1 current valid, bit 2 rpm valid.</field>
+    </message>
   </messages>
 </mavlink>
