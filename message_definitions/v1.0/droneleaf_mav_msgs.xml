@@ -357,6 +357,15 @@
       <entry value="4194304" name="LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MODE_ACTIVE_ON_RC_LOSS">
         <description>Another mode is active at a value the generated RC frame writes while the RC link is lost</description>
       </entry>
+      <entry value="8388608" name="LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_NOT_SET">
+        <description>GPS takeoff mode: config-gps_guidance.safe_landing_gps_position is empty</description>
+      </entry>
+      <entry value="16777216" name="LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_HOME_UNAVAILABLE">
+        <description>GPS takeoff mode: no GPS home recorded yet, so the safe landing distance cannot be checked</description>
+      </entry>
+      <entry value="33554432" name="LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_BEYOND_LIMIT">
+        <description>GPS takeoff mode: the safe landing point is farther from the GPS home than config-gps_guidance.safe_landing_max_distance_from_home_m</description>
+      </entry>
     </enum>
   </enums>
   <messages>

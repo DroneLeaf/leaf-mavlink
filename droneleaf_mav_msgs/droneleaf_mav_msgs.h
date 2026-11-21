@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_DRONELEAF_MAV_MSGS.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -8178871980916645699
+#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -1363456101637863639
 
 #ifdef __cplusplus
 extern "C" {
@@ -280,7 +280,10 @@ typedef enum LEAF_ARM_CLEARANCE_WITHHELD_REASON
    LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_ARM_RANGE_UNREACHABLE=1048576, /* No CRSF-reachable arm value in the ARM range | */
    LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_NO_SAFE_DISARM_VALUE=2097152, /* Neither 1000 nor 2000 is safely outside the ARM range | */
    LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MODE_ACTIVE_ON_RC_LOSS=4194304, /* Another mode is active at a value the generated RC frame writes while the RC link is lost | */
-   LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END=4194305, /*  | */
+   LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_NOT_SET=8388608, /* GPS takeoff mode: config-gps_guidance.safe_landing_gps_position is empty | */
+   LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_HOME_UNAVAILABLE=16777216, /* GPS takeoff mode: no GPS home recorded yet, so the safe landing distance cannot be checked | */
+   LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_BEYOND_LIMIT=33554432, /* GPS takeoff mode: the safe landing point is farther from the GPS home than config-gps_guidance.safe_landing_max_distance_from_home_m | */
+   LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END=33554433, /*  | */
 } LEAF_ARM_CLEARANCE_WITHHELD_REASON;
 #endif
 
