@@ -751,7 +751,7 @@
       <field type="float" name="home_alt_m" units="m">Home altitude, in the GPS receiver altitude reference</field>
     </message>
     <message id="77062" name="LEAF_RACER_GPS_GUIDANCE">
-      <description>Racer GPS guidance snapshot (drone to GS): the flown segment from -> to and the L1 internals. Sent periodically only while the guidance holds a target waypoint; silence means no target.</description>
+      <description>Racer GPS guidance snapshot (drone to GS): the flown segment from -&gt; to and the L1 internals. Sent periodically only while the guidance holds a target waypoint; silence means no target.</description>
       <field type="int32_t" name="target_index">Mission index of the target waypoint (to)</field>
       <field type="int32_t" name="mission_size">Number of waypoints in the accepted route; route_mode identifies RTH and home loiter</field>
       <field type="int32_t" name="from_lat_1e7">Segment start latitude, degrees * 1e7</field>
@@ -764,10 +764,10 @@
       <field type="int32_t" name="l1_aim_lon_1e7">L1 aim point longitude, degrees * 1e7 (valid only with l1_aim_valid)</field>
       <field type="uint8_t" name="l1_aim_valid">1 = GPS guidance active with an L1 aim point this tick</field>
       <field type="float" name="l1_distance_m" units="m">L1 lookahead distance; also the radius within which the next waypoint is requested</field>
-      <field type="float" name="cross_track_error_m" units="m">Signed distance from the from -> to line, positive to the left of the track</field>
+      <field type="float" name="cross_track_error_m" units="m">Signed distance from the from -&gt; to line, positive to the left of the track</field>
       <field type="float" name="alt_error_m" units="m">Target altitude minus current altitude</field>
       <field type="float" name="track_heading_rad" units="rad">Track direction, counter-clockwise from East</field>
-      <field type="float" name="l1_eta_rad" units="rad">L1 angle velocity -> aim point, before its +/-90 deg clamp</field>
+      <field type="float" name="l1_eta_rad" units="rad">L1 angle velocity -&gt; aim point, before its +/-90 deg clamp</field>
       <field type="uint8_t" name="saturation_flags" enum="LEAF_GPS_GUIDANCE_SATURATION" display="bitmask">Command saturations active this tick</field>
       <extensions/>
       <field type="uint8_t" name="route_mode">RacerMode selecting this route; zero for legacy senders.</field>
