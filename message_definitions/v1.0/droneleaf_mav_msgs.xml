@@ -872,13 +872,13 @@
       <field type="uint8_t" name="state">New state for state changes.</field>
     </message>
     <message id="77074" name="LEAF_GIMBAL_MATCHED_ATTITUDE">
-      <description>GimbalLOSCompensation observation sampled at the configured publishing rate. Pan is inner C40D pitch; tilt is outer C40D roll. Physical feedback radians, without command polarity inversion. Fields copy the current observation matched_attitude directly, without holding a previous sample. Emitted only when gimbal compensation is enabled.</description>
+      <description>GimbalLOSCompensation observation sampled at the configured publishing rate. Pan is inner C40D pitch; tilt is outer C40D roll. True joint radians: the C40D physical feedback mapped through config-gimbal's joint calibration (identical to the physical feedback when joint_calibration_enabled is false), without command polarity inversion. Fields copy the current observation matched_attitude directly, without holding a previous sample. Emitted only when gimbal compensation is enabled.</description>
       <field type="double" name="pan_rad" units="rad">LOS-matched inner pan (C40D pitch).</field>
       <field type="double" name="tilt_rad" units="rad">LOS-matched outer tilt (C40D roll).</field>
       <field type="uint8_t" name="valid">Current observation matched_attitude.valid: 1 valid, 0 invalid. Ignore angles when 0.</field>
     </message>
     <message id="77075" name="LEAF_GIMBAL_MANUAL_CONTROL">
-      <description>Ground-station manual gimbal control. ACTIVATE puts the gimbal in HOLD and stops tracker, racer-mode and sine control of it; SETPOINT moves the held pose while active; DEACTIVATE restores automatic behaviour. Angles are FC joint degrees (pan inner, tilt outer) and are clamped to the operating limits reported in LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is answered by one LEAF_GIMBAL_MANUAL_STATUS.</description>
+      <description>Ground-station manual gimbal control. ACTIVATE puts the gimbal in HOLD and stops tracker, racer-mode and sine control of it; SETPOINT moves the held pose while active; DEACTIVATE restores automatic behaviour. Angles are FC joint degrees (pan inner, tilt outer): TRUE joints, the frame of LEAF_GIMBAL_MATCHED_ATTITUDE. With config-gimbal joint_calibration_enabled the FC maps a setpoint through the inverse joint calibration to the C40D's reported joints; disabled, they are the reported joints. Setpoints are clamped to the operating limits reported in LEAF_GIMBAL_MANUAL_STATUS. Each addressed packet is answered by one LEAF_GIMBAL_MANUAL_STATUS.</description>
       <field type="uint32_t" name="request_id">Ground station request correlation ID.</field>
       <field type="uint8_t" name="target_system">Aircraft MAVLink system ID; broadcast is not accepted.</field>
       <field type="uint8_t" name="target_component">LeafFC component ID.</field>
@@ -887,7 +887,7 @@
       <field type="float" name="tilt_setpoint_deg" units="deg">Tilt setpoint; used only for SETPOINT.</field>
     </message>
     <message id="77076" name="LEAF_GIMBAL_MANUAL_STATUS">
-      <description>Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest kept). Limits are the operating joint limits from config-gimbal and the C40D range, inset by joint_margin_deg.</description>
+      <description>Reply to LEAF_GIMBAL_MANUAL_CONTROL, rate limited to config-gimbal_allxf_40d.mavlink_manual_status_publish_rate_hz (newest kept). Limits are the operating joint limits from config-gimbal and the C40D range, inset by joint_margin_deg. Every angle is in TRUE joints (as LEAF_GIMBAL_MANUAL_CONTROL): with the joint calibration enabled the limits are the calibrated reported limits (each at the other joint's zero) and the command is the held reported command mapped through the calibration.</description>
       <field type="uint32_t" name="request_id">Request ID this status answers.</field>
       <field type="uint8_t" name="active">1 manual control active, 0 automatic behaviour.</field>
       <field type="uint8_t" name="session_state">0 initializing, 1 ready, 2 fault or disabled.</field>
