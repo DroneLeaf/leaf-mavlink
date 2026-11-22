@@ -992,5 +992,12 @@
       <field type="uint32_t" name="withheld_reasons" enum="LEAF_ARM_CLEARANCE_WITHHELD_REASON" display="bitmask">Every check currently withholding the clearance; 0 when cleared.</field>
       <field type="uint8_t" name="cleared">1 when LeafFC grants Betaflight arming, 0 when it withholds it.</field>
     </message>
+    <message id="77079" name="LEAF_RACER_NAV_STATE">
+      <description>Airframe attitude, heading and climb rate for the ground station flight instrument (drone to GS), sent periodically at config-target.racer_nav_state_publish_rate_hz.</description>
+      <field type="float" name="roll_rad" units="rad">Roll, positive right wing down.</field>
+      <field type="float" name="pitch_rad" units="rad">Pitch, positive nose up.</field>
+      <field type="float" name="yaw_rad" units="rad">INS heading, counter-clockwise from East (ENU); compass heading = 90 deg - yaw_rad. Not referenced to true North until the INS heading has been aligned.</field>
+      <field type="float" name="climb_m_s" units="m/s">INS vertical velocity, positive up.</field>
+    </message>
   </messages>
 </mavlink>

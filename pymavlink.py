@@ -626,8 +626,14 @@ LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_NO_SAFE_DISARM_VALUE = 2097152
 enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][2097152] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_NO_SAFE_DISARM_VALUE", """Neither 1000 nor 2000 is safely outside the ARM range""")
 LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MODE_ACTIVE_ON_RC_LOSS = 4194304
 enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][4194304] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_MODE_ACTIVE_ON_RC_LOSS", """Another mode is active at a value the generated RC frame writes while the RC link is lost""")
-LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END = 4194305
-enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][4194305] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END", """""")
+LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_NOT_SET = 8388608
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][8388608] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_NOT_SET", """GPS takeoff mode: config-gps_guidance.safe_landing_gps_position is empty""")
+LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_HOME_UNAVAILABLE = 16777216
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][16777216] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_HOME_UNAVAILABLE", """GPS takeoff mode: no GPS home recorded yet, so the safe landing distance cannot be checked""")
+LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_BEYOND_LIMIT = 33554432
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][33554432] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_BEYOND_LIMIT", """GPS takeoff mode: the safe landing point is farther from the GPS home than config-gps_guidance.safe_landing_max_distance_from_home_m""")
+LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END = 33554433
+enums["LEAF_ARM_CLEARANCE_WITHHELD_REASON"][33554433] = EnumEntry("LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END", """""")
 
 # FIRMWARE_VERSION_TYPE
 enums["FIRMWARE_VERSION_TYPE"] = Enum()
@@ -6175,6 +6181,7 @@ MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_CONTROL = 77075
 MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS = 77076
 MAVLINK_MSG_ID_LEAF_ESC_MEAS = 77077
 MAVLINK_MSG_ID_LEAF_ARM_CLEARANCE_STATUS = 77078
+MAVLINK_MSG_ID_LEAF_RACER_NAV_STATE = 77079
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
 MAVLINK_MSG_ID_PING = 4
@@ -9682,6 +9689,49 @@ class MAVLink_leaf_arm_clearance_status_message(MAVLink_message):
 # Define name on the class for backwards compatibility (it is now msgname).
 # Done with setattr to hide the class variable from mypy.
 setattr(MAVLink_leaf_arm_clearance_status_message, "name", mavlink_msg_deprecated_name_property())
+
+
+class MAVLink_leaf_racer_nav_state_message(MAVLink_message):
+    """
+    Airframe attitude, heading and climb rate for the ground station
+    flight instrument (drone to GS), sent periodically at config-
+    target.racer_nav_state_publish_rate_hz.
+    """
+
+    id = MAVLINK_MSG_ID_LEAF_RACER_NAV_STATE
+    msgname = "LEAF_RACER_NAV_STATE"
+    fieldnames = ["roll_rad", "pitch_rad", "yaw_rad", "climb_m_s"]
+    ordered_fieldnames = ["roll_rad", "pitch_rad", "yaw_rad", "climb_m_s"]
+    fieldtypes = ["float", "float", "float", "float"]
+    fielddisplays_by_name: Dict[str, str] = {}
+    fieldenums_by_name: Dict[str, str] = {}
+    fieldunits_by_name: Dict[str, str] = {"roll_rad": "rad", "pitch_rad": "rad", "yaw_rad": "rad", "climb_m_s": "m/s"}
+    native_format = bytearray(b"<ffff")
+    orders = [0, 1, 2, 3]
+    lengths = [1, 1, 1, 1]
+    array_lengths = [0, 0, 0, 0]
+    crc_extra = 103
+    unpacker = struct.Struct("<ffff")
+    instance_field = None
+    instance_offset = -1
+
+    def __init__(self, roll_rad: float, pitch_rad: float, yaw_rad: float, climb_m_s: float):
+        MAVLink_message.__init__(self, MAVLink_leaf_racer_nav_state_message.id, MAVLink_leaf_racer_nav_state_message.msgname)
+        self._fieldnames = MAVLink_leaf_racer_nav_state_message.fieldnames
+        self._instance_field = MAVLink_leaf_racer_nav_state_message.instance_field
+        self._instance_offset = MAVLink_leaf_racer_nav_state_message.instance_offset
+        self.roll_rad = roll_rad
+        self.pitch_rad = pitch_rad
+        self.yaw_rad = yaw_rad
+        self.climb_m_s = climb_m_s
+
+    def pack(self, mav: "MAVLink", force_mavlink1: bool = False) -> bytes:
+        return self._pack(mav, self.crc_extra, self.unpacker.pack(self.roll_rad, self.pitch_rad, self.yaw_rad, self.climb_m_s), force_mavlink1=force_mavlink1)
+
+
+# Define name on the class for backwards compatibility (it is now msgname).
+# Done with setattr to hide the class variable from mypy.
+setattr(MAVLink_leaf_racer_nav_state_message, "name", mavlink_msg_deprecated_name_property())
 
 
 class MAVLink_sys_status_message(MAVLink_message):
@@ -21234,6 +21284,7 @@ mavlink_map: Dict[int, Type[MAVLink_message]] = {
     MAVLINK_MSG_ID_LEAF_GIMBAL_MANUAL_STATUS: MAVLink_leaf_gimbal_manual_status_message,
     MAVLINK_MSG_ID_LEAF_ESC_MEAS: MAVLink_leaf_esc_meas_message,
     MAVLINK_MSG_ID_LEAF_ARM_CLEARANCE_STATUS: MAVLink_leaf_arm_clearance_status_message,
+    MAVLINK_MSG_ID_LEAF_RACER_NAV_STATE: MAVLink_leaf_racer_nav_state_message,
     MAVLINK_MSG_ID_SYS_STATUS: MAVLink_sys_status_message,
     MAVLINK_MSG_ID_SYSTEM_TIME: MAVLink_system_time_message,
     MAVLINK_MSG_ID_PING: MAVLink_ping_message,
@@ -24035,6 +24086,34 @@ class MAVLink(object):
 
         """
         self.send(self.leaf_arm_clearance_status_encode(withheld_reasons, cleared), force_mavlink1=force_mavlink1)
+
+    def leaf_racer_nav_state_encode(self, roll_rad: float, pitch_rad: float, yaw_rad: float, climb_m_s: float) -> MAVLink_leaf_racer_nav_state_message:
+        """
+        Airframe attitude, heading and climb rate for the ground station
+        flight instrument (drone to GS), sent periodically at config-
+        target.racer_nav_state_publish_rate_hz.
+
+        roll_rad                  : Roll, positive right wing down. [rad] (type:float)
+        pitch_rad                 : Pitch, positive nose up. [rad] (type:float)
+        yaw_rad                   : INS heading, counter-clockwise from East (ENU); compass heading = 90 deg - yaw_rad. Not referenced to true North until the INS heading has been aligned. [rad] (type:float)
+        climb_m_s                 : INS vertical velocity, positive up. [m/s] (type:float)
+
+        """
+        return MAVLink_leaf_racer_nav_state_message(roll_rad, pitch_rad, yaw_rad, climb_m_s)
+
+    def leaf_racer_nav_state_send(self, roll_rad: float, pitch_rad: float, yaw_rad: float, climb_m_s: float, force_mavlink1: bool = False) -> None:
+        """
+        Airframe attitude, heading and climb rate for the ground station
+        flight instrument (drone to GS), sent periodically at config-
+        target.racer_nav_state_publish_rate_hz.
+
+        roll_rad                  : Roll, positive right wing down. [rad] (type:float)
+        pitch_rad                 : Pitch, positive nose up. [rad] (type:float)
+        yaw_rad                   : INS heading, counter-clockwise from East (ENU); compass heading = 90 deg - yaw_rad. Not referenced to true North until the INS heading has been aligned. [rad] (type:float)
+        climb_m_s                 : INS vertical velocity, positive up. [m/s] (type:float)
+
+        """
+        self.send(self.leaf_racer_nav_state_encode(roll_rad, pitch_rad, yaw_rad, climb_m_s), force_mavlink1=force_mavlink1)
 
     def sys_status_encode(self, onboard_control_sensors_present: int, onboard_control_sensors_enabled: int, onboard_control_sensors_health: int, load: int, voltage_battery: int, current_battery: int, battery_remaining: int, drop_rate_comm: int, errors_comm: int, errors_count1: int, errors_count2: int, errors_count3: int, errors_count4: int, onboard_control_sensors_present_extended: int = 0, onboard_control_sensors_enabled_extended: int = 0, onboard_control_sensors_health_extended: int = 0) -> MAVLink_sys_status_message:
         """
