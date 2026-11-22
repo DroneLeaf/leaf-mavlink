@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_DRONELEAF_MAV_MSGS.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -3935546082639748684
+#define MAVLINK_DRONELEAF_MAV_MSGS_XML_HASH -2771584421706913994
 
 #ifdef __cplusplus
 extern "C" {
@@ -283,7 +283,8 @@ typedef enum LEAF_ARM_CLEARANCE_WITHHELD_REASON
    LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_NOT_SET=8388608, /* GPS takeoff mode: config-gps_guidance.safe_landing_gps_position is empty | */
    LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_HOME_UNAVAILABLE=16777216, /* GPS takeoff mode: no GPS home recorded yet, so the safe landing distance cannot be checked | */
    LEAF_ARM_CLEARANCE_WITHHELD_SAFE_LANDING_BEYOND_LIMIT=33554432, /* GPS takeoff mode: the safe landing point is farther from the GPS home than config-gps_guidance.safe_landing_max_distance_from_home_m | */
-   LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END=33554433, /*  | */
+   LEAF_ARM_CLEARANCE_WITHHELD_MODE_RANGES_TILT_LIMITING_MODE_CONFIGURED=67108864, /* ANGLE, HORIZON or ACRO TRAINER can be activated in the Betaflight Modes tab; each caps the tilt LeafFC commands | */
+   LEAF_ARM_CLEARANCE_WITHHELD_REASON_ENUM_END=67108865, /*  | */
 } LEAF_ARM_CLEARANCE_WITHHELD_REASON;
 #endif
 
